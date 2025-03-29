@@ -1,3 +1,4 @@
+import { cn } from '@uti/cn'
 import Image from 'next/image'
 
 export type IconProps = {
@@ -8,6 +9,20 @@ export type IconProps = {
   height?: number
 }
 
-export const Logo = ({ className = '', width = 100, height = 100, src, alt }: IconProps) => {
-  return <Image className={className} src={src} width={width} height={height} alt={alt} priority />
+export const Logo = ({
+  className,
+  width = 100,
+  height = 100,
+  src,
+  alt,
+}: IconProps) => {
+  return (
+    <Image
+      src={ src }
+      width={ width }
+      height={ height }
+      alt={ alt }
+      className={ cn('', className) }
+    />
+  )
 }

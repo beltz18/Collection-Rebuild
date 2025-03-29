@@ -1,12 +1,14 @@
 export interface SidebarContext {
-  isOpen: boolean,
+  open: boolean,
+  toggle: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export interface SidebarNodes {
   children: React.ReactNode,
 } 
 
-export interface SidebarProps {
-  className?: string,
+export interface SidebarItems {
   children: React.ReactNode,
+  active?: boolean,
+  setActive?: VoidFunction,
 }

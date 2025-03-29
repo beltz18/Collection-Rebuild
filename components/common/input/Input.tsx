@@ -1,10 +1,29 @@
 'use client'
 
-import { Input } from '@heroui/react'
+import { Input as Inp } from '@heroui/react'
 import { CustomInputProps } from './input.types'
+import { cn } from '@uti/cn'
 
-const CustomInput: React.FC<CustomInputProps> = ({ label, type = 'text', name, isRequired, className, onChange }) => {
-  return <Input type={type} label={label} name={name} isRequired={isRequired} color='default' variant='faded' radius='sm' size='md' className={`${className}`} onChange={onChange} />
+export const Input: React.FC<CustomInputProps> = ({
+  label,
+  type = 'text',
+  isRequired,
+  className,
+  onChange,
+  radius='md',
+  size='md',
+  ...props
+}) => {
+  return (
+    <Inp
+      type={ type }
+      label={ label }
+      isRequired={ isRequired }
+      radius='sm'
+      size='md'
+      className={ cn('', className) }
+      onChange={onChange}
+      { ...props }
+    />
+  )
 }
-
-export default CustomInput

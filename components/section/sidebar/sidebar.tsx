@@ -77,11 +77,12 @@ function Footer ({ children }: SidebarNodes) {
   )
 }
 
-function Item ({ children, active }: SidebarItems) {
+function Item ({ children, active, setActive }: SidebarItems) {
   return (
     <div
       className={`p-4 cursor-pointer hover:bg-white hover:text-theme-hover-text
         ${ active &&  'bg-white text-theme-hover-text' }`}
+      onClick={ setActive }
     >
       { children }
     </div>
