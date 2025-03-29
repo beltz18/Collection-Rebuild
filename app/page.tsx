@@ -1,6 +1,6 @@
 'use client'
 
-import { Sidebar } from "@sec/index"
+import { Sidebar } from '@sec/index'
 
 export default function App() {
   return (

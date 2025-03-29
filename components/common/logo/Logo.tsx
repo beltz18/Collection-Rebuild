@@ -1,13 +1,6 @@
 import { cn } from '@uti/cn'
 import Image from 'next/image'
-
-export type IconProps = {
-  src: string
-  alt: string
-  className?: string
-  width?: number
-  height?: number
-}
+import { IconProps } from './logo.types'
 
 export const Logo = ({
   className,
