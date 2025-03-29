@@ -12,7 +12,7 @@ export default function Home() {
         </Sidebar.Header>
         
         <Sidebar.Body>
-          <Sidebar.Item>Home</Sidebar.Item>
+          <Sidebar.Item active>Home</Sidebar.Item>
           <Sidebar.Item>About</Sidebar.Item>
           <Sidebar.Item>Contact</Sidebar.Item>
         </Sidebar.Body>
