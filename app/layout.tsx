@@ -8,7 +8,7 @@ export default function RootLayout({
     <html suppressHydrationWarning lang='en'>
       <head />
       <body>
-        <Providers themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>
+        <Providers>
           { children }
         </Providers>
       </body>
