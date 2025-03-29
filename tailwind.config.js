@@ -11,6 +11,18 @@ const config = {
     extend: {
       colors: {
 				'primary': 'var(--primary)',
+        'secondary': 'var(--secondary)',
+        'white': 'var(--white)',
+        'dark': 'var(--dark)',
+        'gray': 'var(--gray)',
+        'theme-primary': 'rgb(var(--color-theme-primary) / <alpha-value>)',
+        'theme-secondary': 'rgb(var(--color-theme-secondary) / <alpha-value>)',
+        'theme-background': 'rgb(var(--color-theme-background) / <alpha-value>)',
+        'theme-text': 'rgb(var(--color-theme-text) / <alpha-value>)',
+        'theme-hover': 'rgb(var(--color-theme-hover) / <alpha-value>)',
+        'theme-hover-text': 'rgb(var(--color-theme-hover-text) / <alpha-value>)',
+        'theme-popover': 'rgb(var(--color-theme-popover) / <alpha-value>)',
+        'theme-popover-text': 'rgb(var(--color-theme-popover-text) / <alpha-value>)',
       }
     },
   },
