@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
 export type DropdownProps = {
-  children: [ReactNode, ReactNode]
+  children: ReactNode[]
   className?: string
 }
 export type DropdownTriggerProps = {
@@ -9,11 +9,12 @@ export type DropdownTriggerProps = {
 }
 
 export type DropdownMenuProps = {
-  children: ReactNode
+  children: React.ReactElement[] | React.ReactElement
   className?: string
 }
 
 export type DropdownItemProps = {
   children: ReactNode
+  key: string
   className?: string
 }
