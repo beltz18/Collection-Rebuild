@@ -1,8 +1,8 @@
 'use client'
 
-import { Sidebar } from '@sec/index'
+import { Sidebar } from "@sec/index"
 
-export default function Home() {
+export default function App() {
   return (
     <Sidebar>
       <Sidebar.Toggle />
