@@ -9,15 +9,9 @@ const CustomDropdownTrigger = ({ children }: DropdownTriggerProps) => {
 }
 
 const CustomDropdownMenu = ({ children, className }: DropdownMenuProps) => {
-  const items =
-    React.Children.map(children, (child, index) => ({
-      id: `item-${index}`,
-      element: child,
-    })) || []
-
   return (
-    <DropdownMenu className={className} items={items}>
-      {(item) => <DropdownItem key={item.id}>{item.element}</DropdownItem>}
+    <DropdownMenu className={className} >
+      {children}
     </DropdownMenu>
   )
 }
@@ -28,3 +22,4 @@ export const CustomDropdown = ({ children, className }: DropdownProps) => {
 
 CustomDropdown.Menu = CustomDropdownMenu
 CustomDropdown.Trigger = CustomDropdownTrigger
+CustomDropdown.Item = DropdownItem
