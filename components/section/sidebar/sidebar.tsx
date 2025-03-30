@@ -25,13 +25,16 @@ export const Sidebar = ({ children }: SidebarNodes) => {
   )
 }
 
-function Trigger() {
+function Trigger({ click }: { click: React.Dispatch<React.SetStateAction<boolean>> }) {
   const { open, toggle } = useContext(SidebarContext)
 
   return (
     <button
-      onClick={() => toggle(!open)}
-      className={`rounded-br-md fixed top-0 left-0 z-50 px-3 py-2 bg-theme-primary`}
+      onClick={() => {
+        click(!open)
+        toggle(!open)
+      }}
+      className={`rounded-br-md fixed top-0 left-0 z-50 h-[60px] px-4`}
       title={`${ open ? 'Close sidebar' : 'Open sidebar' }`}
     >
       <Icon
@@ -48,9 +51,9 @@ function Content ({ children }: SidebarNodes) {
 
   return (
     <div
-      className={`bg-theme-primary text-theme-text fixed top-0 left-0 h-full flex justify-between flex-col transition-transform
-        ${ open ? 'translate-x-0' : '-translate-x-[calc(100%-60px)]' }
-        w-[17rem] pt-12`
+      className={`bg-theme-primary text-theme-text fixed top-0 left-0 h-full
+        flex justify-between flex-col transition-all duration-300 pt-14
+        ${ open ? 'translate-x-0 w-[17rem]' : '-translate-x-0 w-[60px]' }`
       }
     >
       { children }
@@ -79,8 +82,10 @@ function Item ({ children, active, setActive, icon }: SidebarItems) {
 
   return (
     <div
-      className={`my-[2px] mx-2 p-3 flex gap-4 text-[18px] rounded-md cursor-pointer hover:bg-white hover:text-theme-hover-text
-        ${ active &&  'bg-white text-theme-hover-text' }`}
+      className={`my-[2px] p-3 flex gap-4 text-[18px] rounded-md cursor-pointer hover:bg-white hover:text-theme-hover-text
+        ${ active &&  'bg-white text-theme-hover-text' }
+        ${ open && 'mx-2' }
+      `}
       onClick={ setActive }
     >
       {
@@ -91,7 +96,7 @@ function Item ({ children, active, setActive, icon }: SidebarItems) {
           { children }
         </>
           :
-        <div className='w-full flex items-end justify-end'>
+        <div className='w-full flex items-end justify-center'>
           { icon }
         </div>
       }
@@ -99,7 +104,7 @@ function Item ({ children, active, setActive, icon }: SidebarItems) {
   )
 }
 
-Sidebar.Toggle  = Trigger
+Sidebar.Trigger = Trigger
 Sidebar.Content = Content
 Sidebar.Body    = Body
 Sidebar.Footer  = Footer
