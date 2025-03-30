@@ -5,10 +5,10 @@ export interface SidebarContext {
 
 export interface SidebarNodes {
   children: React.ReactNode,
-} 
-
+}
 export interface SidebarItems {
   children: React.ReactNode,
   active?: boolean,
   setActive?: VoidFunction,
+  icon?: React.ReactNode,
 }
