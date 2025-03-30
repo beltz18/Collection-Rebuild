@@ -3,7 +3,6 @@
 import { CustomCheckbox } from '@com/checkbox/checkbox'
 import { CustomSelect } from '@com/select/select'
 import { CustomSwitch } from '@com/switch/switch'
-import { SelectItem } from '@heroui/select'
 import { Sidebar } from '@sec/index'
 
 export default function App() {
