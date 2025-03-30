@@ -11,6 +11,7 @@
   "dependencies": {
     "@heroui/breadcrumbs": "^2.2.12",
     "@heroui/button": "2.2.16",
+    "@heroui/checkbox": "^2.3.15",
     "@heroui/code": "2.2.12",
     "@heroui/dropdown": "^2.3.16",
     "@heroui/input": "2.4.16",
@@ -19,7 +20,9 @@
     "@heroui/listbox": "2.3.15",
     "@heroui/navbar": "2.2.14",
     "@heroui/pagination": "^2.2.14",
+    "@heroui/popover": "^2.3.16",
     "@heroui/react": "^2.7.5",
+    "@heroui/select": "^2.4.16",
     "@heroui/snippet": "2.2.17",
     "@heroui/switch": "2.2.14",
     "@heroui/system": "2.4.12",
