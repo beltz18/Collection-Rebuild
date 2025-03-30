@@ -1,3 +1,4 @@
+import { Icon } from '@com/icon'
 import {
   useState,
   createContext,
@@ -10,12 +11,12 @@ import {
 } from './sidebar.types'
 
 const SidebarContext = createContext<Ctx>({
-  open: false,
+  open: true,
   toggle: () => {},
 })
 
 export const Sidebar = ({ children }: SidebarNodes) => {
-  const [open, toggle] = useState(false)
+  const [open, toggle] = useState(true)
 
   return (
     <SidebarContext.Provider value={{ open, toggle }}>
@@ -30,11 +31,14 @@ function Trigger() {
   return (
     <button
       onClick={() => toggle(!open)}
-      className={`rounded-md fixed top-2 left-2 z-50 ${
-        open ? 'bg-gray-500 text-theme-text' : 'bg-gray-200 text-theme-hover-text'
-      }`}
+      className={`rounded-br-md fixed top-0 left-0 z-50 px-3 py-2 bg-theme-primary`}
+      title={`${ open ? 'Close sidebar' : 'Open sidebar' }`}
     >
-      { open ? 'Close Sidebar' : 'Open Sidebar' }
+      <Icon
+        icon='hamburger'
+        size='lg'
+        className='text-white'
+      />
     </button>
   )
 }
@@ -44,18 +48,11 @@ function Content ({ children }: SidebarNodes) {
 
   return (
     <div
-      className={`bg-theme-primary text-theme-text fixed top-0 left-0 h-full flex justify-between flex-col transition-transform ${
-        open ? 'translate-x-0' : '-translate-x-full'
-      } w-[17rem]`}
+      className={`bg-theme-primary text-theme-text fixed top-0 left-0 h-full flex justify-between flex-col transition-transform
+        ${ open ? 'translate-x-0' : '-translate-x-[calc(100%-60px)]' }
+        w-[17rem] pt-12`
+      }
     >
-      { children }
-    </div>
-  )
-}
-
-function Header ({ children }: SidebarNodes) {
-  return (
-    <div className='p-4 mt-10'>
       { children }
     </div>
   )
@@ -71,26 +68,39 @@ function Body ({ children }: SidebarNodes) {
 
 function Footer ({ children }: SidebarNodes) {
   return (
-    <div className='p-4'>
+    <div className=''>
       { children }
     </div>
   )
 }
 
-function Item ({ children, active }: SidebarItems) {
+function Item ({ children, active, setActive, icon }: SidebarItems) {
+  const { open } = useContext(SidebarContext)
+
   return (
     <div
-      className={`p-4 cursor-pointer hover:bg-white hover:text-theme-hover-text
+      className={`my-[2px] mx-2 p-3 flex gap-4 text-[18px] rounded-md cursor-pointer hover:bg-white hover:text-theme-hover-text
         ${ active &&  'bg-white text-theme-hover-text' }`}
+      onClick={ setActive }
     >
-      { children }
+      {
+        open
+          ?
+        <>
+          { icon }
+          { children }
+        </>
+          :
+        <div className='w-full flex items-end justify-end'>
+          { icon }
+        </div>
+      }
     </div>
   )
 }
 
 Sidebar.Toggle  = Trigger
 Sidebar.Content = Content
-Sidebar.Header  = Header
 Sidebar.Body    = Body
 Sidebar.Footer  = Footer
 Sidebar.Item    = Item

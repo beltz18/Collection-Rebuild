@@ -1,3 +1,5 @@
 export * from './button/button'
 export * from './pagination/index'
 export * from './heading/index'
+export * from './input/input'
+export * from './logo/logo'

@@ -1,8 +1,3 @@
-export type CustomInputProps = {
-  label: string
-  type?: string
-  name: string
-  isRequired: boolean
-  className: string
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
-}
+import { InputProps } from '@heroui/input'
+
+export interface CustomInputProps extends InputProps { }

@@ -7,9 +7,9 @@
 
 :root {
   --primary: #023047;
-  --secondary: #5422CC;
-  --white: #F2F2F2;
-  --dark: #1C134A;
+  --secondary: #5422cc;
+  --white: #f2f2f2;
+  --dark: #1c134a;
   --gray: #666666;
 
   /* Theme variables */
@@ -23,7 +23,7 @@
   --color-theme-popover-text: 31 41 55; /* #1F2937 */
 }
 
-[data-theme="red"] {
+[data-theme='red'] {
   --color-theme-primary: 220 20 49; /* #DC1431 */
   --color-theme-secondary: 247 247 239; /* #f7f7ef */
   --color-theme-background: 255 255 255; /* #FFFFFF */
@@ -34,7 +34,7 @@
   --color-theme-popover-text: 220 20 49; /* #DC1431 */
 }
 
-[data-theme="blue"] {
+[data-theme='blue'] {
   --color-theme-primary: 2 48 71; /* #023047 */
   --color-theme-secondary: 28 19 74; /* #1C134A */
   --color-theme-background: 247 247 239; /* #f7f7ef */
@@ -45,10 +45,10 @@
   --color-theme-popover-text: 2 48 71; /* #023047 */
 }
 
-[data-theme="dark"] {
+[data-theme='dark'] {
   --color-theme-primary: 28 19 74; /* #1C134A */
   --color-theme-secondary: 2 48 71; /* #023047 */
-  --color-theme-background:  19 19 19;/* #131313 */
+  --color-theme-background: 19 19 19; /* #131313 */
   --color-theme-text: 247 247 239; /* #f7f7ef */
   --color-theme-hover: 255 255 255; /* #FFFFFF */
   --color-theme-hover-text: 28 19 74; /* #1C134A */
@@ -56,7 +56,7 @@
   --color-theme-popover-text: 247 247 239; /* #f7f7ef */
 }
 
-[data-theme="light"] {
+[data-theme='light'] {
   --color-theme-primary: 229 231 235; /* #e5e7eb */
   --color-theme-secondary: 243 244 246; /* #f3f4f6 */
   --color-theme-background: 255 255 255; /* #ffffff */
@@ -67,8 +67,12 @@
   --color-theme-popover-text: 31 41 55; /* #1f2937 */
 }
 
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #f3f3f3; }
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f3f3f3;
+}
 ::-webkit-scrollbar-thumb {
   background: rgba(15, 15, 15, 0.299);
   border-radius: 20px;
@@ -78,10 +82,8 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
-
-
 
 @layer base {
   :root {
