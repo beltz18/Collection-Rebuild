@@ -4,8 +4,8 @@ import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@heroui/r
 import { DropdownProps, DropdownTriggerProps, DropdownMenuProps, DropdownItemProps } from './dropdown.types'
 import React from 'react'
 
-const CustomDropdownTrigger = ({ children }: DropdownTriggerProps) => {
-  return <DropdownTrigger>{children}</DropdownTrigger>
+const CustomDropdownTrigger = ({ children, className }: DropdownTriggerProps) => {
+  return <DropdownTrigger className={className}>{children}</DropdownTrigger>
 }
 
 const CustomDropdownMenu = ({ children, className }: DropdownMenuProps) => {

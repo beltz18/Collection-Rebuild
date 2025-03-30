@@ -6,6 +6,7 @@ export type DropdownProps = {
 }
 export type DropdownTriggerProps = {
   children: ReactNode
+  className?: string
 }
 
 export type DropdownMenuProps = {
