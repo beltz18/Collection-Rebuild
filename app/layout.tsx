@@ -8,6 +8,7 @@ export default function RootLayout({
     <html suppressHydrationWarning lang='en'>
       <head />
       <body>
+        
         <Providers>
           { children }
         </Providers>

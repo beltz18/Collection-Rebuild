@@ -27,7 +27,7 @@
       "@sty/*": ["./styles/*"],
       "@uti/*": ["./utils/*"],
       "@ctx/*": ["./context/*"],
-      "@/*": ["./*"],
+      "@sts/*": ["./states/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

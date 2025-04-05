@@ -1,6 +1,6 @@
 import { Button as Btn } from '@heroui/button'
 import { ButtonProps } from './button.types'
-import { cn } from '@/utils/cn'
+import { cn } from '@uti/cn'
 
 export const Button : React.FC<ButtonProps> = ({
   placeholder,

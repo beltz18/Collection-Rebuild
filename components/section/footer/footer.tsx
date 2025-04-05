@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { LOGO_FOOTER } from '@/utils/var'
+import { LOGO_FOOTER } from '@uti/var'
 
 export const Footer = () => {
   return (
