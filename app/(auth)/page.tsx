@@ -3,6 +3,9 @@
 import { DefaultLayout } from '@lay/default'
 import AuthLayout        from './layout'
 import { useTokenStore } from '@sts/useTokenStore'
+import { Tooltip } from '@com/tooltip'
+import { Button } from '@com/index'
+import { Info, AlertCircle } from 'lucide-react'
 
 export default function App() {
   const { clear } = useTokenStore()
@@ -30,6 +33,20 @@ export default function App() {
         >
           Borrar Token
         </button>
+
+        <Tooltip placement='bottom'>
+          <Tooltip.Trigger asChild>
+            <Button variant="flat" color='warning' placeholder='Tooltip'>
+              <Info className="h-5 w-5" />
+            </Button>
+          </Tooltip.Trigger>
+          <Tooltip.Content className="bg-blue-600 text-white">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="h-4 w-4" />
+              <span>Información importante</span>
+            </div>
+          </Tooltip.Content>
+        </Tooltip>
       </DefaultLayout>
     </AuthLayout>
   )
