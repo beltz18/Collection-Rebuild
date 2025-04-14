@@ -10,29 +10,29 @@ export const options : SidebarOptions = {
     },
     {
       label: 'Loans',
-      url: '/',
+      url: '/loans',
       Icon: <Icon icon='loans' size='md' />
     },
     {
       label: 'Payments',
-      url: '/',
+      url: '#',
       Icon: <Icon icon='payments' size='md' />
     },
     {
       label: 'Activity Logs',
-      url: '/',
+      url: '#',
       Icon: <Icon icon='history' size='md' />
     },
   ],
   down: [
     {
       label: 'Themes',
-      url: '/',
+      url: '#',
       Icon: <Icon icon='changeTheme' size='md' />
     },
     {
       label: 'Logout',
-      url: '/',
+      url: '#',
       Icon: <Icon icon='logout' size='md' />
     },
   ],

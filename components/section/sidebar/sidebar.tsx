@@ -34,13 +34,12 @@ function Trigger({ click }: { click: React.Dispatch<React.SetStateAction<boolean
         click(!open)
         toggle(!open)
       }}
-      className={`rounded-br-md fixed top-0 left-0 z-50 h-[60px] px-4`}
+      className='fixed top-0 left-0 z-50 h-[60px] px-4'
       title={`${ open ? 'Close sidebar' : 'Open sidebar' }`}
     >
       <Icon
         icon='hamburger'
         size='lg'
-        className='text-white'
       />
     </button>
   )
@@ -53,8 +52,8 @@ function Content ({ children }: SidebarNodes) {
     <div
       className={`bg-theme-primary text-theme-text fixed top-0 left-0 h-full
         flex justify-between flex-col transition-all duration-300 pt-14
-        ${ open ? 'translate-x-0 w-[17rem]' : '-translate-x-0 w-[60px]' }`
-      }
+        ${ open ? 'translate-x-0 w-[17rem]' : '-translate-x-0 w-[60px] px-1' }
+      `}
     >
       { children }
     </div>
@@ -82,9 +81,9 @@ function Item ({ children, active, setActive, icon }: SidebarItems) {
 
   return (
     <div
-      className={`my-[2px] p-3 flex gap-4 text-[18px] rounded-md cursor-pointer hover:bg-white hover:text-theme-hover-text
-        ${ active &&  'bg-white text-theme-hover-text' }
-        ${ open && 'mx-2' }
+      className={`my-[2px] p-3 flex gap-4 text-[18px] rounded-md cursor-pointer
+        hover:bg-white hover:text-theme-hover-text ${ open && 'mx-1' }
+        ${ active && 'bg-white text-theme-hover-text' }
       `}
       onClick={ setActive }
     >

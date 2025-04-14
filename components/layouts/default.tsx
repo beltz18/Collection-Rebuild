@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useState } from 'react'
 import { Sidebar } from '@sec/index'
 import { options } from '@uti/consts'
@@ -20,15 +21,18 @@ export const DefaultLayout = ({ children }: LayoutProps) => {
               <Sidebar.Body>
                 {
                   options.up.map(({ Icon, label, url }, idx) => (
-                    <Sidebar.Item
+                    <Link
                       key={ idx }
-                      active={ active === label }
-                      icon={ Icon }
-                      setActive={() => setActive(label)}
+                      href={ url }
                     >
-                      { label }
-                    </Sidebar.Item>
-
+                      <Sidebar.Item
+                        active={ active === label }
+                        icon={ Icon }
+                        setActive={() => setActive(label)}
+                      >
+                        { label }
+                      </Sidebar.Item>
+                    </Link>
                   ))
                 }
               </Sidebar.Body>
@@ -44,7 +48,6 @@ export const DefaultLayout = ({ children }: LayoutProps) => {
                     >
                       { label }
                     </Sidebar.Item>
-
                   ))
                 }
               </Sidebar.Footer>

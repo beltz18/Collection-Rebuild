@@ -10,11 +10,14 @@ import {
   Hamburger,
   Cross,
   History,
+  Filter,
+  Trash,
 } from "./svg/index"
 
 export type SizeT = { size: string }
 
 const CommonIcons = {
+  /* --------------------------- COMMON --------------------------- */
   changeTheme: {
     SVG: ({ size }: SizeT) => { return <ChangeTheme size={ size } /> }
   },
@@ -48,6 +51,13 @@ const CommonIcons = {
   history: {
     SVG: ({ size }: SizeT) => { return <History size={ size } /> }
   },
+  filter: {
+    SVG: ({ size }: SizeT) => { return <Filter size={ size } /> }
+  },
+  trash: {
+    SVG: ({ size }: SizeT) => { return <Trash size={ size } /> }
+  },
+  /* --------------------------- COMMON --------------------------- */
 } as const
 
 export type IconKeys = keyof typeof CommonIcons
