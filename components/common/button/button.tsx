@@ -7,7 +7,6 @@ export const Button : React.FC<ButtonProps> = ({
   className,
   size='md',
   radius='md',
-  onPress,
   ...props
 }) => {
   return (
@@ -15,7 +14,6 @@ export const Button : React.FC<ButtonProps> = ({
       className={ cn('', className) }
       size={ size }
       radius={ radius }
-      onPress={ onPress }
       { ...props }
     >
       { placeholder }

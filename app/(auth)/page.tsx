@@ -1,15 +1,18 @@
 'use client'
 
 import { DefaultLayout } from '@lay/default'
-import AuthLayout        from './layout'
+import AuthLayout from './layout'
 import { useTokenStore } from '@sts/useTokenStore'
 import { Tooltip } from '@com/tooltip'
 import { Button } from '@com/index'
 import { Info, AlertCircle } from 'lucide-react'
+import { ModalPrueba } from '../../components/Modal-prueba'
+import { useState, useEffect } from "react"
 
 export default function App() {
   const { clear } = useTokenStore()
   const { token } = useTokenStore()
+  const [count, setCount] = useState(0)
 
   const borrarToken = () => {
     clear()
@@ -47,6 +50,14 @@ export default function App() {
             </div>
           </Tooltip.Content>
         </Tooltip>
+
+        <div className="p-6 bg-white rounded-lg shadow-md">
+          <p className="text-lg mb-4">
+            Current count: <strong>{count}</strong>
+          </p>
+
+          <ModalPrueba />
+        </div>
       </DefaultLayout>
     </AuthLayout>
   )
