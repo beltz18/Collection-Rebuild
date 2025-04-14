@@ -8,6 +8,7 @@ import { Button } from '@com/index'
 import { Info, AlertCircle } from 'lucide-react'
 import { ModalPrueba } from '../../components/Modal-prueba'
 import { useState, useEffect } from "react"
+import { NotFoundExamples } from '../../components/notFound'
 
 export default function App() {
   const { clear } = useTokenStore()
@@ -58,6 +59,8 @@ export default function App() {
 
           <ModalPrueba />
         </div>
+
+        <NotFoundExamples />
       </DefaultLayout>
     </AuthLayout>
   )
