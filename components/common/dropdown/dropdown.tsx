@@ -4,20 +4,14 @@ import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@heroui/r
 import { DropdownProps, DropdownTriggerProps, DropdownMenuProps, DropdownItemProps } from './dropdown.types'
 import React from 'react'
 
-const CustomDropdownTrigger = ({ children }: DropdownTriggerProps) => {
-  return <DropdownTrigger>{children}</DropdownTrigger>
+const CustomDropdownTrigger = ({ children, className }: DropdownTriggerProps) => {
+  return <DropdownTrigger className={className}>{children}</DropdownTrigger>
 }
 
 const CustomDropdownMenu = ({ children, className }: DropdownMenuProps) => {
-  const items =
-    React.Children.map(children, (child, index) => ({
-      id: `item-${index}`,
-      element: child,
-    })) || []
-
   return (
-    <DropdownMenu className={className} items={items}>
-      {(item) => <DropdownItem key={item.id}>{item.element}</DropdownItem>}
+    <DropdownMenu className={className} >
+      {children}
     </DropdownMenu>
   )
 }
@@ -28,3 +22,4 @@ export const CustomDropdown = ({ children, className }: DropdownProps) => {
 
 CustomDropdown.Menu = CustomDropdownMenu
 CustomDropdown.Trigger = CustomDropdownTrigger
+CustomDropdown.Item = DropdownItem

@@ -59,7 +59,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
           <div
             ref={ refs.setFloating }
             style={ floatingStyles }
-            className={ cn('px-4 py-2 bg-dark text-gray-0 text-xs w-max rounded z-10', className) }
+            className={ cn('px-4 py-2 bg-theme-primary text-xs w-max rounded z-10', className) }
             { ...getFloatingProps() }
           >
             { label }

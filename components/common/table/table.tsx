@@ -5,6 +5,8 @@ import { CustomCheckbox } from '@com/index'
 import { Split } from '@com/index'
 import { Icon } from '@com/icon'
 import { cn } from '@uti/cn'
+import { Tooltip } from '@com/index'
+import Link from 'next/link'
 import {
   Fragment,
   useEffect,
@@ -276,13 +278,13 @@ export const Table = <T extends object>({
                         return (
                           <td key={cell.id} className='text-gray-90 font-normal group-hover:bg-gray-20 first:pl-1 max-w-[10rem]'>
                             <div className={cn('flex items-center gap-2 truncate w-[95%]', meta?.centerCell && 'justify-center', meta?.cellClassName )}>
-                              {/* {
+                              {
                                 meta?.tooltip
                                   ?
                                 (
                                   <Tooltip label={ `${cell.getValue()}` }>
                                     {
-                                      isValidURL(`${cell.getValue()}`)
+                                      cell.getValue()
                                         ?
                                       <Link
                                         href={`${cell.getValue()}`}
@@ -296,9 +298,9 @@ export const Table = <T extends object>({
                                     }
                                   </Tooltip>
                                 )
-                                  : */}
-                                { flexRender(cell.column.columnDef.cell, cell.getContext()) }
-                              {/* } */}
+                                  :
+                                flexRender(cell.column.columnDef.cell, cell.getContext())
+                              }
                             </div>
                           </td>
                         )

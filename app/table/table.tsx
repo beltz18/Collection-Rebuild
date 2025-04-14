@@ -60,7 +60,7 @@ export const columns = [
       return (
         <Split className='gap-2 w-full min-w-[80px] justify-end pr-4'>
           <Tooltip label='Modificar profesional externo'>
-            Lalalala
+            <span>Lalalala</span>
           </Tooltip>
           
           <Tooltip label='Eliminar profesional externo'>

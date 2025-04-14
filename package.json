@@ -23,6 +23,7 @@
     "@heroui/kbd": "2.2.12",
     "@heroui/link": "2.2.13",
     "@heroui/listbox": "2.3.15",
+    "@heroui/modal": "^2.2.14",
     "@heroui/navbar": "2.2.14",
     "@heroui/pagination": "^2.2.14",
     "@heroui/popover": "^2.3.16",
@@ -32,10 +33,12 @@
     "@heroui/switch": "2.2.14",
     "@heroui/system": "2.4.12",
     "@heroui/theme": "2.4.12",
+    "@heroui/tooltip": "^2.2.14",
     "@react-aria/ssr": "3.9.7",
     "@react-aria/visually-hidden": "3.8.20",
     "@tanstack/react-table": "^8.21.2",
     "clsx": "2.1.1",
+    "floating-ui": "^5.2.8",
     "framer-motion": "11.13.1",
     "intl-messageformat": "^10.5.0",
     "lucide-react": "^0.485.0",
@@ -43,7 +46,8 @@
     "next-themes": "^0.4.4",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-toastify": "^11.0.5"
+    "react-toastify": "^11.0.5",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "15.0.4",
