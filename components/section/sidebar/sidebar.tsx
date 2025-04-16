@@ -1,4 +1,6 @@
 import { Icon } from '@com/icon'
+import { useTheme } from '@ctx/themeContext'
+import { CustomPopover } from '@com/popover/popover'
 import {
   useState,
   createContext,
@@ -27,6 +29,7 @@ export const Sidebar = ({ children }: SidebarNodes) => {
 
 function Trigger({ click }: { click: React.Dispatch<React.SetStateAction<boolean>> }) {
   const { open, toggle } = useContext(SidebarContext)
+  const { theme } = useTheme()
 
   return (
     <button
@@ -40,7 +43,7 @@ function Trigger({ click }: { click: React.Dispatch<React.SetStateAction<boolean
       <Icon
         icon='hamburger'
         size='lg'
-        className='text-white'
+        className={ theme == 'light' ? 'text-black' : 'text-white'}
       />
     </button>
   )
@@ -77,29 +80,30 @@ function Footer ({ children }: SidebarNodes) {
   )
 }
 
-function Item ({ children, active, setActive, icon }: SidebarItems) {
+function Item({
+  children,
+  active,
+  setActive,
+  icon,
+}: SidebarItems & { }) {
   const { open } = useContext(SidebarContext)
 
   return (
     <div
       className={`my-[2px] p-3 flex gap-4 text-[18px] rounded-md cursor-pointer hover:bg-white hover:text-theme-hover-text
-        ${ active &&  'bg-white text-theme-hover-text' }
-        ${ open && 'mx-2' }
+        ${active && "bg-white text-theme-hover-text"}
+        ${open && "mx-2"}
       `}
-      onClick={ setActive }
+      onClick={setActive}
     >
-      {
-        open
-          ?
+      {open ? (
         <>
-          { icon }
-          { children }
+          {icon}
+          {children}
         </>
-          :
-        <div className='w-full flex items-end justify-center'>
-          { icon }
-        </div>
-      }
+      ) : (
+        <div className="w-full flex items-end justify-center">{icon}</div>
+      )}
     </div>
   )
 }

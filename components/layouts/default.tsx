@@ -4,6 +4,7 @@ import { options } from '@uti/consts'
 import { LayoutProps } from './layout.types'
 import { Navbar } from '@sec/index'
 import { Footer } from '@sec/index'
+import { ThemeSelector } from '@sec/theme-popover'
 
 export const DefaultLayout = ({ children }: LayoutProps) => {
   const [active, setActive] = useState<string>("Home")
@@ -18,35 +19,33 @@ export const DefaultLayout = ({ children }: LayoutProps) => {
             
             <Sidebar.Content>
               <Sidebar.Body>
-                {
-                  options.up.map(({ Icon, label, url }, idx) => (
-                    <Sidebar.Item
-                      key={ idx }
-                      active={ active === label }
-                      icon={ Icon }
-                      setActive={() => setActive(label)}
-                    >
-                      { label }
-                    </Sidebar.Item>
-
-                  ))
-                }
+                {options.up.map(({ Icon, label, url }, idx) => (
+                  <Sidebar.Item key={idx} active={active === label} icon={Icon} setActive={() => setActive(label)}>
+                    {label}
+                  </Sidebar.Item>
+                ))}
               </Sidebar.Body>
-              
-              <Sidebar.Footer>
-                {
-                  options.down.map(({ Icon, label, url }, idx) => (
-                    <Sidebar.Item
-                      key={ idx }
-                      active={ active === label }
-                      icon={ Icon }
-                      setActive={() => setActive(label)}
-                    >
-                      { label }
-                    </Sidebar.Item>
 
-                  ))
-                }
+              <Sidebar.Footer>
+                {options.down.map(({ Icon, label, url }, idx) => {
+                  if (label === "Themes") {
+                    return (
+                      <ThemeSelector key={idx}>
+                        <div onClick={() => setActive(label)}>
+                          <Sidebar.Item active={active === label} icon={Icon} setActive={() => {}}>
+                            {label}
+                          </Sidebar.Item>
+                        </div>
+                      </ThemeSelector>
+                    )
+                  }
+
+                  return (
+                    <Sidebar.Item key={idx} active={active === label} icon={Icon} setActive={() => setActive(label)}>
+                      {label}
+                    </Sidebar.Item>
+                  )
+                })}
               </Sidebar.Footer>
             </Sidebar.Content>
           </Sidebar>
