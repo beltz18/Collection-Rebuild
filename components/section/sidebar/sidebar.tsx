@@ -113,8 +113,8 @@ function Item({
   if (open) {
     return (
       <div
-        className={`my-[2px] p-3 flex gap-4 text-[18px] rounded-md cursor-pointer 
-          transition-all duration-200 ease-in-out hover:bg-white
+        className={`my-[2px] p-3 flex gap-4 text-[18px] rounded-md cursor-pointer
+          transition-all duration-200 ease-in-out hover:bg-white hover:text-theme-hover-text
           ${active && !expanded && "bg-white text-theme-hover-text"}
           ${open && "mx-2"}
         `}
