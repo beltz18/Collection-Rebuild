@@ -35,7 +35,7 @@ const TooltipRoot: React.FC<TooltipProps> = ({ children, defaultOpen = false, pl
     open: isOpen,
     onOpenChange: setIsOpen,
     placement,
-    middleware: [offset(8), flip(), shift(), arrow({ element: arrowRef })],
+    middleware: [offset(10), flip(), shift(), arrow({ element: arrowRef })],
     whileElementsMounted: autoUpdate,
   })
 
