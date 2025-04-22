@@ -4,6 +4,7 @@ import type React from "react"
 import { useEffect } from "react"
 import { useTheme } from "@ctx/themeContext"
 import { CustomPopover } from "@com/popover/popover"
+import { ThemePopoverProps } from "./theme-popover-types"
 
 type ThemeOption = {
   name: "light" | "dark" | "blue" | "red"
@@ -19,7 +20,7 @@ const themeOptions: ThemeOption[] = [
   { name: "red", color: "#b91c1c", textColor: "text-white", bgColor: "bg-red-700" },
 ]
 
-export const ThemeSelector = ({ children }: { children: React.ReactNode }) => {
+export const ThemeSelector = ({ children, placementOpen = true }: ThemePopoverProps) => {
   const { theme, setTheme } = useTheme()
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export const ThemeSelector = ({ children }: { children: React.ReactNode }) => {
   }, [theme])
 
   return (
-    <CustomPopover>
+    <CustomPopover placement={ placementOpen ? 'top' : 'right-start' } className="z-50">
       <CustomPopover.Trigger className="w-full">{children}</CustomPopover.Trigger>
 
       <CustomPopover.Content className="w-[15.5rem] p-2 rounded-md shadow-lg z-50">

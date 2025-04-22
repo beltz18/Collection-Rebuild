@@ -1,7 +1,8 @@
 type Option = {
   label: string,
   url: string,
-  Icon: JSX.Element
+  Icon?: JSX.Element
+  children?: Option[]
 }
 
 export interface SidebarOptions {

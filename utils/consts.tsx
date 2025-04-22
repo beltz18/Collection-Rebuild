@@ -14,9 +14,27 @@ export const options : SidebarOptions = {
       Icon: <Icon icon='loans' size='md' />
     },
     {
-      label: 'Payments',
-      url: '/',
-      Icon: <Icon icon='payments' size='md' />
+      label: "Payments",
+      url: "/payments",
+      Icon: <Icon icon="payments" size="md" />,
+      children: [
+        {
+          label: "Payments",
+          url: "/payments",
+        },
+        {
+          label: "Payment Processors",
+          url: "/payments/processors",
+        },
+        {
+          label: "Payment Strategies",
+          url: "/payments/strategies",
+        },
+        {
+          label: "Payment Steps",
+          url: "/payments/steps",
+        },
+      ],
     },
     {
       label: 'Activity Logs',
