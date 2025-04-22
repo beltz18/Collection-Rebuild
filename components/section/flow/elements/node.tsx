@@ -1,0 +1,122 @@
+import React, { memo, type ReactNode } from 'react'
+
+import { Handle, Position, type Node, type NodeProps } from '@xyflow/react'
+
+export type NodeData = {
+  title?: string
+  Data?: any
+  type: 'step' | 'strategy'
+}
+
+export default memo (({
+  data: {
+    title,
+    type,
+    Data,
+  }
+}: NodeProps<Node<NodeData>>) => {
+  return (
+    <>
+      <div className='fixed flex-row-reverse top-[-7.5px] z-50 flex items-center justify-between w-full'>
+        <div className={`cloud bg-green-600`} />
+
+        <div className='text-[10px] bg-blue-500 px-2.5 text-white border-[.1px] bg-white rounded-full'>
+          {
+            type === 'step'
+              ?
+            'Step'
+              :
+            'Strategy'
+          }
+        </div>
+
+        {
+          Data?.order && (
+            <div className='flex items-center justify-center border-[.1px] p-2 text-[10px] bg-theme-background text-theme-text rounded-full w-[12px] h-[12px]'>
+              { Data?.order }
+            </div>
+          )
+        }
+      </div>
+
+      <div className={`wrapper gradient`}>
+        <div className='inner'>
+          <div className='body'>
+            <>
+              {
+                title
+                  &&
+                <div className='title capitalize font-bold'>
+                  { title }
+                </div>
+              }
+            </>
+
+            {
+              type === 'step'
+                ?
+              <CompStep data={{ ...Data }} />
+                :
+              <CompStrategy data={{ ...Data }} />
+            }
+          </div>
+
+          <Handle type='target' position={ Position.Left } />
+          <Handle type='source' position={ Position.Right } />
+        </div>
+      </div>
+    </>
+  )
+})
+
+const CompStep = (data: any) => {
+  return (
+    <div className='w-full flex flex-col text-[8px]'>
+      <div className='w-full flex items-center justify-between'>
+        <b>Method:</b>
+        <span>{ data.data.method }</span>
+      </div>
+      
+      <div className='w-full flex items-center justify-between'>
+        <b>Processor:</b>
+        <span>{ data.data.processor }</span>
+      </div>
+      
+      <div className='w-full flex items-center justify-between'>
+        <b>Attemps:</b>
+        <span>{ data.data.attemps }</span>
+      </div>
+      
+      <div className='w-full flex items-center justify-between'>
+        <b>Order:</b>
+        <span>{ data.data.order }</span>
+      </div>
+    </div>
+  )
+}
+
+const CompStrategy = (data: any) => {
+  return (
+    <div className='w-full flex flex-col text-[8px]'>
+      <div className='w-full flex items-center justify-between'>
+        <b>Company:</b>
+        <span>{ data.data.company }</span>
+      </div>
+      
+      <div className='w-full flex items-center justify-between'>
+        <b>Store:</b>
+        <span>{ data.data.store }</span>
+      </div>
+      
+      <div className='w-full flex items-center justify-between'>
+        <b>Created:</b>
+        <span>{ data.data.created }</span>
+      </div>
+      
+      <div className='w-full flex items-center justify-between'>
+        <b>Updated:</b>
+        <span>{ data.data.updated }</span>
+      </div>
+    </div>
+  )
+}

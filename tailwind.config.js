@@ -23,6 +23,7 @@ const config = {
         'theme-hover-text': 'rgb(var(--color-theme-hover-text) / <alpha-value>)',
         'theme-popover': 'rgb(var(--color-theme-popover) / <alpha-value>)',
         'theme-popover-text': 'rgb(var(--color-theme-popover-text) / <alpha-value>)',
+        'bg-flow-color': 'var(--bg-flow-color)',
       }
     },
   },

@@ -37,6 +37,7 @@
     "@react-aria/ssr": "3.9.7",
     "@react-aria/visually-hidden": "3.8.20",
     "@tanstack/react-table": "^8.21.2",
+    "@xyflow/react": "^12.6.0",
     "clsx": "2.1.1",
     "floating-ui": "^5.2.8",
     "framer-motion": "11.13.1",
