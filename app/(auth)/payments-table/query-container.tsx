@@ -3,7 +3,7 @@
 import { TableContainer } from './table-container'
 import { PaginationC } from '@com/index'
 import { format } from "date-fns"
-import { mockData } from './mock-data'
+import { mockData } from './mock/mock-data'
 import { Status } from '@typ/payment-status'
 import { 
   PaymentEx, 
