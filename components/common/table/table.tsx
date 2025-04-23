@@ -57,7 +57,7 @@ export function CustomTable<T>({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between gap-4">
+      {/* <div className="flex items-center justify-between gap-4">
         <Input
           isClearable
           placeholder="Search..."
@@ -68,7 +68,7 @@ export function CustomTable<T>({
           className="max-w-xs"
         />
         { topActions }
-      </div>
+      </div> */}
 
       <Table
         aria-label="Custom dynamic table"
