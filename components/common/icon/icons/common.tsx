@@ -65,4 +65,4 @@ export type IconKeys = keyof typeof CommonIcons
 const ArrIcons = Object.keys({ ...CommonIcons })
 
 export { ArrIcons }
-export default CommonIcons 
+export default CommonIcons

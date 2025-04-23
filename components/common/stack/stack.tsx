@@ -6,8 +6,11 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 
 export const Stack: React.FC<Props> = ({ children, className, ...props }) => {
   return (
-    <div className={cn('flex flex-col', className)} {...props}>
-      {children}
+    <div
+      className={ cn('flex flex-col', className) }
+      { ...props }
+    >
+      { children }
     </div>
   )
 }

@@ -6,12 +6,12 @@ export const options : SidebarOptions = {
     {
       label: 'Home',
       url: '/',
-      Icon: <Icon icon='home' size='md' />
+      Icon: <Icon icon='home' size='md' />,
     },
     {
       label: 'Loans',
       url: '/loans',
-      Icon: <Icon icon='loans' size='md' />
+      Icon: <Icon icon='loans' size='md' />,
     },
     {
       label: "Payments",
@@ -39,19 +39,19 @@ export const options : SidebarOptions = {
     {
       label: 'Activity Logs',
       url: '#',
-      Icon: <Icon icon='history' size='md' />
+      Icon: <Icon icon='history' size='md' />,
     },
   ],
   down: [
     {
       label: 'Themes',
       url: '#',
-      Icon: <Icon icon='changeTheme' size='md' />
+      Icon: <Icon icon='changeTheme' size='md' />,
     },
     {
       label: 'Logout',
       url: '#',
-      Icon: <Icon icon='logout' size='md' />
+      Icon: <Icon icon='logout' size='md' />,
     },
   ],
 }

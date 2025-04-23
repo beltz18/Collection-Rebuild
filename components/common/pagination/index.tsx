@@ -1,8 +1,8 @@
 'use client'
 
-import { Pagination as Pag } from "@heroui/pagination"
-import { PaginationProps } from "./pagination.types"
-import React, { useCallback } from "react"
+import { useCallback } from 'react'
+import { Pagination as Pag } from '@heroui/pagination'
+import { PaginationProps } from './pagination.types'
 
 export const PaginationC: React.FC<PaginationProps> = ({
   totalItems,
@@ -10,27 +10,27 @@ export const PaginationC: React.FC<PaginationProps> = ({
   currentPage,
   onPageChange,
   isCompact = false,
-  color
+  color,
 }) => {
   const totalPages = Math.ceil((totalItems || 0) / (itemsPerPage || 1)) || 10
 
   const handlePageChange = useCallback(
-    (page: number) => {
+    (page: number) =>
       onPageChange?.(page)
-    },
+    ,
     [onPageChange]
   )
 
   return (
     <Pag
-      isCompact={isCompact}
       showControls
-      total={totalPages}
-      page={currentPage}
-      color={color}
-      onChange={handlePageChange}
+      isCompact={ isCompact }
+      total={ totalPages }
+      page={ currentPage }
+      color={ color }
+      onChange={ handlePageChange }
     />
   )
 }
 
-PaginationC.displayName = "PaginationC"
+PaginationC.displayName = 'PaginationC'
