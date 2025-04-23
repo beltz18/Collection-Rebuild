@@ -3,8 +3,8 @@
 import { TableContainer } from './table-container'
 import { PaginationC } from '@com/index'
 import { format } from "date-fns"
-import { mockData } from './mock-data'
-import { LoanRequestStatus } from './loans-status'
+import { mockData } from './mock/mock-data'
+import { LoanRequestStatus } from '@typ/loans-status'
 import { 
   LoanEx, 
   ColumnEx 

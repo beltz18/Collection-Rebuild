@@ -3,7 +3,8 @@
 import { DefaultLayout } from '@lay/default'
 import AuthLayout from './layout'
 import { useTokenStore } from '@sts/useTokenStore'
-import HomePage from '@sec/home'
+import LoansTable from './query-loan-container'
+import PaymentsTable from './query-payment-container'
 
 export default function App() {
   const { clear } = useTokenStore()
@@ -16,7 +17,10 @@ export default function App() {
   return (
     <AuthLayout>
       <DefaultLayout>
-        <HomePage />
+        <div className='flex flex-col gap-5 w-full'>
+          <LoansTable />
+          <PaymentsTable />
+        </div>
       </DefaultLayout>
     </AuthLayout>
   )

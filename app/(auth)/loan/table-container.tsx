@@ -22,7 +22,7 @@ import {
   LoanEx, 
   ColumnEx 
 } from '@typ/home-tables'
-import { getStatusColor } from './loans-status'
+import { getStatusColor } from '@typ/loans-status'
 
 type Props = {
   data: LoanEx[]

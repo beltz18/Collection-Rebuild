@@ -19,13 +19,13 @@ import {
   DropdownItem,
 } from '@heroui/react'
 import { 
-  PaymentEx,
-  ColumnEx
+  LoanEx, 
+  ColumnEx 
 } from '@typ/home-tables'
-import { Status, getStatusColor } from './payment-status'
+import { getStatusColor } from '@typ/loans-status'
 
 type Props = {
-  data: PaymentEx[]
+  data: LoanEx[]
   columns: ColumnEx[]
 }
 
@@ -61,40 +61,22 @@ const VerticalDotsIcon = ({
   )
 }
 
-const renderUserCell = (payment: PaymentEx, columnKey: Key) => {
+const renderUserCell = (loans: LoanEx, columnKey: Key) => {
   switch (columnKey) {
     case 'id':
-      return <span>{ payment.id }</span>
+      return <span>{ loans.id }</span>
 
-    case 'name':
-      return <span>{ payment.personName}</span>
+    case 'customer':
+      return <span>{ loans.customer }</span>
     
+    case 'date':
+      return <span className='capitalize'>{ loans.date }</span>
+
+    case 'term':
+      return <span className='capitalize'>{ loans.term }</span>
+
     case 'status':
-      return <Chip className={getStatusColor(payment.status)}>{ payment.statusName }</Chip>
-
-    case 'amount':
-      return <span>{ payment.amount }</span>
-
-    case 'capital':
-      return <span>{ payment.capital }</span>
-
-    case 'interest':
-      return <span>{ payment.interestAmount }</span>
-
-    case 'due_date':
-      return <span className='capitalize'>{ payment.dueDate }</span>
-
-    case 'pay_date':
-      return <span className='capitalize'>{ payment.paymentDate || "Not paid yet" }</span>
-
-    case 'loan_num':
-      return <span>{ payment.loanRequestNumber }</span>
-
-    case 'company':
-      return <span>{ payment.companyName }</span>
-
-    case 'pay_num':
-      return <span>{ payment.numberPayment }</span>
+      return <Chip className={getStatusColor(loans.status)}>{ loans.statusName }</Chip>
 
     case 'actions':
       return (
@@ -114,7 +96,7 @@ const renderUserCell = (payment: PaymentEx, columnKey: Key) => {
       )
 
     default:
-      return (payment as any)[columnKey as string]
+      return (loans as any)[columnKey as string]
   }
 }
 
@@ -124,12 +106,7 @@ export const TableContainer = ({
 }: Props) => {
   const [filterValue, setFilterValue] = useState('')
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]))
-  const visibleColumns = [
-    'id', 'name', 'status', 
-    'amount', 'capital', 'interest', 
-    'due_date', 'pay_date', 'loan_num', 
-    'company', 'pay_num', 'actions'
-  ]
+  const visibleColumns = ['id', 'customer', 'date', 'term', 'status', 'actions']
 
   const selectedUserIds = useMemo(() => {
     return Array.from(selectedKeys).map(key => Number(key))

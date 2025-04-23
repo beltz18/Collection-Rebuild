@@ -4,7 +4,7 @@ import { TableContainer } from './table-container'
 import { PaginationC } from '@com/index'
 import { format } from "date-fns"
 import { mockData } from './mock-data'
-import { Status } from './payment-status'
+import { Status } from '@typ/payment-status'
 import { 
   PaymentEx, 
   ColumnEx 

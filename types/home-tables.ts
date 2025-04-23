@@ -1,8 +1,7 @@
-import { LoanRequestStatus } from "@sec/home/loans-table/loans-status"
+import { LoanRequestStatus } from "@typ/loans-status"
 import { 
   Status as PaymentStatus, 
-  LoanPayment 
-} from "@sec/home/payments-table/payment-status"
+} from "@typ/payment-status"
 
 export type LoanEx = {
   id: number
@@ -37,7 +36,6 @@ export type PaymentEx = {
   loanRequestNumber: string
   companyName: string
   numberPayment: number
-  fullPayment?: LoanPayment
   url_loan?: string
   url_user?: string
 }
