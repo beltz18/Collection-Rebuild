@@ -60,7 +60,7 @@ function Content ({ children }: SidebarNodes) {
   return (
     <div
       className={`bg-theme-primary text-theme-text fixed top-0 left-0 h-full
-        flex justify-between flex-col transition-all duration-300 pt-14
+        flex justify-between flex-col transition-all duration-300 pt-[60px]
         ${ open ? 'translate-x-0 w-[17rem]' : '-translate-x-0 w-[60px] px-1' }
       `}
     >
@@ -98,6 +98,7 @@ function Item({
 }: SidebarItems) {
   const { open } = useContext(SidebarContext)
   const isExpandable = hasChildren && open
+  const [activeChildIndex, setActiveChildIndex] = useState(0)
 
   const handleClick = () => {
     if (hasChildren) {
@@ -112,9 +113,9 @@ function Item({
   if (open) {
     return (
       <div
-        className={`my-[2px] p-3 flex gap-4 text-[18px] rounded-md cursor-pointer
-          transition-all duration-200 ease-in-out hover:bg-white hover:text-theme-hover-text
-          ${active && !expanded && "bg-white text-theme-hover-text"}
+        className={`my-[2px] p-3 flex gap-4 text-[18px] rounded-md cursor-pointer 
+          transition-all duration-200 ease-in-out hover:bg-white hover:text-theme-text-hover
+          ${active && !expanded ? "bg-white text-theme-text-hover" : "text-theme-text-on-primary"}
           ${open && "mx-2"}
         `}
         onClick={handleClick}
@@ -141,8 +142,9 @@ function Item({
       <CustomPopover placement="right" offset={10}>
         <CustomPopover.Trigger>
           <div
-            className={`my-[2px] w-full flex items-center justify-center p-3 rounded-md cursor-pointer hover:bg-white hover:text-theme-popover-text
-              ${active && "bg-white text-current"}
+            className={`my-[2px] w-full flex items-center justify-center p-3 rounded-md cursor-pointer hover:bg-white
+            transition-all duration-200 ease-in-out
+              ${active && "bg-white text-theme-text-hover"}
             `}
           >
             {icon}
@@ -150,16 +152,24 @@ function Item({
         </CustomPopover.Trigger>
         <CustomPopover.Content className="py-2 px-1 bg-theme-primary rounded-md shadow-lg min-w-[180px]">
           <div className="mt-1 relative">
-            <div className="absolute left-[21.7px] top-0 h-full w-[1px] bg-default-400/40"></div>
+            <div className="absolute left-[21.7px] top-0 h-full w-[1px] bg-theme-text-on-primary/40"></div>
+            <div
+              className="absolute left-[19px] w-2 h-2 rounded-full bg-theme-text-on-primary z-10 transition-all duration-300 ease-in-out"
+              style={{ top: `${activeChildIndex * 42 + 20}px` }} 
+            />
 
             {childItems.map((child, childIdx) => (
-              <div className="pl-9 py-1 relative" key={childIdx} onClick={() => child.setActive()}>
-                {activeChild === child.label && (
-                  <div className="absolute left-[19px] top-[18px] w-2 h-2 rounded-full bg-default-500 z-10"></div>
-                )}
+              <div
+                key={childIdx}
+                className="pl-9 py-1 relative"
+                onClick={() => {
+                  child.setActive()
+                  setActiveChildIndex(childIdx)
+                }}
+              >
                 <div
-                  className={`flex items-center gap-3 w-full pl-2 pr-3 py-2 rounded-md text-[16px] cursor-pointer transition-all duration-300 ease-in-out hover:text-theme-hover-text text-white
-                    ${activeChild === child.label ? "bg-white text-theme-hover-text/70" : "hover:bg-white"}`}
+                  className={`flex items-center gap-3 w-full pl-2 pr-3 py-2 rounded-md text-[16px] cursor-pointer transition-all duration-300 ease-in-out hover:text-theme-text-hover
+                    ${activeChild === child.label ? "bg-white text-theme-text-hover" : "hover:bg-white text-theme-text-on-primary"}`}
                 >
                   {child.icon}
                   <span>{child.label}</span>
@@ -190,8 +200,8 @@ function Item({
         </Tooltip>
       </div> */}
       <div
-        className={`my-[2px] w-full flex items-center justify-center p-3 rounded-md cursor-pointer hover:bg-white hover:text-theme-hover-text
-          ${active && "bg-white text-theme-hover-text"}
+        className={`my-[2px] w-full flex items-center justify-center p-3 rounded-md cursor-pointer hover:bg-white hover:text-theme-text-hover
+          ${active ? "bg-white text-theme-text-hover" : "text-theme-text-on-primary"}
         `}
         onClick={handleClick}
       >
@@ -209,15 +219,15 @@ function SubItem({ children, active, setActive, icon, parentExpanded }: SidebarS
   return (
     <div
       className={`pl-10 py-1 relative
-        ${open ? "mx-2" : "px-3"}
+        ${open ? "mx-2 text-theme-text-on-primary" : "px-3"}
       `}
       onClick={setActive}
     >
-      <div className="absolute left-[21.7px] top-0 h-full w-[1px] bg-default-400/40"></div>
-      {active && <div className="absolute left-[19px] top-[18px] w-2 h-2 rounded-full bg-default-500 z-10"></div>}
+      <div className="absolute left-[21.7px] top-0 h-full w-[1px] bg-theme-text-on-primary/40"></div>
+      {active && <div className="absolute left-[19px] top-[18px] w-2 h-2 rounded-full bg-theme-text-on-primary z-10"></div>}
       <div
         className={`flex items-center gap-3 w-full pl-2 pr-3 py-2 rounded-md text-[16px] cursor-pointer transition-all duration-300 ease-in-out
-          ${active ? "bg-white text-theme-text/70" : "hover:bg-white"}`}
+          ${active ? "bg-white text-theme-text-hover" : "hover:bg-white hover:text-theme-text-hover"}`}
       >
         {icon}
         <span>{children}</span>

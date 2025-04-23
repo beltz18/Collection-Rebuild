@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Sidebar } from '@sec/index'
 import { options } from '@uti/consts'
 import { LayoutProps } from './layout.types'
@@ -11,6 +11,7 @@ export const DefaultLayout = ({ children }: LayoutProps) => {
   const [active, setActive] = useState<string>("Home")
   const [open, setOpen] = useState<boolean>(true)
   const [expandedItems, setExpandedItems] = useState<string[]>([])
+  const [activeChildIndex, setActiveChildIndex] = useState<number>(0)
 
   const toggleExpanded = (label: string) => {
     setExpandedItems((prev) => (prev.includes(label) ? prev.filter((item) => item !== label) : [...prev, label]))
@@ -62,7 +63,10 @@ export const DefaultLayout = ({ children }: LayoutProps) => {
                         <Sidebar.SubItem
                           key={`${idx}-${childIdx}`}
                           active={active === child.label}
-                          setActive={() => setActive(child.label)}
+                          setActive={() => {
+                            setActive(child.label)
+                            setActiveChildIndex(childIdx)
+                          }}
                           icon={child.Icon}
                           parentExpanded={isExpanded(label)}
                         >
