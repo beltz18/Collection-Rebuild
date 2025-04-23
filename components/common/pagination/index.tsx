@@ -11,9 +11,8 @@ export const PaginationC: React.FC<PaginationProps> = ({
   onPageChange,
   isCompact = false,
   color,
+  total,
 }) => {
-  const totalPages = Math.ceil((totalItems || 0) / (itemsPerPage || 1)) || 10
-
   const handlePageChange = useCallback(
     (page: number) =>
       onPageChange?.(page)
@@ -25,7 +24,7 @@ export const PaginationC: React.FC<PaginationProps> = ({
     <Pag
       showControls
       isCompact={ isCompact }
-      total={ totalPages }
+      total={ total }
       page={ currentPage }
       color={ color }
       onChange={ handlePageChange }
