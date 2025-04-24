@@ -17,7 +17,7 @@ const Custom = ({ body, title, type='normal' }: ToastT) => {
 
   return (
     <div className='w-full min-h-[3rem] h-full flex flex-col justify-around'>
-      { title && <p className={`${colors[type]} text-[14px] capitalize font-bold`}>{ title }</p> }
+      { title && <p className={`${colors[type]} text-[14px] font-bold`}>{ title }</p> }
       <p className="text-[12px]">{ body }</p>
     </div>
   )
