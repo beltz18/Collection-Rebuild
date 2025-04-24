@@ -36,6 +36,15 @@ export default function App() {
         Borrar Token
       </button>
 
+      <div className="bg-slate-400">
+        <span className="text-theme-text-default text-xl font-bold">text</span>
+        <span className="text-theme-text-title text-xl font-bold">text</span>
+        <span className="text-theme-text-hover text-xl font-bold">text</span>
+      </div>
+      <div className="bg-slate-900">
+        <span className="text-theme-text-on-primary text-xl font-bold">text</span>
+      </div>
+
       <Tooltip placement="bottom">
         <Tooltip.Trigger asChild>
           <Button variant="flat" color="warning" placeholder="Tooltip">
