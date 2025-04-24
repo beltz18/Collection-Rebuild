@@ -1,46 +1,41 @@
-import { Icon } from "@com/icon"
 import { 
   Modal, 
-  ModalBody, 
+  ModalTrigger, 
   ModalContent, 
-  ModalFooter, 
   ModalHeader, 
-  ModalTrigger 
-} from "@sec/modal"
-import { Button } from "./common"
-import { closeModal } from "@sec/modal/modal/modal"
+  ModalBody, 
+  ModalFooter 
+} from '@sec/modal'
+import { Button } from './common'
 
-type Props = {
-  customTrigger?: React.ReactNode
-}
-
-export const ModalPrueba: React.FC<Props> = ({ customTrigger }) => {
-
-  const onDeleteAdvice = async () => {
-    closeModal()
-  }
-
+export default function MyComponent() {
   return (
-    <Modal>
+    <Modal
+      size="lg"
+      radius="sm"
+      backdrop="blur"
+      classNames={{
+        backdrop: "bg-black/70",
+        base: "border border-white/20",
+        header: "border-b border-white/20",
+        footer: "border-t border-white/20",
+      }}
+    >
       <ModalTrigger>
-        {customTrigger || (
-          <>
-            <Icon icon="home" size="lg" />
-          </>
-        )}
+        <Button>Open Custom Modal</Button>
       </ModalTrigger>
       <ModalContent>
-        <ModalHeader className="justify-end" />
-        <ModalBody>
-          <Icon icon="payments" size="2xl" className="text-gray-70" />
-          <span className="text-xl font-bold">
-            ¿Quieres eliminar el consejo?
-          </span>
-        </ModalBody>
-        <ModalFooter>
-          <Button variant="bordered" placeholder="Cancelar" onClick={() => closeModal()} />
-          <Button variant="flat" placeholder="Eliminar" onClick={onDeleteAdvice} />
-        </ModalFooter>
+        {(onClose) => (
+          <>
+            <ModalHeader>Custom Modal</ModalHeader>
+            <ModalBody>
+              <p>This modal has custom styling</p>
+            </ModalBody>
+            <ModalFooter>
+              <Button onPress={onClose}>Close</Button>
+            </ModalFooter>
+          </>
+        )}
       </ModalContent>
     </Modal>
   )

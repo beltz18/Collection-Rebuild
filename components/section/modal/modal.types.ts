@@ -1,7 +1,7 @@
 export type ModalCtx = {
-  open: boolean
-  setOpen: (open: boolean) => void
-  closeModal: () => void
+  isOpen: boolean
+  onOpen: () => void
+  onClose: VoidFunction
 }
 
 export type ModalT = {

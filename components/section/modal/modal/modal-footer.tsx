@@ -1,13 +1,8 @@
-import { ModalT } from '../modal.types'
+import { ModalFooter } from "@heroui/modal"
+import type { ModalT } from "../modal.types"
 
 const Footer = ({ children }: ModalT) => {
-  return (
-    <>
-      <div className='pb-[1rem] px-[1rem] flex gap-[1rem] justify-end'>
-        { children }
-      </div>
-    </>
-  )
+  return <ModalFooter className="pb-[1rem] px-[1rem] flex gap-[1rem] justify-end">{children}</ModalFooter>
 }
 
 export default Footer

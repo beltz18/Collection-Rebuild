@@ -5,7 +5,8 @@ import { useTokenStore } from "@sts/useTokenStore"
 import { Tooltip } from "@com/tooltip"
 import { Button } from "@com/index"
 import { Info, AlertCircle } from "lucide-react"
-import { ModalPrueba } from "../../../components/Modal-prueba"
+import ModalPrueba from "../../../components/Modal-prueba"
+import { closeModal, openModal } from "@sec/modal"
 import { useState, useEffect } from "react"
 import { NotFoundExamples } from "../../../components/notFound"
 
@@ -64,7 +65,9 @@ export default function App() {
           Current count: <strong>{count}</strong>
         </p>
 
-        <ModalPrueba />
+        <Button onPress={() => openModal("styled-modal")}>
+          Open Modal
+        </Button>
       </div>
 
       <NotFoundExamples />
