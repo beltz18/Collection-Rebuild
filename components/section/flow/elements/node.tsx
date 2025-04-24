@@ -1,6 +1,10 @@
-import React, { memo, type ReactNode } from 'react'
-
-import { Handle, Position, type Node, type NodeProps } from '@xyflow/react'
+import React, { memo } from 'react'
+import {
+  Handle,
+  Position,
+  type Node,
+  type NodeProps,
+} from '@xyflow/react'
 
 export type NodeData = {
   title?: string
