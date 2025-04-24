@@ -1,92 +1,147 @@
-'use client'
+"use client"
 
-import { Icon } from '@com/icon'
-import { Overlay } from '../overlay'
-import { ModalCtx } from '../modal.types'
-import { cn } from '@uti/cn'
+import type React from "react"
+import { createContext, useContext, useEffect, useId } from "react"
 import {
-  createContext,
-  useContext,
-  useState,
-} from 'react'
+  Modal as HeroModal,
+  ModalContent as HeroModalContent,
+  ModalHeader as HeroModalHeader,
+  ModalBody as HeroModalBody,
+  ModalFooter as HeroModalFooter,
+  useDisclosure,
+  ModalProps
+} from "@heroui/react"
+import { cn } from "@uti/cn"
+import { modalEvents } from "./modal-events"
+
+export type ModalCtx = {
+  isOpen: boolean
+  onOpen: () => void
+  onClose: () => void
+  id: string
+  modalProps: Partial<ModalProps>
+}
 
 export const ModalContext = createContext<ModalCtx | null>(null)
 
-const helperModalId = '_modal:locator'
-
-export const Modal = ({ children }: { children: React.ReactNode }) => {
-  const [open, setOpen] = useState<boolean>(false)
-  const closeModal = () => setOpen(false)
-
-  return (
-    <ModalContext.Provider value={{ open, setOpen, closeModal }}>
-      <div>
-        { children }
-      </div>
-    </ModalContext.Provider>
-  )
-}
-
-export const ModalTrigger = ({ children }: { children: React.ReactNode }) => {
-  const { setOpen } = useModalContext()
-
-  return (
-    <div onClick={() => setOpen(true)}>
-      { children }
-    </div>
-  )
-}
-
-export const ModalContent = ({ children }: { children: React.ReactNode }) => {
-  const { open, closeModal } = useModalContext()
-  if (!open) return
-
-  return (
-    <Overlay
-      className='flex items-center justify-center'
-      onClickBackdrop={() => closeModal()}
-      position='center'
-      fullscreen={false}
-      contentClassName='max-w-[37.5rem] rounded-lg' // 600px, modal max width
-      type='modal'
-    >
-      { children }
-    </Overlay>
-  )
-}
-export const ModalHeader = ({ children, className }: { children?: React.ReactNode, className?: string }) => {
-  const { closeModal } = useModalContext()
-
-  return (
-    <div className={cn('w-full bg-dark text-white h-[2.5rem] p-[.75rem] flex items-center justify-between', className)}>
-      { children && children }
-
-      <span
-        id={helperModalId}
-        className='cursor-pointer'
-        onClick={() => closeModal()}
-      >
-        <Icon
-          icon='cross'
-          size='md'
-        />
-      </span>
-    </div>
-  )
-}
-
-const useModalContext = () => {
+export const useModalContext = () => {
   const ctx = useContext(ModalContext)
-  if (!ctx) throw new Error('Modal must be used within a ModalProvider')
-    
+  if (!ctx) throw new Error("Modal must be used within a ModalProvider")
   return ctx
 }
 
-export const closeModal = () => {
-  const modalLocator = document.getElementById(helperModalId)
-  if (!modalLocator) return
+export const Modal = ({
+  children,
+  id: providedId,
+  ...modalProps
+}: {
+  children: React.ReactNode
+  id?: string
+} & Partial<ModalProps>) => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
-  modalLocator.click()
+  const generatedId = useId()
+  const id = providedId || generatedId
 
-  return
+  const onClose = () => {
+    onOpenChange()
+  }
+
+  const contextValue = {
+    isOpen,
+    onOpen,
+    onClose,
+    id,
+    modalProps,
+  }
+
+  useEffect(() => {
+    const unsubscribe = modalEvents.on("close", (payload) => {
+      if (!payload.id || payload.id === id) {
+        onClose()
+      }
+    })
+
+    const unsubscribeOpen = modalEvents.on("open", (payload) => {
+      if (payload.id === id) {
+        onOpen()
+      }
+    })
+
+    return () => {
+      unsubscribe()
+      unsubscribeOpen()
+    }
+  }, [id, onOpen])
+
+  return <ModalContext.Provider value={contextValue}>{children}</ModalContext.Provider>
 }
+
+export const ModalTrigger = ({
+  children,
+  className,
+  ...props
+}: {
+  children: React.ReactNode
+  className?: string
+  [key: string]: any
+}) => {
+  const { onOpen } = useModalContext()
+
+  return (
+    <div onClick={onOpen} className={className} {...props}>
+      {children}
+    </div>
+  )
+}
+
+export const ModalContent = ({
+  children,
+  ...customProps
+}: {
+  children: React.ReactNode | ((onClose: () => void) => React.ReactNode)
+  [key: string]: any
+}) => {
+  const { isOpen, onClose, modalProps } = useModalContext()
+
+  const backdropValue = modalProps.backdrop || customProps.backdrop || "opaque"
+  const validBackdrop =
+    backdropValue === "opaque" || backdropValue === "transparent" || backdropValue === "blur" ? backdropValue : "opaque"
+
+  const mergedProps = {
+    backdrop: validBackdrop,
+    ...modalProps,
+    ...customProps
+  }
+
+  return (
+    <HeroModal
+      isOpen={isOpen}
+      onOpenChange={onClose}
+      { ...mergedProps }
+    >
+      <HeroModalContent>{typeof children === "function" ? children(onClose) : children}</HeroModalContent>
+    </HeroModal>
+  )
+}
+
+export const ModalHeader = ({
+  children,
+  className,
+  ...props
+}: {
+  children?: React.ReactNode
+  className?: string
+  [key: string]: any
+}) => {
+  return (
+    <HeroModalHeader
+      className={cn("w-full bg-dark text-white h-[2.5rem] p-[.75rem] flex items-center justify-between", className)}
+      {...props}
+    >
+      {children}
+    </HeroModalHeader>
+  )
+}
+
+export { HeroModalBody as ModalBody, HeroModalFooter as ModalFooter }

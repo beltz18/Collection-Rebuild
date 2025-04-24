@@ -1,6 +1,10 @@
-import React, { memo, type ReactNode } from 'react'
-
-import { Handle, Position, type Node, type NodeProps } from '@xyflow/react'
+import React, { memo } from 'react'
+import {
+  Handle,
+  Position,
+  type Node,
+  type NodeProps,
+} from '@xyflow/react'
 
 export type NodeData = {
   title?: string
@@ -20,7 +24,7 @@ export default memo (({
       <div className='fixed flex-row-reverse top-[-7.5px] z-50 flex items-center justify-between w-full'>
         <div className={`cloud bg-green-600`} />
 
-        <div className='text-[10px] bg-blue-500 px-2.5 text-white border-[.1px] bg-white rounded-full'>
+        <div className='text-[10px] px-2.5 text-black/70 border-[.1px] bg-white rounded-full'>
           {
             type === 'step'
               ?
@@ -32,7 +36,7 @@ export default memo (({
 
         {
           Data?.order && (
-            <div className='flex items-center justify-center border-[.1px] p-2 text-[10px] bg-theme-background text-theme-text rounded-full w-[12px] h-[12px]'>
+            <div className='flex items-center justify-center border-[.1px] p-2 text-[10px] border-theme-text-hover bg-zinc-400/70 text-white/70 rounded-full w-[12px] h-[12px]'>
               { Data?.order }
             </div>
           )

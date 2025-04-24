@@ -41,6 +41,7 @@ const columns: ColumnEx[] = [
   { uid: 'loan_num',  name: 'Loan Number' },
   { uid: 'company',  name: 'Company Name' },
   { uid: 'pay_num',  name: 'Payment Number' },
+  { uid: 'actions',  name: 'Actions' },
 ]
 
 export default function PaymentTable() {
