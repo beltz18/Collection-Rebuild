@@ -52,8 +52,7 @@ export default function PaymentTable() {
     <>
       <Card className='flex flex-col gap-4 p-4'>
         <div className='text-default-600 flex justify-between items-center text-lg'>
-          <Heading level={1} className='text-theme-text-title/60 text-2xl'>Recent Payments</Heading>
-          <MenuOptions />
+          <MenuOptions title='Payments' />
         </div>
         <TableContainer
           data={ payments }
