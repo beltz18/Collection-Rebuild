@@ -1,3 +1,4 @@
+import { ArrowRight } from 'lucide-react'
 import {
   ChangeTheme,
   Logout,
@@ -32,6 +33,9 @@ const CommonIcons = {
   },
   arrowLeft: {
     SVG: ({ size }: SizeT) => { return <ArrowLeft size={ size } /> }
+  },
+  arrowRight: {
+    SVG: ({ size }: SizeT) => { return <ArrowRight size={ size } /> }
   },
   payments: {
     SVG: ({ size }: SizeT) => { return <Payments size={ size } /> }

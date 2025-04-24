@@ -29,9 +29,7 @@ function CardBody({ children, className }: CardLoan) {
     <>
       <Divider />
       <Body className={cn('', className)}>
-        <Grid>
           {children}
-        </Grid>
       </Body>
       <Divider />
     </>
