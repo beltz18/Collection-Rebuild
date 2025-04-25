@@ -21,8 +21,7 @@ export default function PaymentTable() {
       <DefaultLayout>
         <Card className='flex flex-col gap-4 p-4'>
           <div className='text-default-600 flex justify-between items-center text-lg'>
-            <Heading level={1} className='text-theme-text-title/60 text-2xl'>All Loans</Heading>
-            <MenuOptions />
+            <MenuOptions title='All Loans' />
           </div>
           <TableQueryContainer />
         </Card>

@@ -124,7 +124,7 @@ export const DefaultLayout = ({ children }: LayoutProps) => {
         <div className='flex-1 flex flex-col w-full translate-x-0'>
           <Navbar />
 
-          <main className='flex-1 overflow-auto p-4'>
+          <main className='flex-1 overflow-auto'>
             { children }
           </main>
 

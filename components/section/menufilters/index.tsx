@@ -1,6 +1,6 @@
 import { Heading, Icon, Input } from '@com/index'
-import { Search, Download, FilterIcon, List, IdCard, Menu, X } from 'lucide-react'
-import { useResponsive } from './hooks/useResponsive'
+import { Search, FilterIcon } from 'lucide-react'
+import { useResponsive } from '@uti/useResponsive'
 import { useState } from 'react'
 import { CustomDropdown } from '@com/dropdown/dropdown'
 import { Tabs } from '@com/tabs/tabs'

@@ -1,4 +1,4 @@
-import { ArrowRight, Download, IdCard, List, Search } from 'lucide-react'
+import { ArrowRight, Briefcase, ChartNoAxesColumn, Download, IdCard, Info, List, Search } from 'lucide-react'
 import {
   ChangeTheme,
   Logout,
@@ -72,6 +72,15 @@ const CommonIcons = {
   },
   search: {
     SVG: ({ size }: SizeT) => { return <Search size={ size } /> }
+  },
+  info: {
+    SVG: ({ size }: SizeT) => { return <Info size={ size } /> }
+  },
+  briefcase: {
+    SVG: ({ size }: SizeT) => { return <Briefcase size={ size } /> }
+  },
+  chartNoAxesColumn: {
+    SVG: ({ size }: SizeT) => { return <ChartNoAxesColumn size={ size } /> }
   },
   /* --------------------------- COMMON --------------------------- */
 } as const
