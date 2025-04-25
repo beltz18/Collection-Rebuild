@@ -1,21 +1,16 @@
 import type { ReactNode } from 'react'
+import { DropdownProps as DropdownT, DropdownTriggerProps as DropdownTriggerT, DropdownMenuProps as DropdownMenuT } from '@heroui/dropdown'
 
-export type DropdownProps = {
+export interface DropdownProps extends DropdownT {
   children: ReactNode[]
   className?: string
 }
-export type DropdownTriggerProps = {
+export interface DropdownTriggerProps extends DropdownTriggerT {
   children: ReactNode
   className?: string
 }
 
-export type DropdownMenuProps = {
+export interface DropdownMenuProps extends DropdownMenuT{
   children: React.ReactElement[] | React.ReactElement
-  className?: string
-}
-
-export type DropdownItemProps = {
-  children: ReactNode
-  key: string
   className?: string
 }

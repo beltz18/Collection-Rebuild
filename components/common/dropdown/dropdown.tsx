@@ -1,7 +1,7 @@
 'use client'
 
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@heroui/react'
-import { DropdownProps, DropdownTriggerProps, DropdownMenuProps, DropdownItemProps } from './dropdown.types'
+import { DropdownProps, DropdownTriggerProps, DropdownMenuProps } from './dropdown.types'
 import React from 'react'
 
 const CustomDropdownTrigger = ({ children, className }: DropdownTriggerProps) => {

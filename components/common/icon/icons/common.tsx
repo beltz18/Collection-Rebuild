@@ -1,4 +1,4 @@
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Download, IdCard, List, Search } from 'lucide-react'
 import {
   ChangeTheme,
   Logout,
@@ -60,6 +60,18 @@ const CommonIcons = {
   },
   trash: {
     SVG: ({ size }: SizeT) => { return <Trash size={ size } /> }
+  },
+  list: {
+    SVG: ({ size }: SizeT) => { return <List size={ size } /> }
+  },
+  idCard: {
+    SVG: ({ size }: SizeT) => { return <IdCard size={ size } /> }
+  },
+  download: {
+    SVG: ({ size }: SizeT) => { return <Download size={ size } /> }
+  },
+  search: {
+    SVG: ({ size }: SizeT) => { return <Search size={ size } /> }
   },
   /* --------------------------- COMMON --------------------------- */
 } as const

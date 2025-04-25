@@ -1,53 +1,165 @@
-import { Input } from "@com/index"
-import { Search, Download, FilterIcon, List, IdCard } from "lucide-react"
+import { Heading, Icon, Input } from '@com/index'
+import { Search, Download, FilterIcon, List, IdCard, Menu, X } from 'lucide-react'
+import { useResponsive } from './hooks/useResponsive'
+import { useState } from 'react'
+import { CustomDropdown } from '@com/dropdown/dropdown'
+import { Tabs } from '@com/tabs/tabs'
+import { Button } from '@heroui/button'
+import { CustomPopover } from '@com/popover/popover'
 
-export default function MenuOptions() {
+export default function MenuOptions({ title = 'Title Placeholder' }: { title?: string }) {
   const options = [8, 12]
+  const { isTablet } = useResponsive()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [rowsPerPage, setRowsPerPage] = useState(options[0])
+
+  if (!isTablet) {
+    return (
+      <div className='w-full flex justify-between items-center gap-3'>
+        {title && (
+          <Heading level={1} className='text-theme-text-title/60 text-2xl'>
+            {title}
+          </Heading>
+        )}
+
+        <div className='flex items-center gap-3'>
+          <div className='w-[180px] h-[32px] relative flex items-center'>
+            <Input type='text' size='sm' placeholder='Search...' endContent={<Search className='text-default-400' size={18} />} />
+          </div>
+
+          <Tabs variant='solid'>
+            <Tabs.Tab title={<Icon icon='list' size='md' />}></Tabs.Tab>
+            <Tabs.Tab title={<Icon icon='idCard' size='md' />}></Tabs.Tab>
+          </Tabs>
+
+          <CustomDropdown>
+            <CustomDropdown.Trigger>
+              <button className='bg-theme-background rounded-xl p-2'>
+                <Icon icon='download' size='md' />
+              </button>
+            </CustomDropdown.Trigger>
+            <CustomDropdown.Menu className='min-w-[120px]'>
+              <CustomDropdown.Item key='pdf' onPress={() => console.log('Export as PDF')} className='text-default-600 hover:bg-default-100'>
+                PDF
+              </CustomDropdown.Item>
+              <CustomDropdown.Item key='csv' onPress={() => console.log('Export as CSV')} className='text-default-600 hover:bg-default-100'>
+                CSV
+              </CustomDropdown.Item>
+            </CustomDropdown.Menu>
+          </CustomDropdown>
+
+          <FilterIcon className='text-default-400 hover:text-default-600 cursor-pointer' size={24} />
+
+          <CustomPopover placement='bottom'>
+            <CustomPopover.Trigger>
+              <button className='flex items-center text-default-400 text-sm gap-1'>
+                Rows: {rowsPerPage}
+                <Icon icon='chevronDown' size='sm' />
+              </button>
+            </CustomPopover.Trigger>
+            <CustomPopover.Content className='min-w-[80px] p-1'>
+              {options.map((opt) => (
+                <button
+                  key={opt}
+                  className={`w-full text-sm p-2 text-left rounded hover:bg-default-100 ${rowsPerPage === opt ? 'bg-default-100 font-medium' : ''}`}
+                  onClick={() => setRowsPerPage(opt)}
+                >
+                  {opt}
+                </button>
+              ))}
+            </CustomPopover.Content>
+          </CustomPopover>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <>
-      <div className="h-full flex justify-around items-center gap-3">
-        <div className="h-[32px] relative flex items-center">
-          <Input
-            type="text"
-            size="sm"
-            placeholder="Search..."
-            endContent={<Search className="text-default-400" size={18} />}
-          />
+    <div className='w-full flex flex-row justify-between gap-2 relative'>
+      {title && (
+        <Heading level={1} className='flex-1 text-theme-text-title/60 text-2xl'>
+          {title}
+        </Heading>
+      )}
+
+      <div className='flex items-center gap-2'>
+        <div className='max-w-[240px] h-[24px] relative flex items-center'>
+          <Input type='text' size='sm' placeholder='Search...' endContent={<Icon icon='search' className='text-default-400' size='md' />} />
         </div>
 
-        <div>
-          <Download
-            className="text-default-400 hover:text-default-600 cursor-pointer"
-            size={24}
-          />
-        </div>
+        <CustomPopover 
+          placement='bottom-end'
+          isOpen={isMobileMenuOpen}
+          onOpenChange={setIsMobileMenuOpen}
+        >
+          <CustomPopover.Trigger>
+            <button>
+              <Icon icon='hamburger' className='text-default-400 hover:text-default-600 cursor-pointer' size='lg' />
+            </button>
+          </CustomPopover.Trigger>
+          <CustomPopover.Content className='bg-theme-background p-3 shadow-md rounded-lg flex flex-col gap-2 w-52'>
+            <Tabs
+              variant='solid'
+              classNames={{
+                tabList: 'rounded-lg',
+              }}
+            >
+              <Tabs.Tab title={<Icon icon='list' size='md' />} className='w-20'></Tabs.Tab>
+              <Tabs.Tab title={<Icon icon='idCard' size='md' />} className='w-20'></Tabs.Tab>
+            </Tabs>
+            <CustomDropdown>
+              <CustomDropdown.Trigger>
+                <Button className='flex justify-start ps-10 w-full rounded-lg h-[36]'>
+                  <Icon icon='download' size='sm' />
+                  Download
+                </Button>
+              </CustomDropdown.Trigger>
+              <CustomDropdown.Menu>
+                <CustomDropdown.Item key='pdf' onPress={() => console.log('Export as PDF')} className='text-default-600 hover:bg-default-100'>
+                  PDF
+                </CustomDropdown.Item>
+                <CustomDropdown.Item key='csv' onPress={() => console.log('Export as CSV')} className='text-default-600 hover:bg-default-100'>
+                  CSV
+                </CustomDropdown.Item>
+              </CustomDropdown.Menu>
+            </CustomDropdown>
 
-        <FilterIcon
-          className="text-default-400 hover:text-default-600 cursor-pointer"
-          size={24}
-        />
+            <Button className='flex justify-start ps-10 w-full rounded-lg h-[36]'>
+              <FilterIcon size={14} />
+              Filters
+            </Button>
+            
+            <CustomPopover placement='bottom'>
+              <CustomPopover.Trigger>
+                <Button className='flex justify-center w-full rounded-lg h-[36]'>
+                  <span>Rows: {rowsPerPage}</span>
+                  <Icon icon='chevronDown' size='sm' />
+                </Button>
+              </CustomPopover.Trigger>
+              <CustomPopover.Content className='min-w-[80px] p-1'>
+                {options.map((opt) => (
+                  <button
+                    key={opt}
+                    className={`w-full text-sm p-2 text-left rounded hover:bg-default-100 ${rowsPerPage === opt ? 'bg-default-100 font-medium' : ''}`}
+                    onClick={() => setRowsPerPage(opt)}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </CustomPopover.Content>
+            </CustomPopover>
 
-        <List className={`text-default-400 hover:text-default-600 cursor-pointer`} size={24} />
-
-        <IdCard className={`text-default-400 hover:text-default-600 cursor-pointer`} size={24} />
-
-        <label className="flex items-center text-default-400 text-sm">
-          Rows:
-          <select
-            className="bg-transparent outline-none text-default-400 text-sm"
-            onChange={(e) => {
-              const n = parseInt(e.target.value);
-            }}
-          >
-            {options.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
-        </label>
+            <Button 
+              className='justify-center w-full rounded-lg h-[36]' 
+              variant='flat' 
+              color='danger' 
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Close
+            </Button>
+          </CustomPopover.Content>
+        </CustomPopover>
       </div>
-    </>
+    </div>
   )
 }
