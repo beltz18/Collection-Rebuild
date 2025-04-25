@@ -16,6 +16,7 @@ export const Logo = ({
       height={ height }
       alt={ alt }
       className={ cn('', className) }
+      priority
     />
   )
 }
