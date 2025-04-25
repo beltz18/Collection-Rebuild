@@ -1,75 +1,50 @@
 "use client"
 
-import type React from "react"
-
 import { useState } from "react"
 import { Button } from "@heroui/react"
-import {
-  Modal,
-  ModalTrigger,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  closeModal,
-  openModal,
-} from "@sec/modal"
+import AddNodeModal from "@sec/flow/modal/add"
 
-export default function ModalExamplePage() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-  })
+export default function ModalExample() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [nodes, setNodes] = useState<any[]>([])
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-  }
-
-  const handleSubmit = (onClose: () => void) => {
-    console.log("Form submitted:", formData)
-    setFormData({ name: "", email: "" })
-    onClose()
+  const handleAddNode = (nodeData: any) => {
+    setNodes([...nodes, { id: `node-${nodes.length + 1}`, data: nodeData }])
+    setIsModalOpen(false)
   }
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Modal Examples</h1>
+      <h1 className="text-2xl font-bold mb-6">Custom Modal Example</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="p-6 border rounded-lg">
-          <h2 className="text-xl font-semibold mb-4">Basic Modal</h2>
-          <Modal id="basic-modal">
-            <ModalTrigger>
-              <Button color="primary" onPress={() => openModal("basic-modal")}>Open Basic Modal</Button>
-            </ModalTrigger>
-            <ModalContent>
-              {(onClose) => (
-                <>
-                  <ModalHeader>Basic Modal</ModalHeader>
-                  <ModalBody>
-                    <p>This is a basic modal example using our custom implementation.</p>
-                    <p className="mt-2">
-                      It demonstrates the render props pattern where the <code>ModalContent</code> component provides an{" "}
-                      <code>onClose</code> function.
-                    </p>
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button color="danger" variant="light" onPress={onClose}>
-                      Cancel
-                    </Button>
-                    <Button color="primary" onPress={onClose}>
-                      Confirm
-                    </Button>
-                  </ModalFooter>
-                </>
-              )}
-            </ModalContent>
-          </Modal>
-        </div>
+      <div className="p-6 border rounded-lg">
+        <h2 className="text-xl font-semibold mb-4">Add Node Modal</h2>
+        <Button color="primary" onPress={() => setIsModalOpen(true)}>
+          Open Add Node Modal
+        </Button>
+
+        <AddNodeModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onAdd={handleAddNode}
+          currentStrategyId="1"
+          nextStepOrder={nodes.length + 1}
+          strategyName="Default Payment Strategy"
+        />
+
+        {nodes.length > 0 && (
+          <div className="mt-6">
+            <h3 className="text-lg font-medium mb-2">Added Nodes:</h3>
+            <div className="space-y-2">
+              {nodes.map((node) => (
+                <div key={node.id} className="p-3 border rounded-md">
+                  <p className="font-medium">{node.data.label}</p>
+                  <p className="text-sm text-gray-600">{node.data.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

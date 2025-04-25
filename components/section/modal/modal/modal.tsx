@@ -136,7 +136,7 @@ export const ModalHeader = ({
 }) => {
   return (
     <HeroModalHeader
-      className={cn("w-full bg-dark text-white h-[2.5rem] p-[.75rem] flex items-center justify-between", className)}
+      className={cn("w-full h-[2.5rem] p-[.75rem] flex items-center justify-between", className)}
       {...props}
     >
       {children}
