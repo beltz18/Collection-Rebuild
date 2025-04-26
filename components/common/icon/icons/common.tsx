@@ -1,4 +1,4 @@
-import { ArrowRight, Briefcase, ChartNoAxesColumn, Download, IdCard, Info, List, Search } from 'lucide-react'
+import { ArrowRight, Briefcase, Calendar, ChartNoAxesColumn, CreditCard, DollarSign, Download, IdCard, Info, List, RefreshCcw, Search } from 'lucide-react'
 import {
   ChangeTheme,
   Logout,
@@ -81,6 +81,18 @@ const CommonIcons = {
   },
   chartNoAxesColumn: {
     SVG: ({ size }: SizeT) => { return <ChartNoAxesColumn size={ size } /> }
+  },
+  dollarSign: {
+    SVG: ({ size }: SizeT) => { return <DollarSign size={ size } /> }
+  },
+  refreshCcw: {
+    SVG: ({ size }: SizeT) => { return <RefreshCcw size={ size } /> }
+  },
+  creditCard: {
+    SVG: ({ size }: SizeT) => { return <CreditCard size={ size } /> }
+  },
+  calendar: {
+    SVG: ({ size }: SizeT) => { return <Calendar size={ size } /> }
   },
   /* --------------------------- COMMON --------------------------- */
 } as const
