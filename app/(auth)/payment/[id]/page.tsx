@@ -6,11 +6,11 @@ import { Tabs } from '@com/tabs/tabs'
 import { useResponsive } from '@uti/useResponsive'
 import { PaymentComponent } from './component-container'
 import { mockData } from './mock/mock-data'
-import { useState } from 'react' // Añade esta importación
+import { useState } from 'react'
 
 export default function PaymentIdPage() {
   const { isTablet } = useResponsive()
-  const [selectedTab, setSelectedTab] = useState('payment') // Estado para controlar la pestaña seleccionada
+  const [selectedTab, setSelectedTab] = useState('payment')
   const numberHistory = 2
 
   return (
