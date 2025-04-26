@@ -9,6 +9,7 @@ import {
   TableRow,
   TableCell,
 } from "@heroui/react"
+import { cn } from '@uti/cn'
 
 export const Skeleton = ({className, children, ...props} : SkeletonProps) => {
   return (
@@ -16,7 +17,40 @@ export const Skeleton = ({className, children, ...props} : SkeletonProps) => {
   )
 }
 
-export const TableSkeleton = ({ 
+export const SkeletonDefault = ({ className }: SkeletonProps) => {
+  return (
+    <div className={cn('w-full space-y-4 p-4 rounded-lg h-20', className)} >
+      <Skeleton className="rounded-lg h-full w-full">
+        <div className="h-full w-full rounded-lg bg-secondary" />
+      </Skeleton>
+    </div>
+  )
+}
+
+
+
+export const SkeletonContent = ({ className }: SkeletonProps) => {
+  return (
+    <div className='w-full space-y-4 p-4 rounded-lg' >
+      <Skeleton className={cn("rounded-lg w-full h-20", className)}>
+        <div className="h-full w-full rounded-lg bg-secondary" />
+      </Skeleton>
+      <div className="space-y-3">
+        <Skeleton className="w-3/5 rounded-lg">
+          <div className="h-4 rounded-lg bg-secondary" />
+        </Skeleton>
+        <Skeleton className="w-4/5 rounded-lg">
+          <div className="h-4 rounded-lg bg-secondary-300" />
+        </Skeleton>
+        <Skeleton className="w-2/5 rounded-lg">
+          <div className="h-4 rounded-lg bg-secondary-200" />
+        </Skeleton>
+      </div>
+    </div>
+  )
+}
+
+export const SkeletonTable = ({ 
   rows = 5, 
   columns, 
 }: TableSkeletonProps) => {
@@ -41,27 +75,5 @@ export const TableSkeleton = ({
         ))}
       </TableBody>
     </Table>
-  )
-}
-
-export const ContentSkeleton = () => {
-  return (
-    <div className="w-full space-y-4 p-4 rounded-lg" >
-      <Skeleton className="rounded-lg h-32 w-full">
-        <div className="h-full w-full rounded-lg bg-secondary" />
-      </Skeleton>
-
-      <div className="space-y-3">
-        <Skeleton className="w-3/5 rounded-lg">
-          <div className="h-4 rounded-lg bg-secondary" />
-        </Skeleton>
-        <Skeleton className="w-4/5 rounded-lg">
-          <div className="h-4 rounded-lg bg-secondary-300" />
-        </Skeleton>
-        <Skeleton className="w-2/5 rounded-lg">
-          <div className="h-4 rounded-lg bg-secondary-200" />
-        </Skeleton>
-      </div>
-    </div>
   )
 }
