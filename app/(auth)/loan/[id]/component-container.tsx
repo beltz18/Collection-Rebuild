@@ -51,9 +51,9 @@ interface LoanComponentProps {
 export const LoanComponent = ({ loanDetails }: LoanComponentProps) => {
   return (
     <div className='w-full px-2 space-y-2'>
-      <h1 className='text-theme-text-default font-bold text-lg'>Loan Info</h1>
-      <div className='bg-theme-background w-full rounded-lg space-y-4'>
-        <div className='flex flex-row flex-wrap justify-between px-4 py-3 border-b border-b-neutral-400'>
+      <h1 className='text-theme-text-default font-bold text-lg pt-2'>Loan Info</h1>
+      <div className='bg-theme-background w-full rounded-lg space-y-4 shadow-lg'>
+        <div className='flex flex-row flex-wrap justify-between px-4 py-3 border-b border-b-neutral-400 '>
           <p>
             {'ID: '}
             <a className='text-blue-500 underline'>{`#${loanDetails.loan_request_id}`}</a>
@@ -89,7 +89,7 @@ export const LoanComponent = ({ loanDetails }: LoanComponentProps) => {
             <p>{loanDetails.loan_destination.description}</p>
           </div>
         </div>
-        <div className='flex flex-row flex-wrap justify-between px-2'>
+        <div className='flex flex-row flex-wrap justify-between px-2 shadow-lg'>
           <CustomAccordion>
             <CustomAccordion.Item className='text-theme-text-default font-bold' title='Additional Information'>
               <div className='text-theme-text-default font-normal grid grid-cols-1 md:grid-cols-2 gap-4'>
@@ -111,7 +111,7 @@ export const LoanComponent = ({ loanDetails }: LoanComponentProps) => {
                 </div>
                 <div className='space-y-2'>
                   <p className='font-bold'>Customer Email:</p>
-                  <p className='text-wrap'>{loanDetails.person.email}</p>
+                  <p className='break-words'>{loanDetails.person.email}</p>
                 </div>
                 {loanDetails.customerNetIncome && (
                   <div className='space-y-2'>
