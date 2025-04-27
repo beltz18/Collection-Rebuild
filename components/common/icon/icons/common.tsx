@@ -6,11 +6,16 @@ import {
   CreditCard,
   DollarSign,
   Download,
+  Eraser,
+  Eye,
   IdCard,
   Info,
   List,
+  Plus,
   RefreshCcw,
+  RefreshCw,
   Search,
+  Sliders,
 } from 'lucide-react'
 import {
   ChangeTheme,
@@ -94,14 +99,26 @@ const CommonIcons = {
   dollarSign: {
     SVG: ({ size }: SizeT) => { return <DollarSign size={ size } /> }
   },
-  refreshCcw: {
-    SVG: ({ size }: SizeT) => { return <RefreshCcw size={ size } /> }
+  refreshCw: {
+    SVG: ({ size }: SizeT) => { return <RefreshCw size={ size } /> }
   },
   creditCard: {
     SVG: ({ size }: SizeT) => { return <CreditCard size={ size } /> }
   },
   calendar: {
     SVG: ({ size }: SizeT) => { return <Calendar size={ size } /> }
+  },
+  eraser: {
+    SVG: ({ size }: SizeT) => { return <Eraser size={ size } /> }
+  },
+  eye: {
+    SVG: ({ size }: SizeT) => { return <Eye size={ size } /> }
+  },
+  sliders: {
+    SVG: ({ size }: SizeT) => { return <Sliders size={ size } /> }
+  },
+  plus: {
+    SVG: ({ size }: SizeT) => { return <Plus size={ size } /> }
   },
   /* --------------------------- COMMON --------------------------- */
 } as const
