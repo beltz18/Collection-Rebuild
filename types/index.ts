@@ -1,6 +1,6 @@
 type Option = {
   label: string,
-  url: string,
+  url?: string,
   Icon?: JSX.Element
   children?: Option[]
 }

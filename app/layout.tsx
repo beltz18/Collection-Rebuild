@@ -1,4 +1,6 @@
 import '@sty/globals.css'
+import "react-day-picker/style.css"
+
 import { Providers } from './providers'
 
 export default function RootLayout({

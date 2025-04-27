@@ -16,7 +16,7 @@ export default function PaymentIdPage() {
   return (
     <AuthLayout>
       <DefaultLayout>
-        <div className={`relative bg-theme-background ${isTablet ? 'w-full h-full' : 'w-full h-full'}`}>
+        <div className={`p-4 relative bg-theme-background ${isTablet ? 'w-full h-full' : 'w-full h-full'}`}>
           <Tabs
             selectedKey={selectedTab}
             onSelectionChange={(key) => setSelectedTab(key as string)}

@@ -60,12 +60,12 @@ export const useCollectionQuery = <T>({
     },
     retry: false,
     refetchOnWindowFocus: false,
-    staleTime: 1 * 1000 * 15,
+    staleTime: 1 * 1000 * 10,
     ...options,
   })
 
   if (query.error)
-    console.log('error here at hook', query.error)
+    console.log('error here at hook', query.error) // errors must be stored in logs file instead of consoling the error
 
   return query
 }

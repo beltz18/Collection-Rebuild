@@ -11,47 +11,44 @@ export const options : SidebarOptions = {
     },
     {
       label: 'Loans',
-      url: '/loans',
+      url: '/loan',
       Icon: <Icon icon='loans' size='md' />,
     },
     {
       label: "Payments",
-      url: "/payments",
       Icon: <Icon icon="payments" size="md" />,
       children: [
         {
           label: "Payments",
-          url: "/payments",
+          url: "/payment",
         },
         {
           label: "Payment Processors",
-          url: "/payments/processors",
+          url: "/payment/processor",
         },
         {
           label: "Payment Strategies",
-          url: "/payments/strategies",
+          url: "/payment/strategy",
         },
         {
           label: "Payment Steps",
-          url: "/payments/steps",
+          url: "/payment/step",
         },
       ],
     },
     {
       label: 'Activity Logs',
-      url: '#',
+      url: '/log',
       Icon: <Icon icon='history' size='md' />,
     },
   ],
   down: [
     {
       label: 'Themes',
-      url: '#',
       Icon: <Icon icon='changeTheme' size='md' />,
     },
     {
       label: 'Logout',
-      url: '#',
       Icon: <Icon icon='logout' size='md' />,
     },
   ],

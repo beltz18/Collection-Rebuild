@@ -1,4 +1,22 @@
-import { ArrowRight, Briefcase, Calendar, ChartNoAxesColumn, CreditCard, DollarSign, Download, IdCard, Info, List, RefreshCcw, Search } from 'lucide-react'
+import {
+  ArrowRight,
+  Briefcase,
+  Calendar,
+  ChartNoAxesColumn,
+  CreditCard,
+  DollarSign,
+  Download,
+  Eraser,
+  Eye,
+  IdCard,
+  Info,
+  List,
+  Plus,
+  RefreshCcw,
+  RefreshCw,
+  Search,
+  Sliders,
+} from 'lucide-react'
 import {
   ChangeTheme,
   Logout,
@@ -6,14 +24,13 @@ import {
   Loans,
   ArrowLeft,
   Payments,
-  NoPayment,
   ChevronDown,
   Hamburger,
   Cross,
   History,
   Filter,
   Trash,
-} from "./svg/index"
+} from './svg/index'
 
 export type SizeT = { size: string }
 
@@ -39,9 +56,6 @@ const CommonIcons = {
   },
   payments: {
     SVG: ({ size }: SizeT) => { return <Payments size={ size } /> }
-  },
-  noPayment: {
-    SVG: ({ size }: SizeT) => { return <NoPayment size={ size } /> }
   },
   chevronDown: {
     SVG: ({ size }: SizeT) => { return <ChevronDown size={ size } /> }
@@ -85,8 +99,8 @@ const CommonIcons = {
   dollarSign: {
     SVG: ({ size }: SizeT) => { return <DollarSign size={ size } /> }
   },
-  refreshCcw: {
-    SVG: ({ size }: SizeT) => { return <RefreshCcw size={ size } /> }
+  refreshCw: {
+    SVG: ({ size }: SizeT) => { return <RefreshCw size={ size } /> }
   },
   creditCard: {
     SVG: ({ size }: SizeT) => { return <CreditCard size={ size } /> }
@@ -94,6 +108,21 @@ const CommonIcons = {
   calendar: {
     SVG: ({ size }: SizeT) => { return <Calendar size={ size } /> }
   },
+  eraser: {
+    SVG: ({ size }: SizeT) => { return <Eraser size={ size } /> }
+  },
+  eye: {
+    SVG: ({ size }: SizeT) => { return <Eye size={ size } /> }
+  },
+  sliders: {
+    SVG: ({ size }: SizeT) => { return <Sliders size={ size } /> }
+  },
+  plus: {
+    SVG: ({ size }: SizeT) => { return <Plus size={ size } /> }
+  },
+  refreshCcw: {
+    SVG: ({ size }: SizeT) => { return <RefreshCcw size={ size } /> }
+  }
   /* --------------------------- COMMON --------------------------- */
 } as const
 
