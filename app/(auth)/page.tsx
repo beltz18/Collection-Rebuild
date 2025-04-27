@@ -9,7 +9,7 @@ export default function App() {
   return (
     <AuthLayout>
       <DefaultLayout>
-        <div className='flex flex-col gap-5 w-full'>
+        <div className='flex flex-col gap-5 w-full p-4'>
           <LoansTable />
           <PaymentsTable />
         </div>
