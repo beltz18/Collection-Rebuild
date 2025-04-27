@@ -3,7 +3,6 @@
 import { TableQueryContainer } from './query-container'
 import AuthLayout from '../layout'
 import { DefaultLayout } from '@lay/default'
-import { Heading } from '@com/heading'
 import { Card } from '@heroui/card'
 import MenuOptions from '@sec/menufilters'
 import {
