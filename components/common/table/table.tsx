@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import React from "react"
-import { SearchIcon } from "lucide-react"
+import React from 'react'
+import { SearchIcon } from 'lucide-react'
 import {
   Table,
   TableHeader,
@@ -11,7 +11,7 @@ import {
   TableCell,
   Input,
   Selection,
-} from "@heroui/react"
+} from '@heroui/react'
 
 type Column = {
   uid: string
@@ -50,29 +50,16 @@ export function CustomTable<T>({
           ?
         visibleColumns.includes(column.uid)
           :
-        visibleColumns === "all",
+        visibleColumns === 'all',
       ),
     [columns, visibleColumns],
   )
 
   return (
-    <div className="space-y-4">
-      {/* <div className="flex items-center justify-between gap-4">
-        <Input
-          isClearable
-          placeholder="Search..."
-          value={ filterValue }
-          onClear={ onClearSearch }
-          onValueChange={ onSearchChange }
-          startContent={ <SearchIcon size={ 18 } /> }
-          className="max-w-xs"
-        />
-        { topActions }
-      </div> */}
-
+    <div>
       <Table
-        aria-label="Custom dynamic table"
-        selectionMode="multiple"
+        aria-label='Custom dynamic table'
+        selectionMode='multiple'
         selectedKeys={ selectedKeys }
         onSelectionChange={ onSelectionChange }
         isHeaderSticky

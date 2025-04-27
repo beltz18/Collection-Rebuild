@@ -44,6 +44,11 @@ export default function Login() {
     }))
   }
 
+  const detectEnterKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter')
+      handleSubmit()
+  }
+
   const handleSubmit = async () => {
     if (!formData.username || !formData.password) {
       errorToast({
@@ -77,7 +82,10 @@ export default function Login() {
   }
 
   return(
-    <div className='bg-[#f7f7efd9] bg-theme-background w-full h-[100vh] flex justify-center items-center flex-col px-4'>
+    <div
+      className='bg-[#f7f7efd9] bg-theme-background w-full h-[100vh] flex justify-center items-center flex-col px-4'
+      onKeyDown={ detectEnterKey }
+    >
       <Logo
         src={ LOGO_ENTITY }
         width={ 450 }

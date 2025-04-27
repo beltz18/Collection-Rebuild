@@ -1,8 +1,5 @@
-import { create } from "zustand"
-import { 
-  persist, 
-  createJSONStorage 
-} from "zustand/middleware"
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 type TokenStore = {
   token: string | null
@@ -17,9 +14,6 @@ export const useTokenStore = create<TokenStore>()(
       setToken: (token) => set({ token }),
       logout: () => set({ token: null }),
     }),
-    {
-      name: "token-storage",
-      storage: createJSONStorage(() => localStorage),
-    }
+    { name: 'token-storage' }
   )
 )

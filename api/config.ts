@@ -65,7 +65,7 @@ export const useCollectionQuery = <T>({
   })
 
   if (query.error)
-    console.log('error here at hook', query.error)
+    console.log('error here at hook', query.error) // errors must be stored in logs file instead of consoling the error
 
   return query
 }

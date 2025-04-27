@@ -39,34 +39,20 @@ export const DefaultLayout = ({ children }: LayoutProps) => {
   }
 
   return (
-    <>
-      <div className='flex h-screen w-full'>
-        <div className={`${ open ? 'w-[17rem]' : 'w-[60px]'}`}>
-          <Sidebar>
-            <Sidebar.Trigger click={ handleSidebarToggle } />
-            
-            <Sidebar.Content>
-              <Sidebar.Body>
-                {
-                  options.up.map(({ Icon, label, url, children }, idx) => (
-                    <div key={ idx }>
-                      {
-                        url
-                          ?
-                        <Link href={ url }>
-                          <CompItem
-                            activeTab={ activeTab }
-                            label={ label }
-                            isExpanded={ isExpanded }
-                            Icon={ Icon }
-                            setActiveTab={ setActiveTab }
-                            children={ children }
-                            setActiveChildrenTab={ setActiveChildrenTab }
-                            setActiveChildrenIndex={ setActiveChildrenIndex }
-                            toggleExpanded={ toggleExpanded }
-                          />
-                        </Link>
-                          :
+    <div className='flex h-screen w-full'>
+      <div className={`${ open ? 'w-[17rem]' : 'w-[60px]'} z-50`}>
+        <Sidebar>
+          <Sidebar.Trigger click={ handleSidebarToggle } />
+          
+          <Sidebar.Content>
+            <Sidebar.Body>
+              {
+                options.up.map(({ Icon, label, url, children }, idx) => (
+                  <div key={ idx }>
+                    {
+                      url
+                        ?
+                      <Link href={ url }>
                         <CompItem
                           activeTab={ activeTab }
                           label={ label }
@@ -78,32 +64,35 @@ export const DefaultLayout = ({ children }: LayoutProps) => {
                           setActiveChildrenIndex={ setActiveChildrenIndex }
                           toggleExpanded={ toggleExpanded }
                         />
-                      }
+                      </Link>
+                        :
+                      <CompItem
+                        activeTab={ activeTab }
+                        label={ label }
+                        isExpanded={ isExpanded }
+                        Icon={ Icon }
+                        setActiveTab={ setActiveTab }
+                        children={ children }
+                        setActiveChildrenTab={ setActiveChildrenTab }
+                        setActiveChildrenIndex={ setActiveChildrenIndex }
+                        toggleExpanded={ toggleExpanded }
+                      />
+                    }
 
-                      <div
-                        className={`overflow-hidden transition-all duration-300 ease-in-out relative ${
-                          isExpanded(label) && children?.length
-                            ? 'max-h-[500px] opacity-100 transform-gpu py-1'
-                            : 'max-h-0 opacity-0 transform-gpu'
-                        }`}
-                      >
-                        {
-                          children?.map((child, childIdx) => (
-                            <div key={`${idx}-${childIdx}`}>
-                              {
-                                child.url
-                                  ?
-                                <Link href={ child.url }>
-                                  <CompSubItem
-                                    activeChildrenTab={ activeChildrenTab }
-                                    child={ child }
-                                    setActiveTab={ setActiveTab }
-                                    label={ label }
-                                    setActiveChildrenTab={ setActiveChildrenTab }
-                                    isExpanded={ isExpanded }
-                                  />
-                                </Link>
-                                  :
+                    <div
+                      className={`overflow-hidden transition-all duration-300 ease-in-out relative ${
+                        isExpanded(label) && children?.length
+                          ? 'max-h-[500px] opacity-100 transform-gpu py-1'
+                          : 'max-h-0 opacity-0 transform-gpu'
+                      }`}
+                    >
+                      {
+                        children?.map((child, childIdx) => (
+                          <div key={`${idx}-${childIdx}`}>
+                            {
+                              child.url
+                                ?
+                              <Link href={ child.url }>
                                 <CompSubItem
                                   activeChildrenTab={ activeChildrenTab }
                                   child={ child }
@@ -112,67 +101,78 @@ export const DefaultLayout = ({ children }: LayoutProps) => {
                                   setActiveChildrenTab={ setActiveChildrenTab }
                                   isExpanded={ isExpanded }
                                 />
-                              }
-                            </div>
-                          ))
-                        }
-                      </div>
-                    </div>
-                  ))
-                }
-              </Sidebar.Body>
-
-              <Sidebar.Footer>
-                {
-                  options.down.map(({ Icon, label }, idx) => {
-                    if (label === 'Themes') {
-                      return (
-                        <ThemeSelector
-                          key={ idx }
-                          placementOpen={ open }
-                        >
-                          <div>
-                            <Sidebar.Item
-                              active={ activeTab === label }
-                              icon={ Icon }
-                            >
-                              { label }
-                            </Sidebar.Item>
+                              </Link>
+                                :
+                              <CompSubItem
+                                activeChildrenTab={ activeChildrenTab }
+                                child={ child }
+                                setActiveTab={ setActiveTab }
+                                label={ label }
+                                setActiveChildrenTab={ setActiveChildrenTab }
+                                isExpanded={ isExpanded }
+                              />
+                            }
                           </div>
-                        </ThemeSelector>
-                      )
-                    }
+                        ))
+                      }
+                    </div>
+                  </div>
+                ))
+              }
+            </Sidebar.Body>
 
+            <Sidebar.Footer>
+              {
+                options.down.map(({ Icon, label }, idx) => {
+                  if (label === 'Themes') {
                     return (
-                      <Sidebar.Item
+                      <ThemeSelector
                         key={ idx }
-                        active={ activeTab === label }
-                        icon={ Icon }
-                        setActive={() => {
-                          clear()
-                          logout()
-                        }}
+                        placementOpen={ open }
                       >
-                        { label }
-                      </Sidebar.Item>
+                        <div>
+                          <Sidebar.Item
+                            active={ activeTab === label }
+                            icon={ Icon }
+                          >
+                            { label }
+                          </Sidebar.Item>
+                        </div>
+                      </ThemeSelector>
                     )
-                  })
-                }
-              </Sidebar.Footer>
-            </Sidebar.Content>
-          </Sidebar>
-        </div>
-        
-        <div className='flex-1 flex flex-col w-full translate-x-0'>
-          <Navbar />
+                  }
 
-          <main className='flex-1 overflow-auto'>
-            { children }
-          </main>
-
-          <Footer />
-        </div>
+                  return (
+                    <Sidebar.Item
+                      key={ idx }
+                      active={ activeTab === label }
+                      icon={ Icon }
+                      setActive={() => {
+                        clear()
+                        logout()
+                      }}
+                    >
+                      { label }
+                    </Sidebar.Item>
+                  )
+                })
+              }
+            </Sidebar.Footer>
+          </Sidebar.Content>
+        </Sidebar>
       </div>
-    </>
+      
+      <div className={`flex flex-col w-full translate-x-0 z-0
+        ${open ? 'w-[calc(100%-17rem)]' : 'w-[calc(100%-60px)]'}
+      `}>
+        <Navbar />
+
+        <main className='flex-1 overflow-y-auto overflow-x-hidden'>
+          { children }
+        </main>
+
+        <Footer />
+      </div>
+    </div>
   )
 }

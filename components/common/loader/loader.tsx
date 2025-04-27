@@ -3,7 +3,7 @@ import React from 'react'
 export const Loader = () => {
   return (
     <>
-      <div className='w-full h-screen flex items-center justify-center'>
+      <div className='w-full flex items-center justify-center'>
         <svg width='50px' height='50px' viewBox="0 0 200 200">
           <radialGradient id="a12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)">
             <stop offset="0" stopColor="#DC1431" />
