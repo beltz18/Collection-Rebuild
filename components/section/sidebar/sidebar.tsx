@@ -1,6 +1,8 @@
+import Link from 'next/link'
 import { Icon } from '@com/icon'
 import { useTheme } from '@ctx/themeContext'
 import { CustomPopover } from '@com/popover/popover'
+import { useSidebarStore } from '@sts/useSidebarStore'
 import { 
   ChevronDown, 
   ChevronRight 
@@ -19,28 +21,28 @@ import {
 
 const SidebarContext = createContext<Ctx>({
   open: true,
-  toggle: () => {},
+  setOpen: () => {},
 })
 
 export const Sidebar = ({ children }: SidebarNodes) => {
-  const [open, toggle] = useState(true)
+  const { open, setOpen } = useSidebarStore()
 
   return (
-    <SidebarContext.Provider value={{ open, toggle }}>
+    <SidebarContext.Provider value={{ open, setOpen }}>
       { children }
     </SidebarContext.Provider>
   )
 }
 
 function Trigger({ click }: { click: (newState: boolean) => void }) {
-  const { open, toggle } = useContext(SidebarContext)
+  const { open, setOpen } = useContext(SidebarContext)
   const { theme } = useTheme()
 
   return (
     <button
       onClick={() => {
         click(!open)
-        toggle(!open)
+        setOpen(!open)
       }}
       className='fixed top-0 left-0 z-50 h-[60px] px-4'
       title={`${ open ? 'Close sidebar' : 'Open sidebar' }`}
@@ -94,18 +96,18 @@ function Item({
   icon, 
   hasChildren, 
   childItems, 
-  activeChild,
 }: SidebarItems) {
+  const {
+    activeChildrenTab,
+    activeChildrenIndex,
+    setActiveChildrenIndex,
+  } = useSidebarStore()
   const { open } = useContext(SidebarContext)
   const isExpandable = hasChildren && open
-  const [activeChildIndex, setActiveChildIndex] = useState(0)
 
   const handleClick = () => {
-    if (hasChildren) {
-      setExpanded && setExpanded()
-    } else {
-      setActive && setActive()
-    }
+    if (hasChildren) setExpanded && setExpanded()
+    else setActive && setActive()
   }
 
   const shouldShowExpanded = expanded && open
@@ -113,25 +115,37 @@ function Item({
   if (open) {
     return (
       <div
-        className={`my-[2px] p-3 flex gap-4 text-[18px] rounded-md cursor-pointer 
+        className={`my-[2px] p-3 flex gap-4 text-[18px] rounded-md cursor-pointer
           transition-all duration-200 ease-in-out hover:bg-white hover:text-theme-text-hover
           ${active && !expanded ? "bg-white text-theme-text-hover" : "text-theme-text-on-primary"}
           ${open && "mx-2"}
         `}
-        onClick={handleClick}
+        onClick={ handleClick }
       >
         <div className="flex items-center gap-4 w-full">
-          {icon}
-          <span className="flex-1">{children}</span>
-          {isExpandable && (
-            <div className="transition-transform duration-300 ease-in-out">
-              {shouldShowExpanded ? (
-                <ChevronDown size={16} className="transition-transform duration-300 ease-in-out rotate-180" />
-              ) : (
-                <ChevronRight size={16} className="transition-transform duration-300 ease-in-out" />
-              )}
-            </div>
-          )}
+          { icon }
+          <span className="flex-1">
+            { children }
+          </span>
+          {
+            isExpandable && (
+              <div className="transition-transform duration-300 ease-in-out">
+                {
+                  shouldShowExpanded
+                    ?
+                  <ChevronDown
+                    size={16}
+                    className="transition-transform duration-300 ease-in-out rotate-180"
+                  />
+                    :
+                  <ChevronRight
+                    size={16}
+                    className="transition-transform duration-300 ease-in-out"
+                  />
+                }
+              </div>
+            )
+          }
         </div>
       </div>
     )
@@ -142,40 +156,71 @@ function Item({
       <CustomPopover placement="right" offset={10}>
         <CustomPopover.Trigger>
           <div
-            className={`my-[2px] w-full flex items-center justify-center p-3 rounded-md cursor-pointer hover:bg-white
-            transition-all duration-200 ease-in-out
-              ${active && "bg-white text-theme-text-hover"}
+            className={`my-[2px] w-full flex items-center justify-center p-3 rounded-md cursor-pointer
+            transition-all duration-200 ease-in-out hover:bg-white hover:text-theme-text-hover
+              ${active ? "bg-white text-theme-text-hover" : "hover:bg-white text-theme-text-on-primary"}
             `}
           >
-            {icon}
+            { icon }
           </div>
         </CustomPopover.Trigger>
+
         <CustomPopover.Content className="py-2 px-1 bg-theme-primary rounded-md shadow-lg min-w-[180px]">
           <div className="mt-1 relative">
-            <div className="absolute left-[21.7px] top-0 h-full w-[1px] bg-theme-text-on-primary/40"></div>
+            <div className="absolute left-[21.7px] top-0 h-full w-[1px] bg-theme-text-on-primary/40" />
             <div
               className="absolute left-[19px] w-2 h-2 rounded-full bg-theme-text-on-primary z-10 transition-all duration-300 ease-in-out"
-              style={{ top: `${activeChildIndex * 42 + 20}px` }} 
+              style={{ top: `${activeChildrenIndex * 42 + 20}px` }} 
             />
 
-            {childItems.map((child, childIdx) => (
-              <div
-                key={childIdx}
-                className="pl-9 py-1 relative"
-                onClick={() => {
-                  child.setActive()
-                  setActiveChildIndex(childIdx)
-                }}
-              >
-                <div
-                  className={`flex items-center gap-3 w-full pl-2 pr-3 py-2 rounded-md text-[16px] cursor-pointer transition-all duration-300 ease-in-out hover:text-theme-text-hover
-                    ${activeChild === child.label ? "bg-white text-theme-text-hover" : "hover:bg-white text-theme-text-on-primary"}`}
-                >
-                  {child.icon}
-                  <span>{child.label}</span>
+            {
+              childItems.map((child, childIdx) => (
+                <div key={ childIdx }>
+                  {
+                    child.url
+                      ?
+                    <Link href={ child.url }>
+                      <div
+                        className="pl-9 py-1 relative"
+                        onClick={() => {
+                          child.setActive()
+                          setActiveChildrenIndex(childIdx)
+                        }}
+                      >
+                        <div
+                          className={`flex items-center gap-3 w-full pl-2 pr-3 py-2 rounded-md text-[16px] cursor-pointer transition-all duration-300 ease-in-out hover:text-theme-text-hover
+                            ${activeChildrenTab === child.label ? "bg-white text-theme-text-hover" : "hover:bg-white text-theme-text-on-primary"}`}
+                        >
+                          { child.icon }
+                          <span>
+                            { child.label }
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                      :
+                    <div
+                      className="pl-9 py-1 relative"
+                      onClick={() => {
+                        child.setActive()
+                        setActiveChildrenIndex(childIdx)
+                      }}
+                    >
+                      <div
+                        className={`flex items-center gap-3 w-full pl-2 pr-3 py-2 rounded-md text-[16px] cursor-pointer transition-all duration-300 ease-in-out hover:text-theme-text-hover
+                          ${activeChildrenTab === child.label ? "bg-white text-theme-text-hover" : "hover:bg-white text-theme-text-on-primary"}`}
+                      >
+                        { child.icon }
+                        <span>
+                          { child.label }
+                        </span>
+                      </div>
+                    </div>
+                  }
                 </div>
-              </div>
-            ))}
+                
+              ))
+            }
           </div>
         </CustomPopover.Content>
       </CustomPopover>
@@ -183,31 +228,14 @@ function Item({
   }
 
   return (
-    <>
-      {/* <div className="relative">
-        <Tooltip placement="right">
-          <Tooltip.Trigger>
-            <div
-              className={`my-[2px] w-full flex items-center justify-center p-3 rounded-md cursor-pointer hover:bg-white hover:text-theme-hover-text
-            ${active && "bg-white text-theme-hover-text"}
-          `}
-              onClick={handleClick}
-            >
-              {icon}
-            </div>
-          </Tooltip.Trigger>
-          <Tooltip.Content className="z-[9999] !bg-zinc-900 !text-white shadow-lg">{children}</Tooltip.Content>
-        </Tooltip>
-      </div> */}
-      <div
-        className={`my-[2px] w-full flex items-center justify-center p-3 rounded-md cursor-pointer hover:bg-white hover:text-theme-text-hover
-          ${active ? "bg-white text-theme-text-hover" : "text-theme-text-on-primary"}
-        `}
-        onClick={handleClick}
-      >
-        {icon}
-      </div>
-    </>
+    <div
+      className={`my-[2px] w-full flex items-center justify-center p-3 rounded-md cursor-pointer hover:bg-white hover:text-theme-text-hover
+        ${active ? "bg-white text-theme-text-hover" : "text-theme-text-on-primary"}
+      `}
+      onClick={ handleClick }
+    >
+      { icon }
+    </div>
   )
 }
 
@@ -221,16 +249,23 @@ function SubItem({ children, active, setActive, icon, parentExpanded }: SidebarS
       className={`pl-10 py-1 relative
         ${open ? "mx-2 text-theme-text-on-primary" : "px-3"}
       `}
-      onClick={setActive}
+      onClick={ setActive }
     >
-      <div className="absolute left-[21.7px] top-0 h-full w-[1px] bg-theme-text-on-primary/40"></div>
-      {active && <div className="absolute left-[19px] top-[18px] w-2 h-2 rounded-full bg-theme-text-on-primary z-10"></div>}
+      <div className="absolute left-[21.7px] top-0 h-full w-[1px] bg-theme-text-on-primary/40" />
+      
+      {
+        active &&
+          <div className="absolute left-[19px] top-[18px] w-2 h-2 rounded-full bg-theme-text-on-primary z-10" />
+      }
+
       <div
         className={`flex items-center gap-3 w-full pl-2 pr-3 py-2 rounded-md text-[16px] cursor-pointer transition-all duration-300 ease-in-out
           ${active ? "bg-white text-theme-text-hover" : "hover:bg-white hover:text-theme-text-hover"}`}
       >
-        {icon}
-        <span>{children}</span>
+        { icon }
+        <span>
+          { children }
+        </span>
       </div>
     </div>
   )

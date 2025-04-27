@@ -7,10 +7,10 @@ import LoansTable from './query-loan-container'
 import PaymentsTable from './query-payment-container'
 
 export default function App() {
-  const { clear } = useTokenStore()
+  const { logout } = useTokenStore()
 
   const borrarToken = () => {
-    clear()
+    logout()
     alert("Token borrado")
   }
 

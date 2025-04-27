@@ -1,9 +1,13 @@
 'use client'
 
-import { useEffect, useState }     from "react"
-import { useRouter }     from "next/navigation" 
-import { getSession }    from "@uti/getSession"
-import { useTokenStore } from "@sts/useTokenStore"
+import {
+  useEffect,
+  useState,
+} from 'react'
+import { useRouter } from 'next/navigation' 
+import { getSession } from '@uti/getSession'
+import { useTokenStore } from '@sts/useTokenStore'
+import { Loader } from '@com/index'
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
@@ -13,17 +17,21 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
   useEffect(() => {
     const checkAuth = async () => {
       const session = getSession()
-      if (!session) {
-        router.replace("/login")
-      }
+      if (!session) router.replace('/login')
       setIsLoading(false)
     }
     checkAuth()
   }, [router, token])
 
   if (isLoading) {
-    return <div className="flex items-center justify-center h-screen bg-gray-100">Loading...</div>
+    return (
+      <div className='flex items-center justify-center h-screen bg-gray-100'>
+        <Loader />
+      </div>
+    )
   }
 
-  return <>{children}</>
+  return <>
+    { children }
+  </>
 }

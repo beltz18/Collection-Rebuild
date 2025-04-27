@@ -8,8 +8,20 @@ import {
   useCollectionMutation,
 } from '@api/config'
 
+type ResponseProps = {
+  message: string
+  data: {
+    token: string
+  }
+}
+
+type SendProps = {
+  username: string
+  password: string
+}
+
 export const useAuthenticateUser = () => {
-  return useCollectionMutation<{}, { message: string, data: { token: string } }>({
+  return useCollectionMutation<SendProps, ResponseProps>({
     fetcher: async (data) =>
       await genericAuthRequest(METHODS.post, ROUTES.login, data)
   })

@@ -7,7 +7,7 @@ import {
 type TokenStore = {
   token: string | null
   setToken: (token: string) => void
-  clear: VoidFunction
+  logout: VoidFunction
 }
 
 export const useTokenStore = create<TokenStore>()(
@@ -15,7 +15,7 @@ export const useTokenStore = create<TokenStore>()(
     (set) => ({
       token: null,
       setToken: (token) => set({ token }),
-      clear: () => set({ token: null }),
+      logout: () => set({ token: null }),
     }),
     {
       name: "token-storage",

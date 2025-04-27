@@ -1,17 +1,31 @@
 import Link from 'next/link'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { Sidebar } from '@sec/index'
 import { options } from '@uti/consts'
 import { LayoutProps } from './layout.types'
 import { Navbar } from '@sec/index'
 import { Footer } from '@sec/index'
 import { ThemeSelector } from '@sec/theme-popover'
+import { useSidebarStore } from '@sts/useSidebarStore'
+import { useTokenStore } from '@sts/useTokenStore'
+import {
+  CompItem,
+  CompSubItem,
+} from './elements/element-sidebar'
 
 export const DefaultLayout = ({ children }: LayoutProps) => {
-  const [active, setActive] = useState<string>('Home')
-  const [open, setOpen] = useState<boolean>(true)
+  const {
+    activeTab,
+    activeChildrenTab,
+    setActiveTab,
+    setActiveChildrenTab,
+    setActiveChildrenIndex,
+    open,
+    setOpen,
+    clear,
+  } = useSidebarStore()
+  const { logout } = useTokenStore()
   const [expandedItems, setExpandedItems] = useState<string[]>([])
-  const [activeChildIndex, setActiveChildIndex] = useState<number>(0)
 
   const toggleExpanded = (label: string) =>
     setExpandedItems((prev) => (prev.includes(label) ? prev.filter((item) => item !== label) : [...prev, label]))
@@ -36,23 +50,36 @@ export const DefaultLayout = ({ children }: LayoutProps) => {
                 {
                   options.up.map(({ Icon, label, url, children }, idx) => (
                     <div key={ idx }>
-                      <Sidebar.Item
-                        active={ active === label && !children }
-                        expanded={isExpanded(label)}
-                        icon={ Icon }
-                        setActive={() => setActive(label)}
-                        setExpanded={() => toggleExpanded(label)}
-                        hasChildren={ !!children?.length }
-                        childItems={
-                          children?.map(child => ({
-                            ...child,
-                            setActive: () => setActive(child.label)
-                          }))
-                        }
-                        activeChild={ active }
-                      >
-                        { label }
-                      </Sidebar.Item>
+                      {
+                        url
+                          ?
+                        <Link href={ url }>
+                          <CompItem
+                            activeTab={ activeTab }
+                            label={ label }
+                            isExpanded={ isExpanded }
+                            Icon={ Icon }
+                            setActiveTab={ setActiveTab }
+                            children={ children }
+                            setActiveChildrenTab={ setActiveChildrenTab }
+                            setActiveChildrenIndex={ setActiveChildrenIndex }
+                            toggleExpanded={ toggleExpanded }
+                          />
+                        </Link>
+                          :
+                        <CompItem
+                          activeTab={ activeTab }
+                          label={ label }
+                          isExpanded={ isExpanded }
+                          Icon={ Icon }
+                          setActiveTab={ setActiveTab }
+                          children={ children }
+                          setActiveChildrenTab={ setActiveChildrenTab }
+                          setActiveChildrenIndex={ setActiveChildrenIndex }
+                          toggleExpanded={ toggleExpanded }
+                        />
+                      }
+
                       <div
                         className={`overflow-hidden transition-all duration-300 ease-in-out relative ${
                           isExpanded(label) && children?.length
@@ -62,18 +89,31 @@ export const DefaultLayout = ({ children }: LayoutProps) => {
                       >
                         {
                           children?.map((child, childIdx) => (
-                            <Sidebar.SubItem
-                              key={`${idx}-${childIdx}`}
-                              active={ active === child.label }
-                              setActive={() => {
-                                setActive(child.label)
-                                setActiveChildIndex(childIdx)
-                              }}
-                              icon={ child.Icon }
-                              parentExpanded={ isExpanded(label) }
-                            >
-                              { child.label }
-                            </Sidebar.SubItem>
+                            <div key={`${idx}-${childIdx}`}>
+                              {
+                                child.url
+                                  ?
+                                <Link href={ child.url }>
+                                  <CompSubItem
+                                    activeChildrenTab={ activeChildrenTab }
+                                    child={ child }
+                                    setActiveTab={ setActiveTab }
+                                    label={ label }
+                                    setActiveChildrenTab={ setActiveChildrenTab }
+                                    isExpanded={ isExpanded }
+                                  />
+                                </Link>
+                                  :
+                                <CompSubItem
+                                  activeChildrenTab={ activeChildrenTab }
+                                  child={ child }
+                                  setActiveTab={ setActiveTab }
+                                  label={ label }
+                                  setActiveChildrenTab={ setActiveChildrenTab }
+                                  isExpanded={ isExpanded }
+                                />
+                              }
+                            </div>
                           ))
                         }
                       </div>
@@ -84,18 +124,17 @@ export const DefaultLayout = ({ children }: LayoutProps) => {
 
               <Sidebar.Footer>
                 {
-                  options.down.map(({ Icon, label, url }, idx) => {
+                  options.down.map(({ Icon, label }, idx) => {
                     if (label === 'Themes') {
                       return (
                         <ThemeSelector
                           key={ idx }
                           placementOpen={ open }
                         >
-                          <div onClick={() => setActive(label)}>
+                          <div>
                             <Sidebar.Item
-                              active={ active === label }
+                              active={ activeTab === label }
                               icon={ Icon }
-                              setActive={() => {}}
                             >
                               { label }
                             </Sidebar.Item>
@@ -107,9 +146,12 @@ export const DefaultLayout = ({ children }: LayoutProps) => {
                     return (
                       <Sidebar.Item
                         key={ idx }
-                        active={ active === label }
+                        active={ activeTab === label }
                         icon={ Icon }
-                        setActive={() => setActive(label)}
+                        setActive={() => {
+                          clear()
+                          logout()
+                        }}
                       >
                         { label }
                       </Sidebar.Item>
