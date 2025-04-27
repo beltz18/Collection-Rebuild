@@ -10,7 +10,7 @@ type Props = {
   columns: ColumnEx[]
   onSelectionChange?: (keys: Set<number>) => void
 }
-import { Status, getStatusColor } from '@typ/payment-status'
+import { getStatusColor } from '@typ/payment-status'
 
 const VerticalDotsIcon = ({ size = 24, width, height, className, ...props }: { size?: number; width?: number; height?: number; className?: string }) => {
   return (

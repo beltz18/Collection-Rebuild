@@ -31,11 +31,15 @@ const columns: ColumnEx[] = [
   { uid: 'location_id', name: 'Location ID' },
 ]
 
-export const TableQueryContainer = ({ search, onSelectionChange }: Props) => {
+export const TableQueryContainer = ({ onSelectionChange }: Props) => {
   return (
     <div className='w-full flex items-center flex-col gap-4'>
-      <TableContainer data={payments} columns={columns} onSelectionChange={onSelectionChange} />
-      <PaginationC total={payments.length} />
+      <TableContainer
+        data={ payments }
+        columns={ columns }
+        onSelectionChange={ onSelectionChange }
+      />
+      <PaginationC total={ payments.length } />
     </div>
   )
 }

@@ -167,7 +167,7 @@ export const DefaultLayout = ({ children }: LayoutProps) => {
       `}>
         <Navbar />
 
-        <main className='w-full overflow-y-auto overflow-x-hidden'>
+        <main className='w-full h-screen overflow-y-auto overflow-x-hidden'>
           { children }
         </main>
 

@@ -3,7 +3,6 @@
 import { TableQueryContainer } from './query-container'
 import AuthLayout from '../layout'
 import { DefaultLayout } from '@lay/default'
-import { Heading } from '@com/heading'
 import { Card } from '@heroui/card'
 import MenuOptions from '@sec/menufilters'
 import {
@@ -19,13 +18,14 @@ export default function PaymentTable() {
   return (
     <AuthLayout>
       <DefaultLayout>
-        <Card className='flex flex-col gap-4 p-4'>
-          <div className='text-default-600 flex justify-between items-center text-lg'>
-            <Heading level={1} className='text-theme-text-title/60 text-2xl'>All Payments</Heading>
-            <MenuOptions />
-          </div>
-          <TableQueryContainer />
-        </Card>
+        <div className='p-4'>
+          <Card className='flex flex-col gap-4 p-4'>
+            <div className='text-default-600 flex justify-between items-center text-lg'>
+              <MenuOptions title='All Payments' />
+            </div>
+            <TableQueryContainer />
+          </Card>
+        </div>
       </DefaultLayout>
     </AuthLayout>
   )

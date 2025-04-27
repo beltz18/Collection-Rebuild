@@ -30,7 +30,7 @@ import {
   History,
   Filter,
   Trash,
-} from "./svg/index"
+} from './svg/index'
 
 export type SizeT = { size: string }
 
@@ -120,6 +120,9 @@ const CommonIcons = {
   plus: {
     SVG: ({ size }: SizeT) => { return <Plus size={ size } /> }
   },
+  refreshCcw: {
+    SVG: ({ size }: SizeT) => { return <RefreshCcw size={ size } /> }
+  }
   /* --------------------------- COMMON --------------------------- */
 } as const
 
