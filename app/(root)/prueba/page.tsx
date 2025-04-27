@@ -11,12 +11,12 @@ import { useState, useEffect } from "react"
 import { NotFoundExamples } from "../../../components/notFound"
 
 export default function App() {
-  const { clear } = useTokenStore()
+  const { logout } = useTokenStore()
   const { token } = useTokenStore()
   const [count, setCount] = useState(0)
 
   const borrarToken = () => {
-    clear()
+    logout()
     alert("Token borrado")
   }
 

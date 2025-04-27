@@ -45,10 +45,12 @@ export default function LoansTable() {
         <div className='text-default-600 flex justify-between items-center text-lg'>
           <MenuOptions title='Loans' />
         </div>
+
         <TableContainer
           data={ loans }
           columns={ columns }
         />
+        
         <div className='w-full flex items-center justify-center'>
           <PaginationC total={ 98 } />
         </div>

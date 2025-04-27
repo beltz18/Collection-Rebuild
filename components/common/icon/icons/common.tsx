@@ -1,4 +1,17 @@
-import { ArrowRight, Briefcase, Calendar, ChartNoAxesColumn, CreditCard, DollarSign, Download, IdCard, Info, List, RefreshCcw, Search } from 'lucide-react'
+import {
+  ArrowRight,
+  Briefcase,
+  Calendar,
+  ChartNoAxesColumn,
+  CreditCard,
+  DollarSign,
+  Download,
+  IdCard,
+  Info,
+  List,
+  RefreshCcw,
+  Search,
+} from 'lucide-react'
 import {
   ChangeTheme,
   Logout,
@@ -6,7 +19,6 @@ import {
   Loans,
   ArrowLeft,
   Payments,
-  NoPayment,
   ChevronDown,
   Hamburger,
   Cross,
@@ -39,9 +51,6 @@ const CommonIcons = {
   },
   payments: {
     SVG: ({ size }: SizeT) => { return <Payments size={ size } /> }
-  },
-  noPayment: {
-    SVG: ({ size }: SizeT) => { return <NoPayment size={ size } /> }
   },
   chevronDown: {
     SVG: ({ size }: SizeT) => { return <ChevronDown size={ size } /> }

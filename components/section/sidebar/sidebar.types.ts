@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 
 export interface SidebarContext {
   open: boolean
-  toggle: React.Dispatch<React.SetStateAction<boolean>>
+  setOpen: (open: boolean) => void
 }
 
 export interface SidebarNodes {
@@ -19,7 +19,6 @@ export interface SidebarItems {
   icon?: ReactNode
   hasChildren?: boolean
   childItems?: any[]
-  activeChild?: string
 }
 
 export interface SidebarSubItems {
