@@ -24,18 +24,23 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
     checkAuth()
   }, [token])
 
-  if (isLoading) {
+  if (isLoading) { return <Loading /> }
+  else if (token && !isLoading) {
     return (
-      <div className='flex items-center justify-center w-full h-screen bg-gray-100'>
-        <div className='flex flex-col gap-3 items-center justify-center'>
-          <Loader />
-          <span className='text-theme-text-default'>Loading...</span>
-        </div>
-      </div>
+      <>
+        { children }
+      </>
     )
-  } else if (token && !isLoading) {
-    return <>
-      { children }
-    </>
-  } else { return null }
+  } else { return <Loading /> }
+}
+
+const Loading = () => {
+  return (
+    <div className='flex items-center justify-center w-full h-screen bg-gray-100'>
+      <div className='flex flex-col gap-3 items-center justify-center'>
+        <Loader />
+        <span className='text-theme-text-default'>Loading...</span>
+      </div>
+    </div>
+  )
 }

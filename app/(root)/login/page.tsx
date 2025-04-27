@@ -90,7 +90,7 @@ export default function Login() {
         src={ LOGO_ENTITY }
         width={ 450 }
         height={ 500 }
-        alt='logo'
+        alt='Logo'
       />
 
       <div className='max-w-[450px] w-full h-[365px] bg-[#FFFFF] p-4 m-5 rounded-lg flex flex-col justify-around items-center shadow-[0_35px_60px_-15px_rgba(0,0,0,0.234)] px-5 border-t-[1px] border-t-[#1212120a]'>

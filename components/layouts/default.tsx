@@ -162,12 +162,12 @@ export const DefaultLayout = ({ children }: LayoutProps) => {
         </Sidebar>
       </div>
       
-      <div className={`flex flex-col w-full translate-x-0 z-0
+      <div className={`flex flex-col translate-x-0 z-0
         ${open ? 'w-[calc(100%-17rem)]' : 'w-[calc(100%-60px)]'}
       `}>
         <Navbar />
 
-        <main className='flex-1 overflow-y-auto overflow-x-hidden'>
+        <main className='w-full overflow-y-auto overflow-x-hidden'>
           { children }
         </main>
 
