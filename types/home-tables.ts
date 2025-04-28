@@ -14,14 +14,14 @@ export interface Loan {
   request_date: Date | string | null
   sign_date: Date | string | null
   disbursment_date: Date | string | null
-  closure_amount: number
-  insurance_amount: number
-  requested_amount: number
-  approved_amount: number
+  closure_amount: number | string
+  insurance_amount: number | string
+  requested_amount: number | string
+  approved_amount: number | string
   term: number
-  base_rate: number
-  insurance_rate: number
-  tax_rate: number
+  base_rate: number | string
+  insurance_rate: number | string
+  tax_rate: number | string
   observations: string | null
   person: {
     person_id: number

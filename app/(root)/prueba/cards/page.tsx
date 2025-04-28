@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 import { CardPayment } from "@com/card/payment"
-import { paymentMock } from "./mock/mock-data"
+import { LoanCard } from "@com/card/loan"
+import { paymentMock, loanMock } from "./mock/mock-data"
 
 export default function Cards() {
   const [_, setShowModal] = useState(false)
@@ -14,7 +15,12 @@ export default function Cards() {
 
   return (
     <>
-      <div>
+      <div className="h-screen flex flex-row gap-20 justify-center items-center">
+        <LoanCard 
+          loanRequest={ loanMock } 
+          onViewDetails={ handleViewDetails } 
+        />
+
         <CardPayment 
           payment={ paymentMock } 
           onViewDetails={ handleViewDetails } 

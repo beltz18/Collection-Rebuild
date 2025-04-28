@@ -1,10 +1,16 @@
 "use client"
 
-import { DollarSign, Calendar, User, Briefcase, Hash, MoreVertical } from "lucide-react"
+import { DollarSign, Calendar, User, Briefcase, Hash, MoreVertical, FileOutputIcon } from "lucide-react"
 import { Button } from "@heroui/button"
 import { Card } from "../card-payment"
 import { format } from "date-fns"
 import { type Status, paymentStatus, getStatusColor } from "@typ/payment-status"
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from '@heroui/react'
 import type { Payment } from "@typ/home-tables"
 
 interface CardPaymentProps {
@@ -27,9 +33,22 @@ export function CardPayment({ payment, onViewDetails }: CardPaymentProps) {
           <p className="text-md text-default-700">Loan #{payment.loan_request_id}</p>
         </div>
         <div>
-          <button className="text-gray-500 hover:bg-gray-100 rounded-full p-2 transition-colors duration-200">
-            <MoreVertical className="w-5 h-5" />
-          </button>
+          <Dropdown>
+            <DropdownTrigger>
+              <Button isIconOnly size='sm' variant='light'>
+                <MoreVertical className='text-default-700 w-5 h-5' />
+              </Button>
+            </DropdownTrigger>
+
+            <DropdownMenu>
+              <DropdownItem key='view'>
+                <div className="flex flex-row gap-2 items-center text-gray-700">
+                  <FileOutputIcon size={16} />
+                  Export Data
+                </div>
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         </div>
       </Card.Header>
 
