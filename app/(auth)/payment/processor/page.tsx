@@ -9,12 +9,24 @@ import AuthLayout from '../../layout'
 import { DefaultLayout } from '@lay/default'
 import { Card } from '@heroui/card'
 import MenuPayment from '@sec/menufilters/menuPayment'
+import { useSidebarStore } from '@sts/useSidebarStore'
 
 export default function PaymentTable() {
   const [mounted, setMounted] = useState(false)
   const [selectedCount, setSelectedCount] = useState(0)
+  const {
+    setActiveTab,
+    setActiveChildrenTab,
+    setActiveChildrenIndex,
+  } = useSidebarStore()
 
-  useEffect(() => setMounted(true), [])
+  useEffect(() => {
+    setMounted(true)
+    setActiveTab('Payments')
+    setActiveChildrenTab('Payment Processors')
+    setActiveChildrenIndex(1)
+  }, [])
+
   if (!mounted) return null
 
   const handleSelectionChange = (keys: Set<number>) =>

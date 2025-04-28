@@ -11,13 +11,19 @@ export const ComponentContainer = ({ data }: Props) => {
   return (
     <Card className='p-2 w-full min-w-xl max-w-xl rounded-sm'>
       <Card.Header className='flex justify-center items-center'>
-        <Heading level={1} className='font-bold text-xl'>Select Payment Strategy</Heading>
+        <Heading
+          level={ 1 }
+          className='font-bold text-xl'
+        >
+          Select Payment Strategy
+        </Heading>
       </Card.Header>
 
       <Card.Footer className='flex flex-col'>
         <div className='flex flex-col space-y-3 w-full'>
           <div className='pb-4'>
             <label className='text-sm font-medium block mb-2'>Payment Strategy</label>
+            
             <CustomSelect
               variant='faded'
               radius='sm'

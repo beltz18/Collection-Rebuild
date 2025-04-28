@@ -24,7 +24,6 @@ export const useSidebarStore = create<StateProps>()(
       open: true,
       setOpen: (open) => set({ open }),
       clear: () => set({
-        activeTab: 'Home',
         activeChildrenTab: null,
         activeChildrenIndex: 0,
       })

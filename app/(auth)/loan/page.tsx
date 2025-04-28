@@ -3,16 +3,22 @@
 import { TableQueryContainer } from './query-container'
 import AuthLayout from '../layout'
 import { DefaultLayout } from '@lay/default'
+import { useSidebarStore } from '@sts/useSidebarStore'
 import {
   useEffect,
   useState,
 } from 'react'
 
 export default function PaymentTable() {
+  const { setActiveTab, clear } = useSidebarStore()
   const [mounted, setMounted] = useState(false)
-  const [selected, setSelected] = useState<number>(8)
 
-  useEffect(() => setMounted(true), [])
+  useEffect(() => {
+    clear()
+    setActiveTab('Loans')
+    setMounted(true)
+  }, [])
+  
   if (!mounted) return null
 
   return (
