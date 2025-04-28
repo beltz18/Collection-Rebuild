@@ -1,7 +1,9 @@
 'use client'
 
-import React from 'react'
-import { SearchIcon } from 'lucide-react'
+import { useMemo } from 'react'
+import { Loan } from '@typ/home-tables'
+import { variants } from '@uti/consts'
+import { useTheme } from '@ctx/themeContext'
 import {
   Table,
   TableHeader,
@@ -9,7 +11,6 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Input,
   Selection,
 } from '@heroui/react'
 
@@ -43,7 +44,9 @@ export function CustomTable<T>({
   onClearSearch,
   onSelectionChange,
 }: CustomTableProps<T>) {
-  const headerColumns = React.useMemo(
+  const { theme } = useTheme()
+
+  const headerColumns = useMemo(
     () =>
       columns.filter((column) =>
         Array.isArray(visibleColumns)
@@ -63,6 +66,7 @@ export function CustomTable<T>({
         selectedKeys={ selectedKeys }
         onSelectionChange={ onSelectionChange }
         isHeaderSticky
+        color={ variants[theme] ?? 'primary' }
       >
         <TableHeader columns={ headerColumns }>
           {
@@ -77,7 +81,7 @@ export function CustomTable<T>({
         <TableBody items={ data }>
           {
             (item) => (
-              <TableRow key={ (item as any).id }>
+              <TableRow key={ (item as Loan).loan_request_id }>
                 {
                   (columnKey) => (
                     <TableCell>

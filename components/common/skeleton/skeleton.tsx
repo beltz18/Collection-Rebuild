@@ -61,7 +61,7 @@ export const SkeletonContent = ({ className }: SkeletonProps) => {
 }
 
 export const SkeletonTable = ({
-  rows = 5,
+  rows = 8,
   columns,
 }: TableSkeletonProps) => {
   return (

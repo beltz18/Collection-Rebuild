@@ -10,3 +10,5 @@ export type ColumnEx = {
   uid: string
   name: string
 }
+
+export type Variants = Record<string, 'default' | 'secondary' | 'primary' | 'danger'>

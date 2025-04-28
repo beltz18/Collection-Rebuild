@@ -6,7 +6,6 @@ import { PaymentEx, ColumnEx } from '@typ/home-tables'
 import { mockData } from './payments-table/mock/mock-data'
 import { Status } from '@typ/payment-status'
 import { format } from 'date-fns'
-import { Heading } from '@com/heading'
 import { Card } from '@heroui/card'
 import MenuOptions from '@sec/menufilters'
 import {
@@ -46,6 +45,8 @@ const columns: ColumnEx[] = [
 
 export default function PaymentTable() {
   const [mounted, setMounted] = useState(false)
+  const [selected, setSelected] = useState<number>(8)
+
   useEffect(() => setMounted(true), [])
   if (!mounted) return null
 
@@ -53,12 +54,19 @@ export default function PaymentTable() {
     <>
       <Card className='flex flex-col gap-4 p-4'>
         <div className='text-default-600 flex justify-between items-center text-lg'>
-          <MenuOptions title='Payments' />
+          <MenuOptions
+            title='Payments'
+            options={[4, 8, 12]}
+            selected={ selected }
+            setSelected={ setSelected }
+          />
         </div>
+
         <TableContainer
           data={ payments }
           columns={ columns }
         />
+
         <div className='w-full flex items-center justify-center'>
           <PaginationC total={ 55 } />
         </div>

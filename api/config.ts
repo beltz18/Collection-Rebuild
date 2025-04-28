@@ -21,14 +21,16 @@ export const collectionAPI = axios.create({
 export const genericAuthRequest = async (
   method: 'get' | 'post' | 'put' | 'delete' | 'patch', 
   path: string, 
-  data?: Record<string, unknown> | unknown[]
+  data?: Record<string, unknown> | unknown[],
+  headers?: Record<string, string>,
 ) => {
   const response = await collectionAPI({
     method,
     url: path,
     withCredentials: true,
     params: method === 'get' ? data : undefined,
-    data: method !== 'get' ? data : undefined
+    data: method !== 'get' ? data : undefined,
+    headers: headers ? { ...collectionAPI.defaults.headers.common, ...headers } : undefined,
   })
 
   return response.data
@@ -64,8 +66,10 @@ export const useCollectionQuery = <T>({
     ...options,
   })
 
-  if (query.error)
+  if (query.error) {
     console.log('error here at hook', query.error) // errors must be stored in logs file instead of consoling the error
+    // return (query.error as any).response ?? query.error
+  }
 
   return query
 }

@@ -1,14 +1,9 @@
-import Link from 'next/link'
-import { CustomTable } from '@com/index'
 import {
-  useMemo,
   useState,
-  useEffect,
   Key,
 } from 'react'
 import {
   Button,
-  Chip,
   Selection,
 } from '@heroui/react'
 import {
@@ -18,11 +13,17 @@ import {
   DropdownItem,
 } from '@heroui/react'
 import { 
-  LoanEx, 
+  Loan as LoanEx, 
   ColumnEx 
 } from '@typ/home-tables'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { Chip } from '@com/chip'
+import { CustomTable } from '@com/index'
 import { VerticalDotsIcon } from '@uti/consts'
 import { getStatusColor } from '@typ/loans-status'
+import { SYSTEM_ROUTES } from '@api/cache'
+import { format } from 'date-fns'
 
 type Props = {
   data: LoanEx[]
@@ -31,20 +32,47 @@ type Props = {
 
 const renderUserCell = (loans: LoanEx, columnKey: Key) => {
   switch (columnKey) {
-    case 'id':
-      return <span>{ loans.id }</span>
+    case 'loan_request_id':
+      return (
+        <Link
+          href={ SYSTEM_ROUTES.goToALoan(loans.loan_request_id) }
+          className='text-blue-600 underline'
+        >
+          { loans.loan_request_id }
+        </Link>
+      )
 
     case 'customer':
-      return <span>{ loans.customer }</span>
+      return (
+        <Link
+          href={ loans.customer_details_url }
+          className='capitalize text-blue-600 underline'
+        >
+          {`${loans.person.first_name} ${loans.person.last_name}`}
+        </Link>
+      )
+
+    case 'approved_amount':
+      return (
+        <span>{`${loans.approved_amount} ${loans.currency.code}`}</span>
+      )
     
-    case 'date':
-      return <span className='capitalize'>{ loans.date }</span>
+    case 'request_date':
+      return (
+        <span className=''>
+          { loans.request_date ? format(loans.request_date, 'dd-MM-yyyy') : 'No date' }
+        </span>
+      )
 
     case 'term':
       return <span className='capitalize'>{ loans.term }</span>
 
     case 'status':
-      return <Chip className={getStatusColor(loans.status)}>{ loans.statusName }</Chip>
+      return (
+        <Chip className={ getStatusColor(loans.status.unique_description) }>
+          { loans.status.unique_description }
+        </Chip>
+      )
 
     case 'actions':
       return (
@@ -56,9 +84,21 @@ const renderUserCell = (loans: LoanEx, columnKey: Key) => {
           </DropdownTrigger>
 
           <DropdownMenu>
-            <DropdownItem key='view'>View</DropdownItem>
-            <DropdownItem key='edit'>Edit</DropdownItem>
-            <DropdownItem key='delete'>Delete</DropdownItem>
+            <DropdownItem
+              key='view'
+              as={ Link }
+              href={ SYSTEM_ROUTES.goToALoan(loans.loan_request_id) }
+            >
+              View loan
+            </DropdownItem>
+
+            <DropdownItem
+              key='edit'
+              as={ Link }
+              href={ SYSTEM_ROUTES.goToAPayment(loans.loan_request_id) }
+            >
+              View payments
+            </DropdownItem>
           </DropdownMenu>
         </Dropdown>
       )
@@ -74,16 +114,18 @@ export const TableContainer = ({
 }: Props) => {
   const [filterValue, setFilterValue] = useState('')
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]))
-  const visibleColumns = ['id', 'customer', 'date', 'term', 'status', 'actions']
+  const visibleColumns = ['loan_request_id', 'customer', 'approved_amount', 'request_date', 'term', 'status', 'actions']
 
-  const selectedUserIds = useMemo(() => {
-    return Array.from(selectedKeys).map(key => Number(key))
-  }, [selectedKeys])
+  // console.log(data, columns)
 
-  useEffect(() => {
-    const selectedUsers = data.filter(el => selectedUserIds.includes(el.id))
-    console.log(selectedUsers)
-  }, [selectedUserIds])
+  // const selectedUserIds = useMemo(() => {
+  //   return Array.from(selectedKeys).map(key => Number(key))
+  // }, [selectedKeys])
+
+  // useEffect(() => {
+  //   const selected = data.filter(el => selectedUserIds.includes(el.loan_request_id))
+  //   console.log(selected)
+  // }, [selectedUserIds])
 
   return (
     <div className='w-full'>

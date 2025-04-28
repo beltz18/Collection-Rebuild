@@ -18,33 +18,33 @@ import {
   DropdownItem,
 } from '@heroui/react'
 import { 
-  LoanEx, 
+  Loan, 
   ColumnEx 
 } from '@typ/home-tables'
 import { VerticalDotsIcon } from '@uti/consts'
 import { getStatusColor } from '@typ/loans-status'
 
 type Props = {
-  data: LoanEx[]
+  data: Loan[]
   columns: ColumnEx[]
 }
 
-const renderUserCell = (loans: LoanEx, columnKey: Key) => {
+const renderUserCell = (loans: Loan, columnKey: Key) => {
   switch (columnKey) {
-    case 'id':
-      return <span>{ loans.id }</span>
+    // case 'id':
+    //   return <span>{ loans.id }</span>
 
-    case 'customer':
-      return <span>{ loans.customer }</span>
+    // case 'customer':
+    //   return <span>{ loans.customer }</span>
     
-    case 'date':
-      return <span className='capitalize'>{ loans.date }</span>
+    // case 'date':
+    //   return <span className='capitalize'>{ loans.date }</span>
 
-    case 'term':
-      return <span className='capitalize'>{ loans.term }</span>
+    // case 'term':
+    //   return <span className='capitalize'>{ loans.term }</span>
 
-    case 'status':
-      return <Chip className={getStatusColor(loans.status)}>{ loans.statusName }</Chip>
+    // case 'status':
+    //   return <Chip className={getStatusColor(loans.status)}>{ loans.statusName }</Chip>
 
     case 'actions':
       return (
@@ -76,14 +76,14 @@ export const TableContainer = ({
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]))
   const visibleColumns = ['id', 'customer', 'date', 'term', 'status', 'actions']
 
-  const selectedUserIds = useMemo(() => {
-    return Array.from(selectedKeys).map(key => Number(key))
-  }, [selectedKeys])
+  // const selectedUserIds = useMemo(() => {
+  //   return Array.from(selectedKeys).map(key => Number(key))
+  // }, [selectedKeys])
 
-  useEffect(() => {
-    const selectedUsers = data.filter(el => selectedUserIds.includes(el.id))
-    console.log(selectedUsers)
-  }, [selectedUserIds])
+  // useEffect(() => {
+  //   const selectedUsers = data.filter(el => selectedUserIds.includes(el.id))
+  //   console.log(selectedUsers)
+  // }, [selectedUserIds])
 
   return (
     <div className='w-full'>

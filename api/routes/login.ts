@@ -1,5 +1,5 @@
 import {
-  ROUTES,
+  API_ROUTES,
   METHODS,
 } from '@api/cache'
 
@@ -23,6 +23,6 @@ type SendProps = {
 export const useAuthenticateUser = () => {
   return useCollectionMutation<SendProps, ResponseProps>({
     fetcher: async (data) =>
-      await genericAuthRequest(METHODS.post, ROUTES.login, data)
+      await genericAuthRequest(METHODS.post, API_ROUTES.login, data)
   })
 }

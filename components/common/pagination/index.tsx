@@ -4,14 +4,12 @@ import { useCallback } from 'react'
 import { Pagination as Pag } from '@heroui/pagination'
 import { PaginationProps } from './pagination.types'
 import { useTheme } from '@ctx/themeContext'
+import { variants } from '@uti/consts'
 
 export const PaginationC: React.FC<PaginationProps> = ({
-  totalItems,
-  itemsPerPage,
   currentPage,
   onPageChange,
-  isCompact = false,
-  color,
+  isCompact = true,
   total,
 }) => {
   const { theme } = useTheme()
@@ -22,13 +20,6 @@ export const PaginationC: React.FC<PaginationProps> = ({
     ,
     [onPageChange]
   )
-
-  const variants: Record<string, 'default' | 'secondary' | 'primary' | 'danger'> = {
-    light: 'default',
-    dark: 'secondary',
-    blue: 'primary',
-    red: 'danger',
-  }
 
   return (
     <Pag

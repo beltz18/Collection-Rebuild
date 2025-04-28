@@ -12,6 +12,8 @@ import {
 
 export default function PaymentTable() {
   const [mounted, setMounted] = useState(false)
+  const [selected, setSelected] = useState<number>(8)
+
   useEffect(() => setMounted(true), [])
   if (!mounted) return null
 
@@ -21,8 +23,14 @@ export default function PaymentTable() {
         <div className='p-4'>
           <Card className='flex flex-col gap-4 p-4'>
             <div className='text-default-600 flex justify-between items-center text-lg'>
-              <MenuOptions title='All Loans' />
+              <MenuOptions
+                title='All Loans'
+                options={[4, 8, 12]}
+                selected={ selected }
+                setSelected={ setSelected }
+              />
             </div>
+            
             <TableQueryContainer />
           </Card>
         </div>

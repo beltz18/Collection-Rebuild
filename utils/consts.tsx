@@ -1,4 +1,5 @@
 import { SidebarOptions } from '@typ/index'
+import { Variants } from '@typ/base'
 import { Icon } from '@com/icon'
 import { cn } from './cn'
 
@@ -52,6 +53,13 @@ export const options : SidebarOptions = {
       Icon: <Icon icon='logout' size='md' />,
     },
   ],
+}
+
+export const variants : Variants = {
+  light: 'default',
+  dark: 'secondary',
+  blue: 'primary',
+  red: 'danger',
 }
 
 export const VerticalDotsIcon = ({
