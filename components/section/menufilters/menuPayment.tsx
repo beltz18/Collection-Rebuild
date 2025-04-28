@@ -1,9 +1,9 @@
 import { Heading, Icon, Input } from '@com/index'
-import { Search, FilterIcon } from 'lucide-react'
+import { Search } from 'lucide-react'
 import { useResponsive } from '@uti/useResponsive'
 import { Button } from '@heroui/button'
 import { CustomPopover } from '@com/popover/popover'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 export default function MenuPayment({ title = 'Title Placeholder', selectedCount = 0 }: { title?: string; selectedCount?: number }) {
   const { isTablet } = useResponsive()

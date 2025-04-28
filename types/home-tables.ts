@@ -55,10 +55,64 @@ export type ColumnEx = {
 }
 
 export interface Payment {
-  id: number
-  personName: string
+  loan_payment_id: number
+  loan_request_id: number
+  person: {
+    person_id: number
+    first_name: string
+    last_name: string
+    email: string
+  }
+  company_name: string
   amount: string
   capital: string
+  interest_amount: string
+  arrears_amount: string
+  other_debts: string
+  balance_date: string
+  remaining_amount: string
+  due_date: string
+  real_payment_date: string
+  payment_status: {
+    loan_payment_status_id: number
+    description: string
+    unique_description: PaymentStatus
+  }
+  number_payment: number
+  payment_history: {
+    attempt_number?: number
+    amount_before?: string
+    amount_after?: string
+    success?: boolean
+    successful_at?: string
+    processed_at?: string
+    payment_method?: string
+    payment_processor?: string
+    transaction_id?: string
+    associated_payment?: {
+      id?: number
+      status?: string
+      created_at?: string
+      successful_at?: string
+      returned_at?: string
+      identifier?: string
+      identifier2?: string
+      return_code?: {
+        code?: string
+        title_en?: string
+        description_en?:string
+        stop_step?: boolean
+        deactivate_account?: boolean
+      } | null
+    } | null
+  }[]
+  loan_details_url: string
+  customer_details_url: string
+  create_date: string
+  update_date: string
+
+  id: number
+  personName: string
   interestAmount: string
   status: PaymentStatus
   statusName: string
@@ -67,8 +121,8 @@ export interface Payment {
   loanRequestNumber: string
   companyName: string
   numberPayment: number
-  url_loan?: string
-  url_user?: string
+  url_loan: string
+  url_user: string
 }
 
 export type PaymentEx = any
