@@ -12,7 +12,7 @@ type Props = {
 
 export const Grid = ({
   children,
-  cols=2,
+  cols=1,
   className,
 }: Props) => {
   return (

@@ -15,14 +15,14 @@ export interface Loan {
   request_date: Date | string | null
   sign_date: Date | string | null
   disbursment_date: Date | string | null
-  closure_amount: number
-  insurance_amount: number
-  requested_amount: number
-  approved_amount: number
+  closure_amount: number | string
+  insurance_amount: number | string
+  requested_amount: number | string
+  approved_amount: number | string
   term: number
-  base_rate: number
-  insurance_rate: number
-  tax_rate: number
+  base_rate: number | string
+  insurance_rate: number | string
+  tax_rate: number | string
   observations: string | null
   person: {
     person_id: number
@@ -87,6 +87,7 @@ export interface Payment {
   id: string
   loan_payment_id: number
   loan_request_id: number
+  loan_request_number: string
   person: {
     person_id: number
     first_name: string
@@ -99,10 +100,10 @@ export interface Payment {
   interest_amount: string
   arrears_amount: string
   other_debts: string
-  balance_date: string
+  balance_date: string | null
   remaining_amount: string
   due_date: string
-  real_payment_date: string
+  real_payment_date: string | null
   payment_status: {
     loan_payment_status_id: number
     unique_description: PaymentStatus
