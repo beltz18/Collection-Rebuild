@@ -5,8 +5,11 @@ import { Card } from '@heroui/card'
 import MenuOptions from '@sec/menufilters'
 import { useGetLoans } from '@api/routes/loan'
 import { useTokenStore } from '@sts/useTokenStore'
-import { SkeletonTable } from '@com/index'
 import { ColumnEx } from '@typ/home-tables'
+import {
+  NoResults,
+  LoadingLoans,
+} from '@uti/home-utils'
 import {
   errorToast,
   PaginationC,
@@ -27,61 +30,54 @@ const columns: ColumnEx[] = [
 ]
 
 export default function LoansTable() {
+  const options = [4, 8, 12]
   const { token, logout } = useTokenStore()
 
   const [mounted, setMounted] = useState(false)
   const [selected, setSelected] = useState<number>(8)
   const [current, setCurrent] = useState<number>(1)
-  
+
   const {
     data,
     isLoading,
     isError,
     error
   } = useGetLoans(token, { page_size: selected, page: current })
+  
+  useEffect(() => {
+    setMounted(true)
+    if (isError) {
+      console.log(error)
+      errorToast({
+        title: (error as any).response?.data?.error ?? 'Error',
+        body: 'Session expired or unexpected error. Please sign in again',
+        duration: 5000,
+      })
+      logout()
+    }
+  }, [isError, error, logout])
 
-  console.log(data, selected)
-
-  useEffect(() => setMounted(true), [])
   if (!mounted) return null
-
-  if (isError) {
-    console.log(error)
-    errorToast({
-      title: (error as any).response.data.error ?? 'Error',
-      body: (error as any).response.data.message ?? 'Unexpected error. Logging out'
-    })
-    logout()
-  }
 
   if (isLoading) {
     return (
-      <Card className='flex flex-col gap-4 p-4'>
-        <div className='text-default-600 flex justify-between items-center text-lg'>
-          <MenuOptions
-            title='Loans'
-            options={[4, 8, 12]}
-            selected={ selected }
-            setSelected={ setSelected }
-          />
-        </div>
-      
-        <SkeletonTable
-          columns={ columns }
-          rows={ selected }
-        />
-      </Card>
+      <LoadingLoans
+        columns={ columns }
+        options={ options }
+        selected={ selected }
+        setSelected={ setSelected }
+      />
     )
   }
 
-  if (!data?.results || data.results.length === 0) return null
+  if (!data?.results || data.results.length === 0) return <NoResults />
 
   return (
     <Card className='flex flex-col gap-4 p-4'>
       <div className='text-default-600 flex justify-between items-center text-lg'>
         <MenuOptions
           title='Loans'
-          options={[4, 8, 12]}
+          options={ options }
           selected={ selected }
           setSelected={ setSelected }
         />

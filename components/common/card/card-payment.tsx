@@ -6,21 +6,22 @@ import {
   CardHeader as Header, 
   CardBody as Body, 
   CardFooter as Footer
-} from "@heroui/card"
+} from '@heroui/card'
 
 export function Card({ children, className }: CardLoan) {
   return (
-    <Content className={className}>
-      {children}
+    <Content className={ className }>
+      { children }
     </Content>
   )
 }
 
 function CardHeader({ children, className }: CardLoan) {
   return (
-    <Header className={cn("flex justify-between items-center", className)}>
-      {children}
-    </Header>)
+    <Header className={ cn('flex justify-between items-center', className) }>
+      { children }
+    </Header>
+  )
 }
 
 function CardBody({ children, className }: CardLoan) {
@@ -37,7 +38,9 @@ function CardBody({ children, className }: CardLoan) {
 
 function CardFooter({ children, className }: CardLoan) {
   return(
-    <Footer className={cn('', className)}>{children}</Footer>
+    <Footer className={ cn('', className) }>
+      { children }
+    </Footer>
   )
 }
 
