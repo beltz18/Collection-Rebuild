@@ -8,9 +8,10 @@ import { useRouter } from 'next/navigation'
 import { getSession } from '@uti/getSession'
 import { useTokenStore } from '@sts/useTokenStore'
 import { Loader } from '@com/index'
+import { SYSTEM_ROUTES } from '@api/cache'
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {0
-  const router = useRouter()
+  const { push } = useRouter()
   const { token } = useTokenStore()
   const [isLoading, setIsLoading] = useState(true)
 
@@ -18,7 +19,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
     const checkAuth = async () => {
       const session = getSession()
       if (!session)
-        router.push('/login')
+        push(SYSTEM_ROUTES.login)
       setIsLoading(false)
     }
     checkAuth()

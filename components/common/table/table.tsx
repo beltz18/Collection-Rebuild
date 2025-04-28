@@ -1,7 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
-import { Loan } from '@typ/home-tables'
+import { useId, useMemo } from 'react'
 import { variants } from '@uti/consts'
 import { useTheme } from '@ctx/themeContext'
 import {
@@ -80,15 +79,15 @@ export function CustomTable<T>({
 
         <TableBody items={ data }>
           {
-            (item) => (
-              <TableRow key={ (item as Loan).loan_request_id }>
-                {
-                  (columnKey) => (
-                    <TableCell>
-                      { renderCell(item, columnKey) }
-                    </TableCell>
-                  )
-                }
+            (item: T) => (
+              <TableRow key={ (item as any).id ?? JSON.stringify(item) }>
+              {
+                (columnKey: React.Key) => (
+                <TableCell>
+                  { renderCell(item, columnKey) }
+                </TableCell>
+                )
+              }
               </TableRow>
             )
           }

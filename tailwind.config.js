@@ -7,6 +7,17 @@ const config = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}'
   ],
+  safelist: [
+    'bg-red-200', 'text-red-800',
+    'bg-orange-200', 'text-orange-800',
+    'bg-blue-200', 'text-blue-800',
+    'bg-yellow-200', 'text-yellow-800',
+    'bg-green-200', 'text-green-800',
+    'bg-purple-200', 'text-purple-800',
+    'bg-cyan-200', 'text-cyan-800',
+    'bg-gray-200', 'text-gray-800',
+    'bg-slate-200', 'text-gray-800',
+  ],
   theme: {
     extend: {
       colors: {
