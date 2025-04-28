@@ -20,7 +20,7 @@ const themeOptions: ThemeOption[] = [
   { name: "red", color: "#b91c1c", textColor: "text-white", bgColor: "bg-red-700" },
 ]
 
-export const ThemeSelector = ({ children, placementOpen = true }: ThemePopoverProps) => {
+export const ThemeSelector = ({ children, placementOpen = true, placementLogin = false }: ThemePopoverProps) => {
   const { theme, setTheme } = useTheme()
 
   useEffect(() => {
@@ -29,7 +29,16 @@ export const ThemeSelector = ({ children, placementOpen = true }: ThemePopoverPr
   }, [theme])
 
   return (
-    <CustomPopover placement={ placementOpen ? 'top' : 'right-start' } className="z-50">
+    <CustomPopover 
+      placement={ 
+        placementOpen
+          ? 'top'
+          : placementLogin
+            ? 'bottom-end'
+            : 'right-start' 
+      } 
+      className="z-50"
+    >
       <CustomPopover.Trigger className="w-full">{children}</CustomPopover.Trigger>
 
       <CustomPopover.Content className="w-[15.5rem] p-2 rounded-md shadow-lg z-50">
