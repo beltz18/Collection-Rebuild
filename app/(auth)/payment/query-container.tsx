@@ -1,56 +1,112 @@
 'use client'
 
 import { TableContainer } from './table-container'
-import { PaginationC } from '@com/index'
-import { format } from "date-fns"
-import { mockData } from './mock/mock-data'
-import { Status } from '@typ/payment-status'
-import { 
-  PaymentEx, 
-  ColumnEx 
-} from '@typ/home-tables'
+import { Card } from '@heroui/card'
+import MenuOptions from '@sec/menufilters'
+import { useGetPayments } from '@api/routes/payment'
+import { useTokenStore } from '@sts/useTokenStore'
+import type { Column } from '@typ/home-tables'
+import uuid4 from 'uuid4'
+import {
+  NoResults,
+  LoadingComp,
+} from '@uti/home-utils'
+import {
+  errorToast,
+  PaginationC,
+} from '@com/index'
+import {
+  useEffect,
+  useState,
+} from 'react'
 
-type Props = {
-  search?: string
-}
-
-const payments: PaymentEx[] = mockData.map((item) => ({
-  id: item.loan_payment_id,
-  personName: `${item.person.first_name} ${item.person.last_name}`,
-  amount: `$${Number.parseFloat(item.amount).toFixed(2)}`,
-  capital: `$${Number.parseFloat(item.capital).toFixed(2)}`,
-  interestAmount: `$${Number.parseFloat(item.interest_amount).toFixed(2)}`,
-  status: item.payment_status.unique_description as Status,
-  statusName: item.payment_status.description,
-  dueDate: item.due_date ? format(new Date(item.due_date), "PP") : "Not set",
-  paymentDate: item.real_payment_date ? format(new Date(item.real_payment_date), "PP") : "Not paid yet",
-  loanRequestNumber: item.loan_request_number,
-  companyName: item.company_name,
-  numberPayment: item.number_payment,
-}))
-
-const columns: ColumnEx[] = [
-  { uid: 'id',       name: 'ID' },
+const columns: Column[] = [
+  { uid: 'id', name: 'ID' },
   { uid: 'name', name: 'Person Name' },
-  { uid: 'status',     name: 'Status' },
-  { uid: 'amount',     name: 'Amount' },
-  { uid: 'capital',   name: 'Capital' },
-  { uid: 'interest',  name: 'Interest' },
-  { uid: 'due_date',  name: 'Due Date' },
-  { uid: 'pay_date',  name: 'Payment Date' },
-  { uid: 'loan_num',  name: 'Loan Number' },
-  { uid: 'company',  name: 'Company Name' },
-  { uid: 'pay_num',  name: 'Payment Number' },
+  { uid: 'status', name: 'Status' },
+  { uid: 'amount', name: 'Amount' },
+  { uid: 'capital', name: 'Capital' },
+  { uid: 'interest', name: 'Interest' },
+  { uid: 'due_date', name: 'Due Date' },
+  { uid: 'pay_date', name: 'Payment Date' },
+  { uid: 'company', name: 'Company' },
+  { uid: 'pay_num', name: 'Payment' },
+  { uid: 'actions', name: 'Actions' },
 ]
 
-export const TableQueryContainer = ({ search }: Props) => {
+export const TableQueryContainer = () => {
+  const options = [30, 40, 50]
+  const { token, logout } = useTokenStore()
+
+  const [mounted, setMounted] = useState(false)
+  const [selected, setSelected] = useState<number>(30)
+  const [current, setCurrent] = useState<number>(1)
+
+  const { 
+    data, 
+    isLoading, 
+    isError, 
+    error 
+  } = useGetPayments(token, { page_size: selected, page: current })
+
+  useEffect(() => {
+    setMounted(true)
+    if (isError) {
+      console.log(error)
+      errorToast({
+        title: (error as any).response?.data?.error ?? 'Error',
+        body: 'Session expired or unexpected error. Please sign in again',
+        duration: 5000,
+      })
+      logout()
+    }
+  }, [isError, error, logout])
+
+  if (!mounted) return null
+
+  if (isLoading) {
+    return (
+      <LoadingComp
+        title='Payments'
+        columns={ columns }
+        options={ options }
+        selected={ selected }
+        setSelected={ setSelected }
+      />
+    )
+  }
+
+  if (!data?.results || data.results.length === 0)
+    return <NoResults title='Loans' />
+
+  const payments = data.results.map((payment) => ({
+    ...payment,
+    id: uuid4(),
+  }))
+
   return (
-    <div className='w-full flex items-center flex-col gap-4'>
+    <Card className='flex flex-col gap-4 p-4'>
+      <div className='text-default-600 flex justify-between items-center text-lg'>
+        <MenuOptions
+          title='All Payments'
+          options={ options }
+          selected={ selected }
+          setSelected={ setSelected }
+        />
+      </div>
+
       <TableContainer
         data={ payments }
         columns={ columns }
       />
-      <PaginationC total={ 15 } />
-    </div>
+
+      <div className='w-full flex items-center justify-center'>
+        <PaginationC
+          total={ Math.floor(data.count / selected) }
+          currentPage={ current }
+          onPageChange={ setCurrent }
+        />
+      </div>
+    </Card>
   )
 }

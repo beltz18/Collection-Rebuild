@@ -1,14 +1,15 @@
 'use client'
 
-import { TableContainer } from './loans-table/table-container'
+import { TableContainer } from './table-loan-container'
 import { Card } from '@heroui/card'
 import MenuOptions from '@sec/menufilters'
 import { useGetLoans } from '@api/routes/loan'
 import { useTokenStore } from '@sts/useTokenStore'
-import { ColumnEx } from '@typ/home-tables'
+import { Column } from '@typ/home-tables'
+import uuid4 from 'uuid4'
 import {
   NoResults,
-  LoadingLoans,
+  LoadingComp,
 } from '@uti/home-utils'
 import {
   errorToast,
@@ -19,8 +20,8 @@ import {
   useState,
 } from 'react'
 
-const columns: ColumnEx[] = [
-  { uid: 'loan_request_id', name: 'ID' },
+const columns: Column[] = [
+  { uid: 'id', name: 'ID' },
   { uid: 'customer', name: 'Customer' },
   { uid: 'approved_amount', name: 'Approved' },
   { uid: 'request_date', name: 'Date' },
@@ -61,7 +62,8 @@ export default function LoansTable() {
 
   if (isLoading) {
     return (
-      <LoadingLoans
+      <LoadingComp
+        title='Loans'
         columns={ columns }
         options={ options }
         selected={ selected }
@@ -70,7 +72,14 @@ export default function LoansTable() {
     )
   }
 
-  if (!data?.results || data.results.length === 0) return <NoResults />
+  if (!data?.results || data.results.length === 0) {
+    return <NoResults title='Loans' />
+  }
+
+  const loans = data.results.map((loan) => ({
+    ...loan,
+    id: uuid4(),
+  }))
 
   return (
     <Card className='flex flex-col gap-4 p-4'>
@@ -84,7 +93,7 @@ export default function LoansTable() {
       </div>
 
       <TableContainer
-        data={ data.results }
+        data={ loans }
         columns={ columns }
       />
 

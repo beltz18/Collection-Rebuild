@@ -2,6 +2,7 @@ import { LoanRequestStatus } from '@typ/loans-status'
 import { Status as PaymentStatus } from '@typ/payment-status'
 
 export interface Loan {
+  id: string
   loan_request_id: number
   loan_details_url: string
   customer_details_url: string
@@ -49,12 +50,41 @@ export interface Loan {
   }
 }
 
-export type ColumnEx = {
+export type Column = {
   uid: string
   name: string
 }
 
+type PaymentHistoryT = {
+  attempt_number?: number
+  amount_before?: string
+  amount_after?: string
+  success?: boolean
+  successful_at?: string
+  processed_at?: string
+  payment_method?: string
+  payment_processor?: string
+  transaction_id?: string
+  associated_payment?: {
+    id?: number
+    status?: string
+    created_at?: string
+    successful_at?: string
+    returned_at?: string
+    identifier?: string
+    identifier2?: string
+    return_code?: {
+      code?: string
+      title_en?: string
+      description_en?:string
+      stop_step?: boolean
+      deactivate_account?: boolean
+    } | null
+  } | null
+}
+
 export interface Payment {
+  id: string
   loan_payment_id: number
   loan_request_id: number
   loan_request_number: string
@@ -76,37 +106,10 @@ export interface Payment {
   real_payment_date: string | null
   payment_status: {
     loan_payment_status_id: number
-    description: string
     unique_description: PaymentStatus
   }
   number_payment: number
-  payment_history: {
-    attempt_number?: number
-    amount_before?: string
-    amount_after?: string
-    success?: boolean
-    successful_at?: string
-    processed_at?: string
-    payment_method?: string
-    payment_processor?: string
-    transaction_id?: string
-    associated_payment?: {
-      id?: number
-      status?: string
-      created_at?: string
-      successful_at?: string
-      returned_at?: string
-      identifier?: string
-      identifier2?: string
-      return_code?: {
-        code?: string
-        title_en?: string
-        description_en?:string
-        stop_step?: boolean
-        deactivate_account?: boolean
-      } | null
-    } | null
-  }[]
+  payment_history: PaymentHistoryT[]
   loan_details_url: string
   customer_details_url: string
   create_date: string

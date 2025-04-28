@@ -7,7 +7,7 @@ export type LoanRequestStatus =
   | 'pre-approved'
   | 'underwriter_review'
   | 'signature_collection'
-  | 'client_digitisation'
+  | 'client_digitization'
   | 'create_loan_in_core'
   | 'in_disbursement_process'
   | 'disbursed'
@@ -31,7 +31,7 @@ export const loanRequestStatus: Record<LoanRequestStatus, string> = {
   'pre-approved': 'Pre-Approved',
   underwriter_review: 'Underwriter Review',
   signature_collection: 'Signature Collection',
-  client_digitisation: 'Client Digitisation',
+  client_digitization: 'Client Digitization',
   create_loan_in_core: 'Create Loan in Core',
   in_disbursement_process: 'In Disbursement Process',
   disbursed: 'Disbursed',
@@ -63,7 +63,7 @@ export const getStatusColor = (status: LoanRequestStatus): string => {
 
     underwriter_review: 'bg-yellow-200 text-yellow-800',
     signature_collection: 'bg-yellow-200 text-yellow-800',
-    client_digitisation: 'bg-yellow-200 text-yellow-800',
+    client_digitization: 'bg-yellow-200 text-yellow-800',
     create_loan_in_core: 'bg-yellow-200 text-yellow-800',
     in_disbursement_process: 'bg-yellow-200 text-yellow-800',
 

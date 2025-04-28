@@ -7,7 +7,13 @@ import { NotFound } from '@sec/not-found'
 import MenuOptions from '@sec/menufilters'
 import { ColumnEx } from '@typ/base'
 
-export const NoResults = () => {
+type EmptyProps = {
+  title: string
+}
+
+export const NoResults = ({
+  title,
+}: EmptyProps) => {
   return (
     <Card className='flex flex-col gap-4 p-4'>
       <div className='text-default-600 flex justify-between items-center text-lg'>
@@ -27,24 +33,26 @@ export const NoResults = () => {
   )
 }
 
-type Props = {
+type LoaderProps = {
+  title: string
   columns: ColumnEx[]
   options: number[]
   selected: number
   setSelected: React.Dispatch<React.SetStateAction<number>>
 }
 
-export const LoadingLoans = ({
+export const LoadingComp = ({
+  title,
   columns,
   options,
   selected,
   setSelected,
-}: Props) => {
+}: LoaderProps) => {
   return (
     <Card className='flex flex-col gap-4 p-4'>
       <div className='text-default-600 flex justify-between items-center text-lg'>
         <MenuOptions
-          title='Loans'
+          title={ title }
           options={ options }
           selected={ selected }
           setSelected={ setSelected }

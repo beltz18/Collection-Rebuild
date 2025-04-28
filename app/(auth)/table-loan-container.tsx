@@ -13,26 +13,27 @@ import {
   DropdownItem,
 } from '@heroui/react'
 import { 
-  Loan as LoanEx, 
-  ColumnEx 
+  Loan, 
+  Column,
 } from '@typ/home-tables'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { Chip } from '@com/chip'
 import { CustomTable } from '@com/index'
 import { VerticalDotsIcon } from '@uti/consts'
 import { getStatusColor } from '@typ/loans-status'
 import { SYSTEM_ROUTES } from '@api/cache'
 import { format } from 'date-fns'
+import { loanRequestStatus } from '@typ/loans-status'
 
 type Props = {
-  data: LoanEx[]
-  columns: ColumnEx[]
+  data: Loan[]
+  columns: Column[]
 }
 
-const renderUserCell = (loans: LoanEx, columnKey: Key) => {
+const renderUserCell = (loans: Loan, columnKey: Key) => {
+  console.log(columnKey)
   switch (columnKey) {
-    case 'loan_request_id':
+    case 'id':
       return (
         <Link
           href={ SYSTEM_ROUTES.goToALoan(loans.loan_request_id) }
@@ -70,7 +71,7 @@ const renderUserCell = (loans: LoanEx, columnKey: Key) => {
     case 'status':
       return (
         <Chip className={ getStatusColor(loans.status.unique_description) }>
-          { loans.status.description }
+          { loanRequestStatus[loans.status.unique_description] }
         </Chip>
       )
 
@@ -114,7 +115,7 @@ export const TableContainer = ({
 }: Props) => {
   const [filterValue, setFilterValue] = useState('')
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]))
-  const visibleColumns = ['loan_request_id', 'customer', 'approved_amount', 'request_date', 'term', 'status', 'actions']
+  const visibleColumns = ['id', 'customer', 'approved_amount', 'request_date', 'term', 'status', 'actions']
 
   // console.log(data, columns)
 
