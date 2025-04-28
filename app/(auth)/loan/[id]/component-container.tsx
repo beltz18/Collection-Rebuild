@@ -1,6 +1,23 @@
-import { CustomAccordion } from '@com/accordion/accordion'
-import { Icon } from '@com/icon'
-import { Tabs } from '@com/tabs/tabs'
+"use client"
+
+import { CustomAccordion } from "@com/accordion/accordion"
+import { Card } from "@heroui/card"
+import { Chip } from "@heroui/chip"
+import { getStatusColor, loanRequestStatus, type LoanRequestStatus } from "@typ/loans-status"
+import {
+  Calendar,
+  DollarSign,
+  Clock,
+  Target,
+  User,
+  Mail,
+  Percent,
+  Shield,
+  Receipt,
+  CreditCard,
+  FileText,
+  Building,
+} from "lucide-react"
 
 interface LoanComponentProps {
   about: {
@@ -49,89 +66,181 @@ interface LoanComponentProps {
 }
 
 export const LoanComponent = ({ loanDetails }: LoanComponentProps) => {
+  const formatDate = (dateString: string) => {
+    try {
+      return new Date(dateString).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    } catch (e) {
+      return dateString
+    }
+  }
+  
+  const paymentStatusKey = (loanDetails.status.description as LoanRequestStatus) || "PENDING"
+
   return (
-    <div className='w-full px-2 space-y-2'>
-      <h1 className='text-theme-text-default font-bold text-lg pt-2'>Loan Info</h1>
-      <div className='bg-theme-background w-full rounded-lg space-y-4 shadow-lg'>
-        <div className='flex flex-row flex-wrap justify-between px-4 py-3 border-b border-b-neutral-400 '>
-          <p>
-            {'ID: '}
-            <a className='text-blue-500 underline'>{`#${loanDetails.loan_request_id}`}</a>
-          </p>
-          <p>
-            {'Status: '}
-            <span className='text-blue-500'>{loanDetails.status.description}</span>
-          </p>
-        </div>
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4 px-4 pt-1 pb-4 border-b border-b-neutral-400'>
-          <div className='space-y-2'>
-            <p className='font-bold'>Customer:</p>
-            <p>{`${loanDetails.person.first_name} ${loanDetails.person.last_name}`}</p>
-          </div>
-          <div className='space-y-2'>
-            <p className='font-bold'>Request Date:</p>
-            <p>{loanDetails.request_date}</p>
-          </div>
-          <div className='space-y-2'>
-            <p className='font-bold'>Requested Amount:</p>
-            <p>{`$${loanDetails.requested_amount} ${loanDetails.currency.code}`}</p>
-          </div>
-          <div className='space-y-2'>
-            <p className='font-bold'>Approved Amount:</p>
-            <p>{`$${loanDetails.approved_amount} ${loanDetails.currency.code}`}</p>
-          </div>
-          <div className='space-y-2'>
-            <p className='font-bold'>Term:</p>
-            <p>{loanDetails.term} months</p>
-          </div>
-          <div className='space-y-2'>
-            <p className='font-bold'>Loan Destination:</p>
-            <p>{loanDetails.loan_destination.description}</p>
+    <div className="space-y-6 pt-4">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-default-800">Loan Information</h1>
+        <Chip className={`mt-1 ${getStatusColor(paymentStatusKey)}`}>
+          <span className="font-bold text-[11px]">
+            {loanRequestStatus[paymentStatusKey] || loanDetails.status.description}
+          </span>
+        </Chip>
+      </div>
+
+      <Card className="w-full overflow-hidden">
+        <div className="flex justify-between items-center border-b border-default-200 p-6">
+          <div className="flex items-center gap-2">
+            <FileText className="text-primary h-5 w-5" />
+            <h2 className="text-xl font-semibold text-default-800">Loan #{loanDetails.loan_request_id}</h2>
           </div>
         </div>
-        <div className='flex flex-row flex-wrap justify-between px-2 shadow-lg'>
+
+        <div className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex items-start gap-3">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <User className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm text-default-500">Customer</p>
+                <p className="text-lg text-default-700 font-semibold">
+                  {`${loanDetails.person.first_name} ${loanDetails.person.last_name}`}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="p-2 bg-secondary/10 rounded-lg">
+                <Calendar className="w-5 h-5 text-secondary" />
+              </div>
+              <div>
+                <p className="text-sm text-default-500">Request Date</p>
+                <p className="text-lg text-default-700 font-semibold">{formatDate(loanDetails.request_date)}</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="p-2 bg-success/10 rounded-lg">
+                <DollarSign className="w-5 h-5 text-success" />
+              </div>
+              <div>
+                <p className="text-sm text-default-500">Requested Amount</p>
+                <p className="text-lg text-default-700 font-semibold">
+                  ${loanDetails.requested_amount} {loanDetails.currency.code}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="p-2 bg-warning/10 rounded-lg">
+                <CreditCard className="w-5 h-5 text-warning" />
+              </div>
+              <div>
+                <p className="text-sm text-default-500">Approved Amount</p>
+                <p className="text-lg text-default-700 font-semibold">
+                  ${loanDetails.approved_amount} {loanDetails.currency.code}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="p-2 bg-info/10 rounded-lg">
+                <Clock className="w-5 h-5 text-info" />
+              </div>
+              <div>
+                <p className="text-sm text-default-500">Term</p>
+                <p className="text-lg text-default-700 font-semibold">{loanDetails.term} months</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="p-2 bg-danger/10 rounded-lg">
+                <Target className="w-5 h-5 text-danger" />
+              </div>
+              <div>
+                <p className="text-sm text-default-500">Loan Destination</p>
+                <p className="text-lg text-default-700 font-semibold">{loanDetails.loan_destination.description}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-default-200">
           <CustomAccordion>
-            <CustomAccordion.Item className='text-theme-text-default font-bold' title='Additional Information'>
-              <div className='text-theme-text-default font-normal grid grid-cols-1 md:grid-cols-2 gap-4'>
-                <div className='space-y-2'>
-                  <p className='font-bold'>Base Rate:</p>
-                  <p>{`${loanDetails.base_rate}%`}</p>
+            <CustomAccordion.Item className="text-xl font-semibold text-default-800 p-4" title="Additional Information">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-default-100 rounded-lg">
+                    <Percent className="w-5 h-5 text-default-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-default-500">Base Rate</p>
+                    <p className="text-base text-default-700 font-medium">{loanDetails.base_rate}%</p>
+                  </div>
                 </div>
-                <div className='space-y-2'>
-                  <p className='font-bold'>Insurance Rate:</p>
-                  <p>{`${loanDetails.insurance_rate}%`}</p>
+
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-default-100 rounded-lg">
+                    <Shield className="w-5 h-5 text-default-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-default-500">Insurance Rate</p>
+                    <p className="text-base text-default-700 font-medium">{loanDetails.insurance_rate}%</p>
+                  </div>
                 </div>
-                <div className='space-y-2'>
-                  <p className='font-bold'>Tax Rate:</p>
-                  <p>{`${loanDetails.tax_rate}%`}</p>
+
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-default-100 rounded-lg">
+                    <Receipt className="w-5 h-5 text-default-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-default-500">Tax Rate</p>
+                    <p className="text-base text-default-700 font-medium">{loanDetails.tax_rate}%</p>
+                  </div>
                 </div>
-                <div className='space-y-2'>
-                  <p className='font-bold'>Payment Frequency:</p>
-                  <p>{loanDetails.payment_frequency.description}</p>
+
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-default-100 rounded-lg">
+                    <Calendar className="w-5 h-5 text-default-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-default-500">Payment Frequency</p>
+                    <p className="text-base text-default-700 font-medium">
+                      {loanDetails.payment_frequency.description}
+                    </p>
+                  </div>
                 </div>
-                <div className='space-y-2'>
-                  <p className='font-bold'>Customer Email:</p>
-                  <p className='break-words'>{loanDetails.person.email}</p>
+
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-default-100 rounded-lg">
+                    <Mail className="w-5 h-5 text-default-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-default-500">Customer Email</p>
+                    <p className="text-base text-default-700 font-medium break-words">{loanDetails.person.email}</p>
+                  </div>
                 </div>
+
                 {loanDetails.customerNetIncome && (
-                  <div className='space-y-2'>
-                    <p className='font-bold'>Customer Net Income:</p>
-                    <p>{loanDetails.customerNetIncome}</p>
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-default-100 rounded-lg">
+                      <Building className="w-5 h-5 text-default-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-default-500">Customer Net Income</p>
+                      <p className="text-base text-default-700 font-medium">{loanDetails.customerNetIncome}</p>
+                    </div>
                   </div>
                 )}
-                <div className='space-y-2'>
-                  <p className='font-bold'>Customer:</p>
-                  <p>{`${loanDetails.person.first_name} ${loanDetails.person.last_name}`}</p>
-                </div>
-                <div className='space-y-2'>
-                  <p className='font-bold'>Customer Net Income:</p>
-                  <p>{`$USD NAN`}</p>
-                </div>
               </div>
             </CustomAccordion.Item>
           </CustomAccordion>
         </div>
-      </div>
+      </Card>
     </div>
   )
 }

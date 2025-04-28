@@ -1,7 +1,6 @@
 import { CardLoan } from './card.types'
 import { cn } from '@uti/cn'
 import { Grid } from '@com/grid'
-import { Divider } from '@com/divider'
 import {
   Card as Content, 
   CardHeader as Header, 
@@ -27,13 +26,11 @@ function CardHeader({ children, className }: CardLoan) {
 function CardBody({ children, className }: CardLoan) {
   return (
     <>
-      <Divider />
       <Body className={cn('', className)}>
         <Grid>
           {children}
         </Grid>
       </Body>
-      <Divider />
     </>
   )
 }
