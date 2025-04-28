@@ -1,6 +1,5 @@
 import { CardLoan } from './card.types'
 import { cn } from '@uti/cn'
-import { Grid } from '@com/grid'
 import { Divider } from '@com/divider'
 import {
   Card as Content, 
@@ -11,26 +10,29 @@ import {
 
 export function Card({ children, className }: CardLoan) {
   return (
-    <Content className={className}>
-      {children}
+    <Content className={ className }>
+      { children }
     </Content>
   )
 }
 
 function CardHeader({ children, className }: CardLoan) {
   return (
-    <Header className={cn("flex justify-between items-center", className)}>
-      {children}
-    </Header>)
+    <Header className={ cn("flex justify-between items-center", className) }>
+      { children }
+    </Header>
+  )
 }
 
 function CardBody({ children, className }: CardLoan) {
   return (
     <>
       <Divider />
-      <Body className={cn('', className)}>
-          {children}
+
+      <Body className={ cn('', className) }>
+          { children }
       </Body>
+      
       <Divider />
     </>
   )
@@ -38,7 +40,9 @@ function CardBody({ children, className }: CardLoan) {
 
 function CardFooter({ children, className }: CardLoan) {
   return(
-    <Footer className={cn('', className)}>{children}</Footer>
+    <Footer className={ cn('', className) }>
+      { children }
+    </Footer>
   )
 }
 

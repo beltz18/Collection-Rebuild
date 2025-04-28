@@ -70,7 +70,7 @@ const renderUserCell = (loans: LoanEx, columnKey: Key) => {
     case 'status':
       return (
         <Chip className={ getStatusColor(loans.status.unique_description) }>
-          { loans.status.unique_description }
+          { loans.status.description }
         </Chip>
       )
 
