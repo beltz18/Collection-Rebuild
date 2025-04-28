@@ -1,5 +1,6 @@
 export const CACHE_KEYS = {
   getLoans: 'loans',
+  getPayments: 'payments'
 }
 
 type HttpMethod = 'get' | 'post' | 'put' | 'delete' | 'patch'
@@ -14,6 +15,7 @@ export const METHODS: Record<HttpMethod, HttpMethod> = {
 export const API_ROUTES = {
   login: '/login/',
   loan: '/loan-requests/',
+  payment: '/loan-payments/'
 }
 
 export const SYSTEM_ROUTES = {
