@@ -8,6 +8,7 @@ import { PaymentComponent } from './component-container'
 import { mockData } from './mock/mock-data'
 import { useState } from 'react'
 import { Status } from '@typ/payment-status'
+import PaymentHistory from './component-history-container'
 
 export default function PaymentIdPage() {
   const { isTablet } = useResponsive()
@@ -71,7 +72,7 @@ export default function PaymentIdPage() {
               className={`bg-theme-background ${isTablet ? '' : 'w-full h-full'}`}
             >
               <div className={isTablet ? 'h-full w-full' : 'min-h-full w-full'}>
-                <p>{'History (:^D)'}</p>
+                <PaymentHistory />
               </div>
             </Tabs.Tab>
             <Tabs.Tab key='settings' title='Settings' className={`bg-theme-background ${isTablet ? '' : 'w-full h-full'}`}>
