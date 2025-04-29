@@ -1,12 +1,26 @@
 'use client'
 
 import { ComponentContainer } from './component-container'
-import { useGetStrategies } from '@api/routes/strategy'
 import { useTokenStore } from '@sts/useTokenStore'
-import { useEffect } from 'react'
-import { errorToast } from '@com/index'
-
-const  items = ['pay1', 'pay2','pay3','pay4']
+import { useFlowStore } from '@sts/useFlowStore'
+import { StrategySelector } from './util/strategySelector'
+import { generateEdges } from '@uti/lib'
+import {
+  StepT,
+  StrategyT,
+} from '@typ/strategy'
+import {
+  useGetStrategies,
+  useGetSteps,
+} from '@api/routes/strategy'
+import {
+  errorToast,
+  warningToast,
+} from '@com/index'
+import {
+  useEffect,
+  useState,
+} from 'react'
 
 type Props = {
   strategyId: string | null
@@ -14,19 +28,29 @@ type Props = {
 
 export const StepsQueryContainer = ({ strategyId }: Props) => {
   const { token, logout } = useTokenStore()
+  const { setSteps, setStrategy } = useFlowStore()
+
+  const [selectedStrategy, setSelectedStrategy] = useState<StrategyT | null>(null)
+  const [value, setValue] = useState<string | number | null>(null)
+  const [dataSteps, setDataSteps] = useState<[StrategyT, ...StepT[]] | null>(null)
 
   const {
     data,
-    isLoading,
-    isFetching,
     isError,
     error,
   } = useGetStrategies(token)
 
-  console.log(data)
+  const {
+    data: s,
+    refetch,
+  } = useGetSteps(
+    token,
+    { strategy_id: selectedStrategy?.id },
+    { enabled: false },
+  )
   
   useEffect(() => {
-    console.log(strategyId)
+    // console.log(strategyId)
     if (isError) {
       console.log(error)
       errorToast({
@@ -36,11 +60,65 @@ export const StepsQueryContainer = ({ strategyId }: Props) => {
       })
       logout()
     }
-  }, [strategyId, isError, error, logout])
+    if (value && data)
+      setSelectedStrategy(data?.find((s) => value == s.id) || null)
+  }, [strategyId, isError, error, logout, value])
+
+  const handleGoToSteps = async () => {
+    if (!selectedStrategy) {
+      warningToast({
+        body: 'You must select an strategy first',
+        duration: 3000
+      })
+      return
+    }
+
+    try {
+      const { data: stepsData } = await refetch()
+
+      if (stepsData && stepsData.length > 0) {
+        const sortedSteps = [...stepsData].sort((a, b) => a.order - b.order)
+        const strategyFinal = { ...selectedStrategy }
+        strategyFinal['id'] = 999999999
+
+        setStrategy(selectedStrategy)
+        setSteps(stepsData ?? [])
+
+        const edges = generateEdges([strategyFinal, ...(sortedSteps ?? [])])
+        console.log(edges)
+
+        setDataSteps([strategyFinal, ...(sortedSteps ?? [])])
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  console.log(dataSteps)
 
   return (
-    <div className='w-full min-h-full flex items-center justify-center flex-col gap-4'>
-      <ComponentContainer data={ items } />
+    <div className='w-full h-full flex items-center justify-center flex-col gap-4'>
+      {
+        dataSteps && dataSteps?.length > 0
+          ?
+        <ComponentContainer
+          data={ dataSteps }
+          // edges={ }
+        />
+          :
+        <StrategySelector
+          data={
+            data?.map((s) => ({
+              key: s.id,
+              label: s.name,
+            }))
+              ??
+            []
+          }
+          setValue={ setValue }
+          handleClick={ handleGoToSteps }
+        />
+      }
     </div>
   )
 }

@@ -33,7 +33,7 @@ export default function Login() {
   const setToken = useTokenStore((state) => state.setToken)
 
   const auth = useAuthenticateUser()
-  const { isPending } = auth
+  const { isPending, isSuccess } = auth
 
   const createToken = (token: string) => {
     setToken(token)
@@ -66,7 +66,7 @@ export default function Login() {
             title: 'Success!',
             body: 'You are authenticated now!'
           })
-          setTimeout(() => createToken(r.data.token), 50)
+          createToken(r.data.token)
         } else {
           errorToast({
             title: 'Error',
@@ -150,7 +150,7 @@ export default function Login() {
               radius='sm'
               onPress={ handleSubmit }
               disabled={ isPending }
-              isLoading={ isPending }
+              isLoading={ isPending && !isSuccess }
             >
               Sign In
             </Button>

@@ -31,7 +31,6 @@ type Props = {
 }
 
 const renderUserCell = (loans: Loan, columnKey: Key) => {
-  console.log(columnKey)
   switch (columnKey) {
     case 'id':
       return (

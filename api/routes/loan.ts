@@ -24,11 +24,10 @@ type LoanResponse = {
 
 export const useGetLoans = (token: string | null, filters?: FilterProps) => {
   return useCollectionQuery<LoanResponse>({
-    fetcher: async () => await genericAuthRequest(METHODS.get, API_ROUTES.loan,
-      { ...filters },
-      token ? { Authorization: `Bearer ${token}` } : undefined
+    fetcher: async () => await genericAuthRequest(METHODS.get,
+      API_ROUTES.loan, { ...filters },
+      token ? { Authorization: `Bearer ${token}` } : undefined,
     ),
     queryKey: [CACHE_KEYS.getLoans, filters],
   })
 }
-

@@ -22,7 +22,7 @@ export const Logo = ({
       priority
       unoptimized={ useFallback }
       onError={() => setUseFallback(true)}
-      onLoadingComplete={() => setLoaded(true)}
+      onLoad={() => setLoaded(true)}
       className={
         cn('transition-opacity duration-300 ease-in-out',
         loaded ? 'opacity-100' : 'opacity-0', className)

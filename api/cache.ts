@@ -2,6 +2,7 @@ export const CACHE_KEYS = {
   getLoans: 'loans',
   getPayments: 'payments',
   getStrategies: 'strategies',
+  getSteps: 'steps',
 }
 
 type HttpMethod = 'get' | 'post' | 'put' | 'delete' | 'patch'
@@ -18,6 +19,7 @@ export const API_ROUTES = {
   loan: '/loan-requests/',
   payment: '/loan-payments/',
   strategy: '/api/payment-strategies/',
+  steps: '/api/payment-steps/',
 }
 
 export const SYSTEM_ROUTES = {

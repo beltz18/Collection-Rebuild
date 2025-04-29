@@ -42,6 +42,7 @@ export const TableQueryContainer = () => {
     data,
     isLoading,
     isFetching,
+
     isError,
     error
   } = useGetLoans(token, { page_size: selected, page: current })
@@ -73,9 +74,8 @@ export const TableQueryContainer = () => {
     )
   }
 
-  if (!data?.results || data.results.length === 0) {
+  if (!data?.results || data.results.length === 0)
     return <NoResults title='Loans' />
-  }
 
   const loans = data.results.map((loan) => ({
     ...loan,

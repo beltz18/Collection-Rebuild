@@ -10,22 +10,20 @@ import { SelectProps } from './select.types'
 export const CustomSelect = ({
   className,
   label,
-  itemsSelect,
+  values,
   ...props
 }: SelectProps) => {
   return (
-    itemsSelect && (
+    values && (
       <Select
         className={ className }
         label={ label }
         {...props}
       >
         {
-          itemsSelect.map((item, index) =>
-            <SelectItem key={ index }>
-              { item }
-            </SelectItem>
-          )
+          values.map((val) => (
+            <SelectItem key={ val.key }>{ val.label }</SelectItem>
+          ))
         }
       </Select>
     )

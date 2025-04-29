@@ -24,9 +24,9 @@ type PaymentResponse = {
 
 export const useGetPayments = (token: string | null, filters?: FilterProps) => {
   return useCollectionQuery<PaymentResponse>({
-    fetcher: async () => await genericAuthRequest(METHODS.get, API_ROUTES.payment,
-      { ...filters },
-      token ? { Authorization: `Bearer ${token}` } : undefined
+    fetcher: async () => await genericAuthRequest(METHODS.get,
+      API_ROUTES.payment, { ...filters },
+      token ? { Authorization: `Bearer ${token}` } : undefined,
     ),
     queryKey: [CACHE_KEYS.getPayments, filters],
   })
