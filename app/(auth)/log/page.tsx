@@ -14,12 +14,39 @@ import { WeekSelector } from './elements/week-selector'
 import { MonthSelector } from './elements/month-selector'
 import { useResponsive } from '@uti/useResponsive'
 
+const monthToNumber = (month: string): number => {
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ]
+  return months.indexOf(month) + 1
+}
+
+function getCalendarWeekOfMonth(date: Date): number {
+  const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1)
+  const dayOfWeek = firstDayOfMonth.getDay() // 0 (Domingo) - 6 (Sábado)
+  const offset = (dayOfWeek === 0 ? 6 : dayOfWeek - 1) // Ajuste para que lunes sea 0
+
+  const adjustedDate = date.getDate() + offset
+  return Math.ceil(adjustedDate / 7)
+}
+
 export default function LogsDashboard() {
   const [mounted, setMounted] = useState(false)
   const { isDesktopL } = useResponsive()
   const [currentPeriod, setCurrentPeriod] = useState({
     month: 'April',
-    week: `Week 4`,
+    week: `Week 1`,
   })
 
   const { setActiveTab, setActiveChildrenTab, setActiveChildrenIndex } =
@@ -27,13 +54,15 @@ export default function LogsDashboard() {
 
   const weeklyPerformanceData = useMemo(() => {
     const weeks = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5']
-
+    const currentMonthNum = monthToNumber(currentPeriod.month)
+    
     return weeks.map((week) => {
       const weekNumber = parseInt(week.replace('Week ', ''))
       const weekLogs = mockLogsData.filter((log) => {
         const logDate = new Date(log.timestamp)
+        const logMonth = logDate.getMonth() + 1
         const logWeek = Math.ceil(logDate.getDate() / 7)
-        return logWeek === weekNumber
+        return logMonth === currentMonthNum && logWeek === weekNumber
       })
 
       return {
@@ -42,7 +71,7 @@ export default function LogsDashboard() {
         failed: weekLogs.filter((log) => log.status === 'Failed').length,
       }
     })
-  }, [])
+  }, [currentPeriod.month])
 
   useEffect(() => {
     setMounted(true)
@@ -82,6 +111,7 @@ export default function LogsDashboard() {
             >
               <WeekSelector
                 currentWeek={currentPeriod.week}
+                currentMonth={currentPeriod.month}
                 onWeekChange={handleWeekChange}
               />
               <WeeklyPerformanceChart data={weeklyPerformanceData} />
