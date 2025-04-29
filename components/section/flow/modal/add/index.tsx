@@ -115,13 +115,6 @@ export default function AddNodeModal({
             </ModalBody>
 
             <ModalFooter className="border-t border-default-500/10 pt-3">
-              <Button 
-                color="danger" 
-                variant="flat"
-                onPress={onClose} 
-                disabled={isSubmitting} 
-                placeholder="Cancel" 
-              />
               <Button
                 color="primary"
                 onPress={handleSubmit}

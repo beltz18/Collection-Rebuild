@@ -4,7 +4,6 @@ import { ComponentContainer } from './component-container'
 import { useTokenStore } from '@sts/useTokenStore'
 import { useFlowStore } from '@sts/useFlowStore'
 import { StrategySelector } from './util/strategySelector'
-import { generateEdges } from '@uti/lib'
 import {
   StepT,
   StrategyT,
@@ -84,17 +83,12 @@ export const StepsQueryContainer = ({ strategyId }: Props) => {
         setStrategy(selectedStrategy)
         setSteps(stepsData ?? [])
 
-        const edges = generateEdges([strategyFinal, ...(sortedSteps ?? [])])
-        console.log(edges)
-
         setDataSteps([strategyFinal, ...(sortedSteps ?? [])])
+      } else {
+        setDataSteps([selectedStrategy])
       }
-    } catch (err) {
-      console.log(err)
-    }
+    } catch (err) { console.log(err) }
   }
-
-  console.log(dataSteps)
 
   return (
     <div className='w-full h-full flex items-center justify-center flex-col gap-4'>
@@ -103,7 +97,6 @@ export const StepsQueryContainer = ({ strategyId }: Props) => {
           ?
         <ComponentContainer
           data={ dataSteps }
-          // edges={ }
         />
           :
         <StrategySelector

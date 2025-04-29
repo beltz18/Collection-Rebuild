@@ -3,7 +3,7 @@
 import { LogsTableContainer } from './table-container'
 import { PaginationC } from '@com/index'
 import { mockLogsData } from './mock/mock-data'
-import { ActivityLog, ColumnEx } from '../../../types/log'
+import { ActivityLog, ColumnEx, LogAction, LogStatus } from '../../../types/log'
 
 type Props = {
   search?: string
@@ -16,11 +16,11 @@ type Props = {
 
 const activityLogs: ActivityLog[] = mockLogsData.map((log) => ({
   id: log.id,
-  status: log.status,
-  action: log.action,
+  status: log.status as LogStatus,
+  action: log.action as LogAction,
   message: log.message,
   date: log.timestamp,
-  userId: log.userId,
+  userId: log.userId ?? undefined,
 }))
 
 const columns: ColumnEx[] = [

@@ -1,4 +1,5 @@
-import React, { memo } from 'react'
+import { memo } from 'react'
+import { format } from 'date-fns'
 import {
   Handle,
   Position,
@@ -74,6 +75,7 @@ export default memo (({
 })
 
 const CompStep = (data: any) => {
+  console.log(data)
   return (
     <div className='w-full flex flex-col text-[8px]'>
       <div className='w-full flex items-center justify-between'>
@@ -88,7 +90,7 @@ const CompStep = (data: any) => {
       
       <div className='w-full flex items-center justify-between'>
         <b>Attemps:</b>
-        <span>{ data.data.attemps }</span>
+        <span>{ data.data.attempts }</span>
       </div>
       
       <div className='w-full flex items-center justify-between'>
@@ -104,22 +106,30 @@ const CompStrategy = (data: any) => {
     <div className='w-full flex flex-col text-[8px]'>
       <div className='w-full flex items-center justify-between'>
         <b>Company:</b>
-        <span>{ data.data.company }</span>
+        <span>
+          { data.data.company ?? 'No company' }
+        </span>
       </div>
       
       <div className='w-full flex items-center justify-between'>
         <b>Store:</b>
-        <span>{ data.data.store }</span>
+        <span>
+          { data.data.branch ?? 'No store' }
+        </span>
       </div>
       
       <div className='w-full flex items-center justify-between'>
         <b>Created:</b>
-        <span>{ data.data.created }</span>
+        <span>
+          { format(data.data.create_date, 'dd-MM-yyyy') }
+        </span>
       </div>
       
       <div className='w-full flex items-center justify-between'>
         <b>Updated:</b>
-        <span>{ data.data.updated }</span>
+        <span>
+          { format(data.data.update_date, 'dd-MM-yyyy') }
+        </span>
       </div>
     </div>
   )

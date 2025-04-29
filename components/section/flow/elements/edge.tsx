@@ -1,5 +1,7 @@
-import React from 'react'
-import { getBezierPath, type EdgeProps } from '@xyflow/react'
+import {
+  getBezierPath,
+  type EdgeProps,
+} from '@xyflow/react'
 
 export default function CustomEdge ({
   id,
@@ -11,7 +13,7 @@ export default function CustomEdge ({
   targetPosition,
   style = {},
   markerEnd,
-}: EdgeProps) {
+}: EdgeProps & { data?: { label?: React.ReactNode } }) {
   const xEqual = sourceX === targetX
   const yEqual = sourceY === targetY
 
