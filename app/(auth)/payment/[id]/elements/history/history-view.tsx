@@ -23,6 +23,7 @@ import { PaymentAttemptsList } from "./attempts-list"
 import { PAYMENT_METHODS } from "../constants"
 import { getStatusColor, paymentStatus, type Status } from "@typ/payment-status"
 import type { PaymentHistoryViewProps } from "./types"
+import { useResponsive } from '@uti/useResponsive'
 
 export const PaymentHistoryView: React.FC<PaymentHistoryViewProps> = ({ paymentData, token, id }) => {
   const { theme } = useTheme()
@@ -31,6 +32,8 @@ export const PaymentHistoryView: React.FC<PaymentHistoryViewProps> = ({ paymentD
   const [expandedItems, setExpandedItems] = useState<Record<string, string[]>>({})
   const [forceUpdate, setForceUpdate] = useState(0)
   const [isRefreshing, setIsRefreshing] = useState(false)
+
+  const { isMobile } = useResponsive()
 
   const filterAttemptsByMethod = useCallback((attempts: any[], methodKey: string) => {
     if (methodKey === "all") return attempts
@@ -56,10 +59,9 @@ export const PaymentHistoryView: React.FC<PaymentHistoryViewProps> = ({ paymentD
 
   return (
     <div className="space-y-6">
-      <div className="w-full flex justify-end items-center gap-4">
+      <div className={`w-full flex ${isMobile ? 'flex-col items-start gap-2' : 'flex-row justify-end items-center gap-4'}`}>
         <Button
           color="primary"
-          className="mt-3"
           startContent={<RotateCw className={`mr-1 ${isRefreshing ? "animate-spin" : ""}`} size={15} />}
           disabled={isRefreshing}
         >
@@ -69,7 +71,7 @@ export const PaymentHistoryView: React.FC<PaymentHistoryViewProps> = ({ paymentD
           <DropdownTrigger>
             <Button
               color="primary"
-              className={`bg-theme-primary text-white mt-3
+              className={`bg-theme-primary text-white
                 ${theme === "light" ? "bg-[#161616e0] text-[#ededed]" : "bg-theme-primary"}
               `}
               startContent={<Download className="mr-1" size={15} />}

@@ -2,7 +2,7 @@ import { CustomTable } from '@com/index'
 import { cn } from '@uti/cn'
 import { useMemo, useState, useEffect, Key } from 'react'
 import { Chip, Selection } from '@heroui/react'
-import { ActivityLog, ColumnEx } from '../../../types/log'
+import { ActivityLog, ColumnEx } from './types'
 import { getStatusColor } from '@typ/payment-status'
 
 type Props = {
@@ -61,7 +61,13 @@ const formatDateTime = (dateString: string) => {
 const renderLogCell = (log: ActivityLog, columnKey: Key) => {
   switch (columnKey) {
     case 'status':
-      return <Chip className={getStatusColor(log.status === 'Success' ? 'PP' : 'PF')}>{log.status}</Chip>
+      return (
+        <Chip
+          className={getStatusColor(log.status === 'Success' ? 'PP' : 'PF')}
+        >
+          {log.status}
+        </Chip>
+      )
 
     case 'action':
       return <span className='font-medium'>{log.action}</span>
