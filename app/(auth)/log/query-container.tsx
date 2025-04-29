@@ -3,7 +3,7 @@
 import { LogsTableContainer } from './table-container'
 import { PaginationC } from '@com/index'
 import { mockLogsData } from './mock/mock-data'
-import { ActivityLog, ColumnEx } from './types'
+import { ActivityLog, ColumnEx } from '../../../types/log'
 
 type Props = {
   search?: string

@@ -2,7 +2,7 @@ import { CustomTable } from '@com/index'
 import { cn } from '@uti/cn'
 import { useMemo, useState, useEffect, Key } from 'react'
 import { Chip, Selection } from '@heroui/react'
-import { ActivityLog, ColumnEx } from './types'
+import { ActivityLog, ColumnEx } from '../../../types/log'
 import { getStatusColor } from '@typ/payment-status'
 
 type Props = {
