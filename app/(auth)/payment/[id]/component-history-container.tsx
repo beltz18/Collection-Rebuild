@@ -2,6 +2,7 @@
 
 import { PaymentHistoryView } from "./elements"
 import { mockData } from "./mock/mock-data"
+import { Heading } from "@com/heading"
 import { useState } from "react"
 
 export default function PaymentHistory() {
@@ -9,7 +10,7 @@ export default function PaymentHistory() {
 
   return (
     <div className="container mx-auto pt-4 pb-4">
-      <h1 className="text-2xl font-bold mb-3">Payment Information</h1>
+      <Heading level={1} className="text-2xl font-bold mb-3">Payment Information</Heading>
       <PaymentHistoryView
         paymentData={mockData.paymentDetails}
         token={token}
