@@ -6,10 +6,18 @@ import {
 } from 'react'
 import AuthLayout from '../layout'
 import { DefaultLayout } from '@lay/default'
+import { useSidebarStore } from '@sts/useSidebarStore'
 
 export default function Log () {
   const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
+  const { setActiveTab, clear } = useSidebarStore()
+
+  useEffect(() => {
+    clear()
+    setActiveTab('Activity Logs')
+    setMounted(true)
+  }, [])
+  
   if (!mounted) return null
 
   return (
