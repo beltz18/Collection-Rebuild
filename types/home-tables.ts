@@ -55,24 +55,24 @@ export type Column = {
   name: string
 }
 
-type PaymentHistoryT = {
-  attempt_number?: number
-  amount_before?: string
-  amount_after?: string
+export type PaymentHistoryT = {
+  attempt_number?: number | string
+  amount_before?: number | string
+  amount_after?: number | string
   success?: boolean
-  successful_at?: string
+  successful_at?: string | null
   processed_at?: string
   payment_method?: string
   payment_processor?: string
-  transaction_id?: string
+  transaction_id?: string | null
   associated_payment?: {
     id?: number
     status?: string
     created_at?: string
-    successful_at?: string
-    returned_at?: string
+    successful_at?: string | null
+    returned_at?: string | null
     identifier?: string
-    identifier2?: string
+    identifier_2?: string
     return_code?: {
       code?: string
       title_en?: string
