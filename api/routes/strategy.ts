@@ -6,6 +6,7 @@ import {
 import {
   useCollectionQuery,
   genericAuthRequest,
+  useCollectionMutation
 } from '@api/config'
 import {
   StrategyT,
@@ -40,5 +41,31 @@ export const useGetSteps = (
     ),
     queryKey: [CACHE_KEYS.getSteps, filters?.strategy_id],
     ...options,
+  })
+}
+
+type SendProps = {
+  active?: boolean
+  default?: boolean
+  name: string
+  days_before_due_to_start?: string
+  strict_mode?: boolean
+  company?: number
+  branch?: number
+}
+
+type ResponseProps = {
+  data: StrategyT,
+  message: string
+}
+
+export const usePostStrategies = (token: string | null) => {
+  return useCollectionMutation<SendProps, ResponseProps>({
+    fetcher: async (data) =>
+      await genericAuthRequest(
+        METHODS.post, 
+        API_ROUTES.strategy, data,
+        token ? { Authorization: `Bearer ${token}` } : undefined,
+      )
   })
 }

@@ -11,6 +11,26 @@ export interface StrategyT {
   update_date: Date | string | null
 }
 
+export interface Strategy {
+  id: string
+  name: string
+  active: boolean
+  company: any
+  branch: any
+  company_id?: string | number
+  branch_id?: string | number
+  days_before_due: number
+  strict_mode: boolean
+  default: boolean
+  store?: string
+  client_id?: string
+  location_id?: string
+  sec_code?: string
+  use_same_day_ach?: boolean
+  enabled_for_lender_web?: boolean
+  days_before_due_to_start?: number
+}
+
 export interface StepT {
   id: number
   create_date: Date | string | null

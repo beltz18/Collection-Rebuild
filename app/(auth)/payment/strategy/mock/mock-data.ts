@@ -192,3 +192,28 @@ export const mockData = [
     "branch": 12
   }
 ]
+
+export const mockCompanies = [
+  { id: "1", name: "Company A" },
+  { id: "2", name: "Company B" },
+  { id: "3", name: "Company C" },
+]
+
+export const mockBranches = [
+  { id: "1", name: "Store 1" },
+  { id: "2", name: "Store 2" },
+  { id: "3", name: "Store 3" },
+]
+
+export const exampleStrategy = {
+  id: "1",
+  name: "Default Collection Strategy",
+  active: true,
+  company: "Company A",
+  branch: "Store 1",
+  company_id: "1",
+  branch_id: "1",
+  days_before_due: 5,
+  strict_mode: true,
+  default: true,
+}
