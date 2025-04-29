@@ -3,7 +3,7 @@
 import { LogsTableContainer } from './table-container'
 import { PaginationC } from '@com/index'
 import { mockLogsData } from './mock/mock-data'
-import { ActivityLog, ColumnEx } from './types'
+import { ActivityLog, ColumnEx, LogStatus } from './types'
 import { useMemo } from 'react'
 import { getCalendarWeekOfMonth, monthToNumber } from '@uti/calendar'
 
@@ -38,11 +38,11 @@ export const LogsQueryContainer = ({
 
   const activityLogs: ActivityLog[] = filteredLogs.map((log) => ({
     id: log.id,
-    status: log.status,
+    status: log.status as LogStatus,
     action: log.action,
     message: log.message,
     date: log.timestamp,
-    userId: log.userId,
+    userId: log.userId ?? undefined,
   }))
 
   const columns: ColumnEx[] = [
