@@ -1,56 +1,96 @@
-import { CustomTable } from '@com/index'
-import { cn } from '@uti/cn'
-import { useMemo, useState, useEffect, Key } from 'react'
-import { Chip, Selection } from '@heroui/react'
-import { PaymentStrategyEx, ColumnEx } from './types'
+"use client"
+
+import { CustomTable } from "@com/index"
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Button
+} from '@heroui/react'
+import { VerticalDotsIcon } from "@uti/consts"
+import { useMemo, useState, useEffect, type Key } from "react"
+import { Chip, type Selection } from "@heroui/react"
+import type { ColumnEx } from "./types"
+import { StrategyT } from "@typ/strategy"
 
 type Props = {
-  data: PaymentStrategyEx[]
+  data: StrategyT[]
   columns: ColumnEx[]
   onSelectionChange?: (keys: Set<number>) => void
 }
-import { Status, getStatusColor } from '@typ/payment-status'
 
-const VerticalDotsIcon = ({ size = 24, width, height, className, ...props }: { size?: number; width?: number; height?: number; className?: string }) => {
-  return (
-    <svg aria-hidden='true' fill='none' focusable='false' height={size || height} role='presentation' viewBox='0 0 24 24' width={size || width} className={cn('', className)} {...props}>
-      <path d='M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z' fill='currentColor' />
-    </svg>
-  )
-}
-
-const renderUserCell = (payment: PaymentStrategyEx, columnKey: Key) => {
+const renderUserCell = (strategy: StrategyT, columnKey: Key) => {
   switch (columnKey) {
-    case 'name':
-      return <span>{payment.name}</span>
+    case "name":
+      return <span>{strategy.name}</span>
 
-    case 'status':
-      return <Chip className={payment.status === 'active' ? getStatusColor('PP') : getStatusColor('PF')}>{payment.status}</Chip>
+    case "status":
+      return (
+        <Chip variant="flat" color={strategy.active ? "success" : "danger"}>
+          {strategy.active ? "Active" : "Inactive"}
+        </Chip>
+      )
 
-    case 'company':
-      return <span>{payment.company || '-'}</span>
+    case "company":
+      return <span>{strategy.company || "-"}</span>
 
-    case 'store':
-      return <span>{payment.store || '-'}</span>
+    case "store":
+      return <span>{strategy.branch || "-"}</span>
 
-    case 'days_before_due':
-      return <span>{payment.days_before_due}</span>
+    case "days_before_due":
+      return <span>{strategy.days_before_due_to_start}</span>
 
-    case 'strict_mode':
-      return <Chip className={payment.strict_mode ? getStatusColor('SP') : 'bg-neutral-100 text-default-600'}>{payment.strict_mode ? 'Yes' : 'No'}</Chip>
+    case "strict_mode":
+      return (
+        <Chip
+          variant="flat"
+          color={strategy.strict_mode ? "warning" : "default"}
+        >
+          {strategy.strict_mode ? "Yes" : "No"}
+        </Chip>
+      )
 
-    case 'is_default':
-      return <Chip className={payment.is_default ? getStatusColor('NTP') : 'bg-neutral-100 text-default-600'}>{payment.is_default ? 'Yes' : 'No'}</Chip>
+    case "is_default":
+      return (
+        <Chip variant="flat" color={strategy.default ? "primary" : "default"}>
+          {strategy.default ? "Yes" : "No"}
+        </Chip>
+      )
+
+    case "actions":
+      return (
+        <Dropdown>
+          <DropdownTrigger>
+            <Button isIconOnly size='sm' variant='light'>
+              <VerticalDotsIcon className="text-default-300" />
+            </Button>
+          </DropdownTrigger>
+
+          <DropdownMenu>
+            <DropdownItem key="view">View steps</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      )
 
     default:
-      return (payment as any)[columnKey as string]
+      return (strategy as any)[columnKey as string]
   }
 }
 
 export const TableContainer = ({ data, columns, onSelectionChange }: Props) => {
-  const [filterValue, setFilterValue] = useState('')
+  const [filterValue, setFilterValue] = useState("")
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]))
-  const visibleColumns = ['name', 'status', 'company', 'store', 'days_before_due', 'strict_mode', 'is_default']
+  const visibleColumns = [
+    "name",
+    "status",
+    "company",
+    "store",
+    "days_before_due",
+    "strict_mode",
+    "is_default",
+    "actions"
+  ]
 
   const selectedUserIds = useMemo(() => {
     return Array.from(selectedKeys).map((key) => Number(key))
@@ -65,12 +105,14 @@ export const TableContainer = ({ data, columns, onSelectionChange }: Props) => {
   }
 
   useEffect(() => {
-    const selectedUsers = data.filter((el) => selectedUserIds.includes(el.id))
-    console.log(selectedUsers)
-  }, [selectedUserIds])
+    const selectedStrategies = data.filter((el) =>
+      selectedUserIds.includes(el.id)
+    )
+    console.log("Selected strategies:", selectedStrategies)
+  }, [selectedUserIds, data])
 
   return (
-    <div className='w-full'>
+    <div className="w-full">
       <CustomTable
         columns={columns}
         data={data}
@@ -79,7 +121,7 @@ export const TableContainer = ({ data, columns, onSelectionChange }: Props) => {
         selectedKeys={selectedKeys}
         renderCell={renderUserCell}
         onSearchChange={setFilterValue}
-        onClearSearch={() => setFilterValue('')}
+        onClearSearch={() => setFilterValue("")}
         onSelectionChange={handleSelectionChange}
       />
     </div>

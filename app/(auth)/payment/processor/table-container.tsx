@@ -1,47 +1,37 @@
 import { CustomTable } from '@com/index'
-import { cn } from '@uti/cn'
 import { useMemo, useState, useEffect, Key } from 'react'
 import { Chip, Selection } from '@heroui/react'
-
-import { PaymentEx, ColumnEx } from './types'
+import { ProcessorT } from '@typ/processor'
+import { ColumnEx } from './types'
 
 type Props = {
-  data: PaymentEx[]
+  data: ProcessorT[]
   columns: ColumnEx[]
   onSelectionChange?: (keys: Set<number>) => void
 }
-import { getStatusColor } from '@typ/payment-status'
 
-const VerticalDotsIcon = ({ size = 24, width, height, className, ...props }: { size?: number; width?: number; height?: number; className?: string }) => {
-  return (
-    <svg aria-hidden='true' fill='none' focusable='false' height={size || height} role='presentation' viewBox='0 0 24 24' width={size || width} className={cn('', className)} {...props}>
-      <path d='M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z' fill='currentColor' />
-    </svg>
-  )
-}
-
-const renderUserCell = (payment: PaymentEx, columnKey: Key) => {
+const renderUserCell = (payment: ProcessorT, columnKey: Key) => {
   switch (columnKey) {
     case 'name':
-      return <span>{payment.name}</span>
+      return <span>{payment.name || "-"}</span>
 
     case 'description':
-      return <span>{payment.description}</span>
+      return <span>{payment.description || "-"}</span>
 
     case 'processor_type':
-      return <span>{payment.processor_type}</span>
+      return <span>{payment.processor_type || "-"}</span>
 
     case 'status':
-      return <Chip className={payment.status === 'active' ? getStatusColor('PP') : getStatusColor('PF')}>{payment.status}</Chip>
+      return <Chip variant="flat" color={payment.active ? "success" : "danger"}>{payment.active ? "Active" : "Inactive"}</Chip>
 
     case 'store_id':
-      return <span>{payment.store_id}</span>
+      return <span>{payment.store_id || "-"}</span>
 
     case 'client_id':
-      return <span>{payment.client_id}</span>
+      return <span>{payment.client_id || "-"}</span>
 
     case 'location_id':
-      return <span>{payment.location_id}</span>
+      return <span>{payment.location_id || "-"}</span>
 
     default:
       return (payment as any)[columnKey as string]

@@ -8,6 +8,8 @@ import {
   Download,
   Eraser,
   Eye,
+  FileDown,
+  Folder,
   IdCard,
   Info,
   List,
@@ -122,6 +124,12 @@ const CommonIcons = {
   },
   refreshCcw: {
     SVG: ({ size }: SizeT) => { return <RefreshCcw size={ size } /> }
+  },
+  fileDown: {
+    SVG: ({ size }: SizeT) => { return <FileDown size={ size } /> }
+  },
+  folder: {
+    SVG: ({ size }: SizeT) => { return <Folder size={ size } /> }
   }
   /* --------------------------- COMMON --------------------------- */
 } as const
