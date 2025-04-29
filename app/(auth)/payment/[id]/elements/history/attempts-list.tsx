@@ -58,7 +58,7 @@ export const PaymentAttemptsList: React.FC<PaymentAttemptsListProps> = ({
             key={itemKey}
             aria-label={`Attempt ${attempt.attempt_number}`}
             title={
-              <div className="flex items-center justify-between w-full">
+              <div className={`flex flex-row flex-wrap gap-2 items-center justify-between w-full`}>
                 <div className="flex items-center gap-2">
                   {attempt.success ? (
                     <CheckCircle className="w-5 h-5 text-success" />
