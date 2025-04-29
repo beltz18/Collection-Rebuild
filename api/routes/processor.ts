@@ -14,7 +14,7 @@ type ProcessorsResponse = ProcessorT[]
 export const useGetProcessors = (token: string | null) => {
   return useCollectionQuery<ProcessorsResponse>({
     fetcher: async () => await genericAuthRequest(METHODS.get,
-      API_ROUTES.processor, {},
+      API_ROUTES.processor, { },
       token ? { Authorization: `Bearer ${token}` } : undefined
     ),
     queryKey: [CACHE_KEYS.getProcessors],

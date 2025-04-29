@@ -4,6 +4,9 @@ export const CACHE_KEYS = {
   getStrategies: 'strategies',
   getSteps: 'steps',
   getProcessors: 'processors',
+  getCompanies: 'companies',
+  getBranches: 'branches',
+  getMethods: 'methods',
 }
 
 type HttpMethod = 'get' | 'post' | 'put' | 'delete' | 'patch'
@@ -22,6 +25,9 @@ export const API_ROUTES = {
   strategy: '/api/payment-strategies/',
   steps: '/api/payment-steps/',
   processor: '/payment-processors/',
+  company: '/api/companies/',
+  branch: '/api/branches/',
+  method: '/api/payment-methods/',
 }
 
 export const SYSTEM_ROUTES = {

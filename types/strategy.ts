@@ -1,7 +1,7 @@
 export interface StrategyT {
   active: boolean,
-  branch: number | null
-  company: number | null
+  branch: number | string | null
+  company: number | string | null
   create_date: Date | string | null
   days_before_due_to_start: number | null
   default: boolean

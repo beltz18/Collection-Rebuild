@@ -75,7 +75,6 @@ export default memo (({
 })
 
 const CompStep = (data: any) => {
-  console.log(data)
   return (
     <div className='w-full flex flex-col text-[8px]'>
       <div className='w-full flex items-center justify-between'>
@@ -102,33 +101,46 @@ const CompStep = (data: any) => {
 }
 
 const CompStrategy = (data: any) => {
+  console.log(data)
   return (
     <div className='w-full flex flex-col text-[8px]'>
       <div className='w-full flex items-center justify-between'>
         <b>Company:</b>
         <span>
-          { data.data.company ?? 'No company' }
+          {
+            typeof data.data.company !== 'number'
+              ?
+            data.data.company ?? 'No company'
+              :
+            'No company'
+          }
         </span>
       </div>
       
       <div className='w-full flex items-center justify-between'>
         <b>Store:</b>
         <span>
-          { data.data.branch ?? 'No store' }
+          {
+            typeof data.data.branch !== 'number'
+              ?
+            data.data.company ?? 'No store'
+              :
+            'No store'
+          }
         </span>
       </div>
       
       <div className='w-full flex items-center justify-between'>
         <b>Created:</b>
         <span>
-          { format(data.data.create_date, 'dd-MM-yyyy') }
+          { format(data.data.create_date, 'PP') }
         </span>
       </div>
       
       <div className='w-full flex items-center justify-between'>
         <b>Updated:</b>
         <span>
-          { format(data.data.update_date, 'dd-MM-yyyy') }
+          { format(data.data.update_date, 'PP') }
         </span>
       </div>
     </div>

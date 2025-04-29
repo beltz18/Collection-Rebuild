@@ -60,7 +60,7 @@ const renderUserCell = (loans: Loan, columnKey: Key) => {
     case 'request_date':
       return (
         <span className=''>
-          { loans.request_date ? format(loans.request_date, 'dd-MM-yyyy') : 'No date' }
+          { loans.request_date ? format(loans.request_date, 'PP') : 'No date' }
         </span>
       )
 

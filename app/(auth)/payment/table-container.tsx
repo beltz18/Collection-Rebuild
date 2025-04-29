@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { CustomTable } from '@com/index'
 import { VerticalDotsIcon } from '@uti/consts'
 import { SYSTEM_ROUTES } from '@api/cache'
+import { format } from 'date-fns'
 import {
   useState,
   Key,
@@ -77,7 +78,7 @@ const renderUserCell = (payment: Payment, columnKey: Key) => {
 
     case 'due_date':
       return <span className='capitalize'>
-        { payment.due_date }
+        { format(payment.due_date, 'PP') ?? 'No Date' }
       </span>
 
     case 'pay_date':
