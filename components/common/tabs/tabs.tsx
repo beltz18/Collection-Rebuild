@@ -20,7 +20,7 @@ export const Tabs = ({ children, className, ...props }: TabsProps) => {
 
   return (
     <DefaultTabs
-      variant="underlined"
+      variant='underlined'
       color={ variants[theme] ?? 'primary' }
       className={`${className}`}
       { ...props }

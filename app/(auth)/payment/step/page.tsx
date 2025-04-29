@@ -1,11 +1,18 @@
 'use client'
 
-import { useEffect } from 'react'
+import {
+  useEffect,
+  useState,
+} from 'react'
+import { useSearchParams } from 'next/navigation'
 import { DefaultLayout } from '@lay/default'
-import { CardQueryContainer } from './query-container'
+import { StepsQueryContainer } from './query-container'
 import { useSidebarStore } from '@sts/useSidebarStore'
 
 export default function App() {
+  const searchParams = useSearchParams()
+  const [strategy, setStrategy] = useState<string | null>('')
+
   const {
     setActiveTab,
     setActiveChildrenTab,
@@ -16,11 +23,14 @@ export default function App() {
     setActiveTab('Payments')
     setActiveChildrenTab('Payment Steps')
     setActiveChildrenIndex(3)
-  }, [])
+
+    const strategy = searchParams.get('strategyId')
+    if (strategy) setStrategy(strategy)
+  }, [searchParams])
 
   return (
     <DefaultLayout>
-      <CardQueryContainer />
+      <StepsQueryContainer strategyId={ strategy } />
     </DefaultLayout>
   )
 }

@@ -45,6 +45,7 @@ export default function PaymentTable() {
   const { 
     data, 
     isLoading, 
+    isFetching,
     isError, 
     error 
   } = useGetPayments(token, { page_size: selected, page: current })
@@ -54,7 +55,7 @@ export default function PaymentTable() {
     if (isError) {
       console.log(error)
       errorToast({
-        title: (error as any).response?.data?.error ?? 'Error',
+        title: 'Error',
         body: 'Session expired or unexpected error. Please sign in again',
         duration: 5000,
       })
@@ -64,7 +65,7 @@ export default function PaymentTable() {
 
   if (!mounted) return null
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <LoadingComp
         title='Payments'

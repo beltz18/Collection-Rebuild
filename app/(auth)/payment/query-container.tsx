@@ -43,10 +43,11 @@ export const TableQueryContainer = () => {
   const [current, setCurrent] = useState<number>(1)
 
   const { 
-    data, 
-    isLoading, 
-    isError, 
-    error 
+    data,
+    isLoading,
+    isFetching,
+    isError,
+    error,
   } = useGetPayments(token, { page_size: selected, page: current })
 
   useEffect(() => {
@@ -54,7 +55,7 @@ export const TableQueryContainer = () => {
     if (isError) {
       console.log(error)
       errorToast({
-        title: (error as any).response?.data?.error ?? 'Error',
+        title: 'Error',
         body: 'Session expired or unexpected error. Please sign in again',
         duration: 5000,
       })
@@ -64,7 +65,7 @@ export const TableQueryContainer = () => {
 
   if (!mounted) return null
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <LoadingComp
         title='Payments'

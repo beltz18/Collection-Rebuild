@@ -35,12 +35,13 @@ export const TableQueryContainer = () => {
   const { token, logout } = useTokenStore()
 
   const [mounted, setMounted] = useState(false)
-  const [selected, setSelected] = useState<number>(8)
+  const [selected, setSelected] = useState<number>(30)
   const [current, setCurrent] = useState<number>(1)
 
   const {
     data,
     isLoading,
+    isFetching,
     isError,
     error
   } = useGetLoans(token, { page_size: selected, page: current })
@@ -50,7 +51,7 @@ export const TableQueryContainer = () => {
     if (isError) {
       console.log(error)
       errorToast({
-        title: (error as any).response?.data?.error ?? 'Error',
+        title: 'Error',
         body: 'Session expired or unexpected error. Please sign in again',
         duration: 5000,
       })
@@ -60,7 +61,7 @@ export const TableQueryContainer = () => {
 
   if (!mounted) return null
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <LoadingComp
         title='Loans'

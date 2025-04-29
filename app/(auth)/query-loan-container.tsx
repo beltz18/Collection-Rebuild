@@ -41,6 +41,7 @@ export default function LoansTable() {
   const {
     data,
     isLoading,
+    isFetching,
     isError,
     error
   } = useGetLoans(token, { page_size: selected, page: current })
@@ -50,7 +51,7 @@ export default function LoansTable() {
     if (isError) {
       console.log(error)
       errorToast({
-        title: (error as any).response?.data?.error ?? 'Error',
+        title: 'Error',
         body: 'Session expired or unexpected error. Please sign in again',
         duration: 5000,
       })
@@ -60,7 +61,7 @@ export default function LoansTable() {
 
   if (!mounted) return null
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <LoadingComp
         title='Loans'
