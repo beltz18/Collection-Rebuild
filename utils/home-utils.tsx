@@ -16,16 +16,8 @@ export const NoResults = ({
 }: EmptyProps) => {
   return (
     <Card className='flex flex-col gap-4 p-4'>
-      <div className='text-default-600 flex justify-between items-center text-lg'>
-        <Heading
-          level={ 1 }
-          className='text-theme-text-title/60 text-2xl'
-        >
-          Loans
-        </Heading>
-      </div>
-
       <NotFound
+        title={ title }
         className='h-[440px] flex items-center w-full justify-center'
         description='There are no loans created yet'
       />
