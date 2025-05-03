@@ -4,6 +4,7 @@ import { ComponentContainer } from './component-container'
 import { useTokenStore } from '@sts/useTokenStore'
 import { useFlowStore } from '@sts/useFlowStore'
 import { StrategySelector } from './util/strategySelector'
+import { useGetProcessors } from '@api/routes/processor'
 import {
   useGetCompanies,
   useGetBranches,
@@ -58,6 +59,8 @@ export const StepsQueryContainer = ({ strategyId }: Props) => {
     { enabled: false },
   )
 
+  const { data: methods } = useGetMethods(token)
+  const { data: processors } = useGetProcessors(token)
   const { data: company } = useGetCompanies(token)
   const {
     data: b,
@@ -99,12 +102,18 @@ export const StepsQueryContainer = ({ strategyId }: Props) => {
       const { data: branches } = await refetchBranch()
 
       if (stepsData && stepsData.length > 0) {
-        const sortedSteps = [...stepsData].sort((a, b) => a.order - b.order)
+        let sortedSteps = [...stepsData].sort((a, b) => a.order - b.order)
         const strategyFinal = { ...selectedStrategy }
 
         strategyFinal['id'] = 999999999
         strategyFinal['company'] = companies?.find((el) => el.company_id == selectedStrategy.company)?.name ?? null
         strategyFinal['branch'] = branches?.find((el) => el.branch_id == selectedStrategy.branch)?.name ?? null
+        
+        sortedSteps = sortedSteps.map((el) => ({
+          ...el,
+          method: methods?.find((e) => e.id == el.method)?.name ?? '',
+          processor: processors?.find((e) => e.id == el.processor)?.name ?? '',
+        }))
 
         setStrategy(selectedStrategy)
         setSteps(stepsData ?? [])

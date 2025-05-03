@@ -3,23 +3,18 @@
 import { TableQueryContainer } from './query-container'
 import AuthLayout from '../layout'
 import { DefaultLayout } from '@lay/default'
-import {
-  useEffect,
-  useState,
-} from 'react'
+import { Wrapper } from './wrapper'
 
 export default function PaymentTable() {
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
-  if (!mounted) return null
-
   return (
     <AuthLayout>
-      <DefaultLayout>
-        <div className='p-4'>
-          <TableQueryContainer />
-        </div>
-      </DefaultLayout>
+      <Wrapper>
+        <DefaultLayout>
+          <div className='p-4'>
+            <TableQueryContainer />
+          </div>
+        </DefaultLayout>
+      </Wrapper>
     </AuthLayout>
   )
 }

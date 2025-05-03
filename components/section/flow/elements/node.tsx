@@ -1,6 +1,10 @@
 import { memo } from 'react'
 import { format } from 'date-fns'
 import {
+  StrategyT,
+  StepT,
+} from '@typ/strategy'
+import {
   Handle,
   Position,
   type Node,
@@ -9,7 +13,7 @@ import {
 
 export type NodeData = {
   title?: string
-  Data?: any
+  Data?: StrategyT | StepT
   type: 'step' | 'strategy'
 }
 
@@ -25,7 +29,7 @@ export default memo (({
       <div className='fixed flex-row-reverse top-[-7.5px] z-50 flex items-center justify-between w-full'>
         <div className={`cloud bg-green-600`} />
 
-        <div className='text-[10px] px-2.5 text-black/70 border-[.1px] bg-white rounded-full'>
+        <div className={`${type === 'step' ? 'bg-white text-black/70' : 'bg-theme-text-hover text-theme-text-on-primary'} text-[10px] px-2.5 border-[.1px] rounded-full`}>
           {
             type === 'step'
               ?
@@ -70,6 +74,16 @@ export default memo (({
           <Handle type='source' position={ Position.Right } />
         </div>
       </div>
+      
+      {
+        Data?.is_basic_step && (
+          <div className='fixed bottom-[-7.5px] z-50 flex items-center justify-center w-full'>
+            <div className='text-[10px] px-2.5 border-[.1px] bg-theme-background text-theme-text-title rounded-full'>
+              Basic
+            </div>
+          </div>
+        )
+      }
     </>
   )
 })
@@ -101,7 +115,6 @@ const CompStep = (data: any) => {
 }
 
 const CompStrategy = (data: any) => {
-  console.log(data)
   return (
     <div className='w-full flex flex-col text-[8px]'>
       <div className='w-full flex items-center justify-between'>

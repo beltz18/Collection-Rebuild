@@ -9,6 +9,8 @@ export interface StrategyT {
   name: string
   strict_mode: boolean
   update_date: Date | string | null
+  order?: number
+  is_basic_step?: boolean
 }
 
 export interface Strategy {
@@ -37,8 +39,8 @@ export interface StepT {
   update_date: Date | string | null
   active: boolean
   strategy: number
-  method: number
-  processor: number
+  method: number | string
+  processor: number | string
   order: number
   attempts: number
   min_hours_between_attempts: number

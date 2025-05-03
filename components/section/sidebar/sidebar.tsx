@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { Icon } from '@com/icon'
 import { useTheme } from '@ctx/themeContext'
@@ -8,7 +10,6 @@ import {
   ChevronRight 
 } from 'lucide-react'
 import {
-  useState,
   createContext,
   useContext,
 } from 'react'

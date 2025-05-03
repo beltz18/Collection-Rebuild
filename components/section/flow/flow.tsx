@@ -1,6 +1,10 @@
 import '@xyflow/react/dist/base.css'
 
-import { useCallback, useState } from 'react'
+import {
+  useCallback,
+  useState,
+  ChangeEventHandler,
+} from 'react'
 import {
   ReactFlow,
   Controls,
@@ -8,16 +12,19 @@ import {
   useEdgesState,
   addEdge,
   MiniMap,
+  Panel,
   type Node,
   type Edge,
   type OnConnect,
   type ColorMode,
 } from '@xyflow/react'
+import { type NodeData } from './elements/node'
+import { Line } from './elements/line'
+import { CustomSelect } from '@com/select/select'
 import { PlusCircle } from 'lucide-react'
 import AddNodeModal from './modal/add'
 import { Button } from '@com/index'
-import { type NodeData } from './elements/node'
-// import { initialNodes, initialEdges } from './elements/data'
+import { useTheme } from '@ctx/themeContext'
 
 import CustomNode from './elements/node'
 import CustomEdge from './elements/edge'
@@ -44,13 +51,16 @@ export const Flow = ({
   initialNodes,
   initialEdges,
 }: Props) => {
+  const { flowTheme, setFlowTheme } = useTheme()
+
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [colorMode, setColorMode] = useState<ColorMode>('dark')
+  const [colorMode, setColorMode] = useState<ColorMode>(flowTheme)
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 
   const onConnect: OnConnect = useCallback(
-    (params) => setEdges((els) => addEdge(params, els)),
+    (params) => setEdges((els) =>
+      addEdge(params, els)),
     []
   )
 
@@ -64,6 +74,16 @@ export const Flow = ({
 
     setNodes((prev) => [...prev, newNode])
     setIsModalOpen(false)
+  }
+
+  const options = [
+    { label: 'dark', key: 'dark' },
+    { label: 'light', key: 'light' },
+  ]
+
+  const onChange : ChangeEventHandler<HTMLSelectElement> = (e) => {
+    setColorMode(e.target.value as ColorMode)
+    setFlowTheme(e.target.value as ColorMode)
   }
 
   return (
@@ -83,45 +103,27 @@ export const Flow = ({
       >
         <MiniMap />
         <Controls showInteractive={ false } />
+        <Line />
 
-        <div className='w-full flex justify-end pt-3 pr-4'>
+        <Panel className='flex gap-3' position="top-right">
+          <CustomSelect
+            values={ options }
+            label='Theme'
+            onChange={ onChange }
+            size='sm'
+            className='w-[120px] text-theme-text-default'
+          />
+          
           <Button
             type='button'
             placeholder='Add Step'
             variant='bordered'
             color='secondary'
-            className='rounded-md text-xs font-medium h-8 bg-zinc-300/20 z-50'
+            className='rounded-md text-xs h-[48px] font-medium z-50 bg-theme-background text-theme-text-title'
             startContent={ <PlusCircle size={ 14 } /> }
             onPress={() => setIsModalOpen(true)}
           />
-        </div>
-        <svg>
-          <defs>
-            <linearGradient id='edge-gradient'>
-              <stop offset='0%' stopColor='#ae53ba' />
-              <stop offset='100%' stopColor='#2a8af6' />
-            </linearGradient>
-
-            <marker
-              id='edge-circle'
-              viewBox='-5 -5 10 10'
-              refX='0'
-              refY='0'
-              markerUnits='strokeWidth'
-              markerWidth='10'
-              markerHeight='10'
-              orient='auto'
-            >
-              <circle
-                stroke='#2a8af6'
-                strokeOpacity='0.75'
-                r='2'
-                cx='0'
-                cy='0'
-              />
-            </marker>
-          </defs>
-        </svg>
+        </Panel>
       </ReactFlow>
 
       <AddNodeModal
