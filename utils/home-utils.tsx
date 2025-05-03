@@ -1,7 +1,4 @@
-import {
-  Heading,
-  SkeletonTable,
-} from '@com/index'
+import { SkeletonTable } from '@com/index'
 import { Card } from '@com/card/card-loan'
 import { NotFound } from '@sec/not-found'
 import MenuOptions from '@sec/menufilters'

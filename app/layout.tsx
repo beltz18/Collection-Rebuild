@@ -9,7 +9,10 @@ import {
 } from '@uti/var'
 
 export const metadata : Metadata = {
-  title: APPNAME,
+  title: {
+    default: APPNAME,
+    template: `${APPNAME} | %s`,
+  },
   description: DESCRIPTION,
   keywords: [],
 }

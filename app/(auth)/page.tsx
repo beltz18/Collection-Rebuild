@@ -3,6 +3,11 @@ import AuthLayout from './layout'
 import LoansTable from './query-loan-container'
 import PaymentsTable from './query-payment-container'
 import { Wrapper } from './wrapper'
+import { PAGES } from '@uti/var'
+
+export const metadata = {
+  title: PAGES.home,
+}
 
 export default function App() {
   return (

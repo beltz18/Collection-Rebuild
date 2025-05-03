@@ -1,9 +1,12 @@
-'use client'
-
 import { TableQueryContainer } from './query-container'
 import AuthLayout from '../layout'
 import { DefaultLayout } from '@lay/default'
 import { Wrapper } from './wrapper'
+import { PAGES } from '@uti/var'
+
+export const metadata = {
+  title: PAGES.payment,
+}
 
 export default function PaymentTable() {
   return (
