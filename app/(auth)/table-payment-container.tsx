@@ -1,11 +1,9 @@
-import Link from 'next/link'
-import { CustomTable } from '@com/index'
-import { VerticalDotsIcon } from '@uti/consts'
-import { SYSTEM_ROUTES } from '@api/cache'
-import { format } from 'date-fns'
-import { cn } from '@uti/cn'
+'use client'
+
 import {
+  useMemo,
   useState,
+  useEffect,
   Key,
 } from 'react'
 import {
@@ -27,6 +25,13 @@ import {
   getStatusColor,
   paymentStatus,
 } from '@typ/payment-status'
+import Link from 'next/link'
+import { CustomTable } from '@com/index'
+import { VerticalDotsIcon } from '@uti/consts'
+import { SYSTEM_ROUTES } from '@api/cache'
+import { format } from 'date-fns'
+import { cn } from '@uti/cn'
+import { useMenuStorePayment } from '@sts/useMenuStore'
 
 type Props = {
   data: Payment[]
@@ -147,6 +152,8 @@ export const TableContainer = ({
   data,
   columns,
 }: Props) => {
+  const { setSelectedCells } = useMenuStorePayment()
+
   const [filterValue, setFilterValue] = useState('')
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]))
   const visibleColumns = [
@@ -162,14 +169,20 @@ export const TableContainer = ({
     'actions',
   ]
 
-  // const selectedUserIds = useMemo(() => {
-  //   return Array.from(selectedKeys).map(key => Number(key))
-  // }, [selectedKeys])
+  const selectedElements = useMemo(() => {
+    return Array.from(selectedKeys).map(key => Number(key))
+  }, [selectedKeys])
 
-  // useEffect(() => {
-  //   const selectedUsers = data.filter(el => selectedUserIds.includes(el.id))
-  //   console.log(selectedUsers)
-  // }, [selectedUserIds])
+  const handleSelectionChange = (keys: Selection) =>
+    setSelectedKeys(keys)
+
+  useEffect(() => {
+    const selected = data.filter(el => selectedElements.includes(el.id))
+    setSelectedCells(selected)
+
+    if (selectedKeys == 'all')
+      setSelectedCells(data)
+  }, [selectedElements])
 
   return (
     <div className='w-full'>
@@ -182,7 +195,7 @@ export const TableContainer = ({
         renderCell={ renderUserCell }
         onSearchChange={ setFilterValue }
         onClearSearch={() => setFilterValue('')}
-        onSelectionChange={ setSelectedKeys }
+        onSelectionChange={ handleSelectionChange }
       />
     </div>
   )

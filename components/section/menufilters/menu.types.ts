@@ -1,10 +1,8 @@
-import { Loan, Payment } from "@typ/home-tables"
+import { Loan, Payment } from '@typ/home-tables'
 
 export interface MenuPropsContext {
   search: string
-  tabs: 'table' | 'cards'
-  rows: number[]
-  selectedRow: number
+  tab: 'table' | 'card'
   filters: {
     key: string
     value: any

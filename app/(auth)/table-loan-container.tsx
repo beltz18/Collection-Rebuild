@@ -8,6 +8,7 @@ import {
 } from 'react'
 import {
   Button,
+  Chip,
   Selection,
 } from '@heroui/react'
 import {
@@ -21,7 +22,6 @@ import {
   Column,
 } from '@typ/home-tables'
 import Link from 'next/link'
-import { Chip } from '@com/chip'
 import { CustomTable } from '@com/index'
 import { VerticalDotsIcon } from '@uti/consts'
 import { getStatusColor } from '@typ/loans-status'
@@ -29,6 +29,7 @@ import { SYSTEM_ROUTES } from '@api/cache'
 import { format } from 'date-fns'
 import { loanRequestStatus } from '@typ/loans-status'
 import { cn } from '@uti/cn'
+import { useMenuStoreLoan } from '@sts/useMenuStore'
 
 type Props = {
   data: Loan[]
@@ -138,24 +139,34 @@ export const TableContainer = ({
   data,
   columns,
 }: Props) => {
+  const { setSelectedCells } = useMenuStoreLoan()
+
   const [filterValue, setFilterValue] = useState('')
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]))
-  const visibleColumns = ['id', 'customer', 'approved_amount', 'request_date', 'term', 'status', 'actions']
+  const visibleColumns = [
+    'id',
+    'customer',
+    'approved_amount',
+    'request_date',
+    'term',
+    'status',
+    'actions',
+  ]
 
-  const selectedUserIds = useMemo(() => {
+  const selectedElements = useMemo(() => {
     return Array.from(selectedKeys).map((key) => Number(key))
   }, [selectedKeys])
 
-  const handleSelectionChange = (keys: Selection) => {
+  const handleSelectionChange = (keys: Selection) =>
     setSelectedKeys(keys)
-  }
 
   useEffect(() => {
-    const selected = data.filter((el) => selectedUserIds.includes(el.id))
-    console.log(selected)
-  }, [selectedUserIds])
-
-  console.log(data)
+    const selected = data.filter((el) => selectedElements.includes(el.id))
+    setSelectedCells(selected)
+    
+    if (selectedKeys == 'all')
+      setSelectedCells(data)
+  }, [selectedElements])
 
   return (
     <div className='w-full'>

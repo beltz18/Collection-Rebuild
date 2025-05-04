@@ -6,7 +6,7 @@ import MenuOptions from '@sec/menufilters'
 import { useGetLoans } from '@api/routes/loan'
 import { useTokenStore } from '@sts/useTokenStore'
 import { Column } from '@typ/home-tables'
-import uuid4 from 'uuid4'
+import { useMenuStoreLoan } from '@sts/useMenuStore'
 import {
   NoResults,
   LoadingComp,
@@ -32,6 +32,8 @@ const columns: Column[] = [
 
 export default function LoansTable() {
   const options = [4, 8, 12]
+
+  const { selectedCells } = useMenuStoreLoan()
   const { token, logout } = useTokenStore()
 
   const [mounted, setMounted] = useState(false)
@@ -87,6 +89,7 @@ export default function LoansTable() {
       <div className='text-default-600 flex justify-between items-center text-lg'>
         <MenuOptions
           title='Loans'
+          cells={ selectedCells }
           options={ options }
           selected={ selected }
           setSelected={ setSelected }

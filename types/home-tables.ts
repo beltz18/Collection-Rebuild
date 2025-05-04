@@ -84,7 +84,7 @@ export type PaymentHistoryT = {
 }
 
 export interface Payment {
-  id: string
+  id: number
   loan_payment_id: number
   loan_request_id: number
   loan_request_number: string

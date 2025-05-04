@@ -6,7 +6,7 @@ import MenuOptions from '@sec/menufilters'
 import { useGetPayments } from '@api/routes/payment'
 import { useTokenStore } from '@sts/useTokenStore'
 import type { Column } from '@typ/home-tables'
-import uuid4 from 'uuid4'
+import { useMenuStorePayment } from '@sts/useMenuStore'
 import {
   NoResults,
   LoadingComp,
@@ -36,6 +36,8 @@ const columns: Column[] = [
 
 export default function PaymentTable() {
   const options = [4, 8, 12]
+
+  const { selectedCells } = useMenuStorePayment()
   const { token, logout } = useTokenStore()
 
   const [mounted, setMounted] = useState(false)
@@ -82,7 +84,7 @@ export default function PaymentTable() {
 
   const payments = data.results.map((payment) => ({
     ...payment,
-    id: uuid4(),
+    id: payment.loan_payment_id,
   }))
 
   return (
@@ -90,6 +92,7 @@ export default function PaymentTable() {
       <div className='text-default-600 flex justify-between items-center text-lg'>
         <MenuOptions
           title='Payments'
+          cells={ selectedCells }
           options={ options }
           selected={ selected }
           setSelected={ setSelected }
