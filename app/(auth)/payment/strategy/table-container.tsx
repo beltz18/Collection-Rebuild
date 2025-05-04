@@ -23,7 +23,11 @@ type Props = {
 const renderUserCell = (strategy: StrategyT, columnKey: Key) => {
   switch (columnKey) {
     case 'name':
-      return <span>{ strategy.name }</span>
+      return (
+        <span className='text-theme-text-default'>
+          { strategy.name }
+        </span>
+      )
 
     case 'status':
       return (
@@ -33,13 +37,25 @@ const renderUserCell = (strategy: StrategyT, columnKey: Key) => {
       )
 
     case 'company':
-      return <span>{ strategy.company || '-' }</span>
+      return (
+        <span className='text-theme-text-default'>
+          { strategy.company || '-' }
+        </span>
+      )
 
     case 'store':
-      return <span>{ strategy.branch || '-' }</span>
+      return (
+        <span className='text-theme-text-default'>
+          { strategy.branch || '-' }
+        </span>
+      )
 
     case 'days_before_due':
-      return <span>{ strategy.days_before_due_to_start }</span>
+      return (
+        <span className='text-theme-text-default'>
+          { strategy.days_before_due_to_start }
+        </span>
+      )
 
     case 'strict_mode':
       return (
@@ -108,10 +124,8 @@ export const TableContainer = ({ data, columns, onSelectionChange }: Props) => {
   }
 
   useEffect(() => {
-    const selectedStrategies = data.filter((el) =>
-      selectedUserIds.includes(el.id)
-    )
-    console.log('Selected strategies:', selectedStrategies)
+    const selectedStrategies = data.filter((el) => selectedUserIds.includes(el.id))
+    // console.log('Selected strategies:', selectedStrategies)
   }, [selectedUserIds, data])
 
   return (

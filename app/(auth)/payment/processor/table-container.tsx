@@ -21,21 +21,21 @@ const renderUserCell = (payment: ProcessorT, columnKey: Key) => {
   switch (columnKey) {
     case 'name':
       return (
-        <span>
+        <span className='text-theme-text-default'>
           { payment.name || '-' }
         </span>
       )
 
     case 'description':
       return (
-        <span>
+        <span className='text-theme-text-default'>
           { payment.description || '-' }
         </span>
       )
 
     case 'processor_type':
       return (
-        <span>
+        <span className='text-theme-text-default capitalize'>
           { payment.processor_type || '-' }
         </span>
       )
@@ -52,21 +52,21 @@ const renderUserCell = (payment: ProcessorT, columnKey: Key) => {
 
     case 'store_id':
       return (
-        <span>
+        <span className='text-theme-text-default'>
           { payment.store_id || '-' }
         </span>
       )
 
     case 'client_id':
       return (
-        <span>
+        <span className='text-theme-text-default'>
           { payment.client_id || '-' }
         </span>
       )
 
     case 'location_id':
       return (
-        <span>
+        <span className='text-theme-text-default'>
           { payment.location_id || '-' }
         </span>
       )
@@ -79,7 +79,15 @@ const renderUserCell = (payment: ProcessorT, columnKey: Key) => {
 export const TableContainer = ({ data, columns }: Props) => {
   const [filterValue, setFilterValue] = useState('')
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]))
-  const visibleColumns = ['name', 'description', 'processor_type', 'status', 'store_id', 'client_id', 'location_id']
+  const visibleColumns = [
+    'name',
+    'description',
+    'processor_type',
+    'status',
+    'store_id',
+    'client_id',
+    'location_id',
+  ]
 
   const selectedUserIds = useMemo(() => {
     return Array.from(selectedKeys).map((key) => Number(key))
