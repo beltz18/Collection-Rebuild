@@ -90,7 +90,7 @@ export const TableQueryContainer = () => {
     <Card className='flex flex-col gap-4 p-4'>
       <div className='text-default-600 flex justify-between items-center text-lg'>
         <MenuOptions
-          title='All Payments'
+          title='Payments'
           cells={ selectedCells }
           options={ options }
           selected={ selected }
