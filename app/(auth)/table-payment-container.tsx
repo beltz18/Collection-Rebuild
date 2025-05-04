@@ -3,6 +3,7 @@ import { CustomTable } from '@com/index'
 import { VerticalDotsIcon } from '@uti/consts'
 import { SYSTEM_ROUTES } from '@api/cache'
 import { format } from 'date-fns'
+import { cn } from '@uti/cn'
 import {
   useState,
   Key,
@@ -48,7 +49,7 @@ const renderUserCell = (payment: Payment, columnKey: Key) => {
       return (
         <Link
           href={ payment.customer_details_url }
-          className='capitalize text-blue-600 underline'
+          className='capitalize text-blue-600 underline w-full h-full overflow-hidden text-ellipsis whitespace-nowrap'
         >
           {`${payment.person.first_name} ${payment.person.last_name}`}
         </Link>
@@ -56,9 +57,18 @@ const renderUserCell = (payment: Payment, columnKey: Key) => {
     
     case 'status':
       return (
-        <Chip className={ getStatusColor(payment.payment_status.unique_description) }>
-          { paymentStatus[payment.payment_status.unique_description] }
-        </Chip>
+        <div className='max-w-[250px]'>
+          <Chip
+            className={
+              cn(
+                'w-full h-full overflow-hidden text-ellipsis whitespace-nowrap',
+                getStatusColor(payment.payment_status.unique_description)
+              )
+            }
+          >
+            { paymentStatus[payment.payment_status.unique_description] }
+          </Chip>
+        </div>
       )
 
     case 'amount':
@@ -68,23 +78,16 @@ const renderUserCell = (payment: Payment, columnKey: Key) => {
         </span>
       )
 
-    case 'capital':
-      return (
-        <span className='text-theme-text-default'>
-          { payment.capital }
-        </span>
-      )
-
     case 'interest':
       return (
         <span className='text-theme-text-default'>
-          { payment.interest_amount }
+          { payment.interest_amount }%
         </span>
       )
 
     case 'due_date':
       return (
-        <span className='text-theme-text-default'>
+        <span className='text-theme-text-default w-full h-full overflow-hidden text-ellipsis whitespace-nowrap'>
           { format(payment.due_date, 'PP') }
         </span>
       )
@@ -151,7 +154,6 @@ export const TableContainer = ({
     'name',
     'status',
     'amount',
-    'capital',
     'interest',
     'due_date',
     'pay_date',

@@ -133,18 +133,20 @@ export const StepsQueryContainer = ({ strategyId }: Props) => {
           data={ dataSteps }
         />
           :
-        <StrategySelector
-          data={
-            data?.map((s) => ({
-              key: s.id,
-              label: s.name,
-            }))
-              ??
-            []
-          }
-          setValue={ setValue }
-          handleClick={ handleGoToSteps }
-        />
+        <div className='px-4 w-full flex justify-center'>
+          <StrategySelector
+            data={
+              data?.map((s) => ({
+                key: s.id,
+                label: s.name,
+              }))
+                ??
+              []
+            }
+            setValue={ setValue }
+            handleClick={ handleGoToSteps }
+          />
+        </div>
       }
     </div>
   )

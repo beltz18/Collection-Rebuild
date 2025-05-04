@@ -28,6 +28,7 @@ import { getStatusColor } from '@typ/loans-status'
 import { SYSTEM_ROUTES } from '@api/cache'
 import { format } from 'date-fns'
 import { loanRequestStatus } from '@typ/loans-status'
+import { cn } from '@uti/cn'
 
 type Props = {
   data: Loan[]
@@ -50,7 +51,7 @@ const renderUserCell = (loans: Loan, columnKey: Key) => {
       return (
         <Link
           href={ loans.customer_details_url }
-          className='capitalize text-blue-600 underline'
+          className='capitalize text-blue-600 underline w-full h-full overflow-hidden text-ellipsis whitespace-nowrap'
         >
           {`${loans.person.first_name} ${loans.person.last_name}`}
         </Link>
@@ -58,14 +59,14 @@ const renderUserCell = (loans: Loan, columnKey: Key) => {
 
     case 'approved_amount':
       return (
-        <span className='text-theme-text-default'>
+        <span className='text-theme-text-default w-full h-full overflow-hidden text-ellipsis whitespace-nowrap'>
           {`${loans.approved_amount} ${loans.currency.code}`}
         </span>
       )
     
     case 'request_date':
       return (
-        <span className='text-theme-text-default'>
+        <span className='text-theme-text-default w-full h-full overflow-hidden text-ellipsis whitespace-nowrap'>
           {
             loans.request_date
               ?
@@ -85,9 +86,18 @@ const renderUserCell = (loans: Loan, columnKey: Key) => {
 
     case 'status':
       return (
-        <Chip className={ getStatusColor(loans.status.unique_description) }>
-          { loanRequestStatus[loans.status.unique_description] }
-        </Chip>
+        <div className='max-w-[250px]'>
+          <Chip
+            className={
+              cn(
+                'w-full h-full overflow-hidden text-ellipsis whitespace-nowrap',
+                getStatusColor(loans.status.unique_description)
+              )
+            }
+          >
+            { loanRequestStatus[loans.status.unique_description] }
+          </Chip>
+        </div>
       )
 
     case 'actions':
