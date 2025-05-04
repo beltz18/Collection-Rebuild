@@ -1,44 +1,82 @@
+import {
+  useMemo,
+  useState,
+  useEffect,
+  Key,
+} from 'react'
+import {
+  Chip,
+  Selection,
+} from '@heroui/react'
 import { CustomTable } from '@com/index'
-import { useMemo, useState, useEffect, Key } from 'react'
-import { Chip, Selection } from '@heroui/react'
 import { ProcessorT } from '@typ/processor'
 import { ColumnEx } from './types'
 
 type Props = {
   data: ProcessorT[]
   columns: ColumnEx[]
-  onSelectionChange?: (keys: Set<number>) => void
 }
 
 const renderUserCell = (payment: ProcessorT, columnKey: Key) => {
   switch (columnKey) {
     case 'name':
-      return <span>{payment.name || "-"}</span>
+      return (
+        <span>
+          { payment.name || '-' }
+        </span>
+      )
 
     case 'description':
-      return <span>{payment.description || "-"}</span>
+      return (
+        <span>
+          { payment.description || '-' }
+        </span>
+      )
 
     case 'processor_type':
-      return <span>{payment.processor_type || "-"}</span>
+      return (
+        <span>
+          { payment.processor_type || '-' }
+        </span>
+      )
 
     case 'status':
-      return <Chip variant="flat" color={payment.active ? "success" : "danger"}>{payment.active ? "Active" : "Inactive"}</Chip>
+      return (
+        <Chip
+          variant='flat'
+          color={ payment.active ? 'success' : 'danger' }
+        >
+          { payment.active ? 'Active' : 'Inactive' }
+        </Chip>
+      )
 
     case 'store_id':
-      return <span>{payment.store_id || "-"}</span>
+      return (
+        <span>
+          { payment.store_id || '-' }
+        </span>
+      )
 
     case 'client_id':
-      return <span>{payment.client_id || "-"}</span>
+      return (
+        <span>
+          { payment.client_id || '-' }
+        </span>
+      )
 
     case 'location_id':
-      return <span>{payment.location_id || "-"}</span>
+      return (
+        <span>
+          { payment.location_id || '-' }
+        </span>
+      )
 
     default:
       return (payment as any)[columnKey as string]
   }
 }
 
-export const TableContainer = ({ data, columns, onSelectionChange }: Props) => {
+export const TableContainer = ({ data, columns }: Props) => {
   const [filterValue, setFilterValue] = useState('')
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]))
   const visibleColumns = ['name', 'description', 'processor_type', 'status', 'store_id', 'client_id', 'location_id']
@@ -49,10 +87,6 @@ export const TableContainer = ({ data, columns, onSelectionChange }: Props) => {
 
   const handleSelectionChange = (keys: Selection) => {
     setSelectedKeys(keys)
-    if (onSelectionChange) {
-      const numericKeys = new Set(Array.from(keys).map((key) => Number(key)))
-      onSelectionChange(numericKeys)
-    }
   }
 
   useEffect(() => {
@@ -63,15 +97,15 @@ export const TableContainer = ({ data, columns, onSelectionChange }: Props) => {
   return (
     <div className='w-full'>
       <CustomTable
-        columns={columns}
-        data={data}
-        filterValue={filterValue}
-        visibleColumns={visibleColumns}
-        selectedKeys={selectedKeys}
-        renderCell={renderUserCell}
-        onSearchChange={setFilterValue}
+        columns={ columns }
+        data={ data }
+        filterValue={ filterValue }
+        visibleColumns={ visibleColumns }
+        selectedKeys={ selectedKeys }
+        renderCell={ renderUserCell }
+        onSearchChange={ setFilterValue }
         onClearSearch={() => setFilterValue('')}
-        onSelectionChange={handleSelectionChange}
+        onSelectionChange={ handleSelectionChange }
       />
     </div>
   )

@@ -2,7 +2,7 @@ import { LoanRequestStatus } from '@typ/loans-status'
 import { Status as PaymentStatus } from '@typ/payment-status'
 
 export interface Loan {
-  id: string
+  id: number
   loan_request_id: number
   loan_details_url: string
   customer_details_url: string

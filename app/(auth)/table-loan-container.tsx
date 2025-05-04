@@ -1,5 +1,9 @@
+'use client'
+
 import {
+  useMemo,
   useState,
+  useEffect,
   Key,
 } from 'react'
 import {
@@ -54,18 +58,30 @@ const renderUserCell = (loans: Loan, columnKey: Key) => {
 
     case 'approved_amount':
       return (
-        <span>{`${loans.approved_amount} ${loans.currency.code}`}</span>
+        <span className='text-theme-text-default'>
+          {`${loans.approved_amount} ${loans.currency.code}`}
+        </span>
       )
     
     case 'request_date':
       return (
-        <span className=''>
-          { loans.request_date ? format(loans.request_date, 'PP') : 'No date' }
+        <span className='text-theme-text-default'>
+          {
+            loans.request_date
+              ?
+            format(loans.request_date, 'PP')
+              :
+            'No date'
+          }
         </span>
       )
 
     case 'term':
-      return <span className='capitalize'>{ loans.term }</span>
+      return (
+        <span className='text-theme-text-default'>
+          { loans.term }
+        </span>
+      )
 
     case 'status':
       return (
@@ -85,15 +101,15 @@ const renderUserCell = (loans: Loan, columnKey: Key) => {
 
           <DropdownMenu>
             <DropdownItem
-              key='view'
+              key='view loan'
               as={ Link }
               href={ SYSTEM_ROUTES.goToALoan(loans.loan_request_id) }
             >
-              View loan
+              View Loan
             </DropdownItem>
 
             <DropdownItem
-              key='edit'
+              key='view payments'
               as={ Link }
               href={ SYSTEM_ROUTES.goToAPayment(loans.loan_request_id) }
             >
@@ -116,16 +132,20 @@ export const TableContainer = ({
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]))
   const visibleColumns = ['id', 'customer', 'approved_amount', 'request_date', 'term', 'status', 'actions']
 
-  // console.log(data, columns)
+  const selectedUserIds = useMemo(() => {
+    return Array.from(selectedKeys).map((key) => Number(key))
+  }, [selectedKeys])
 
-  // const selectedUserIds = useMemo(() => {
-  //   return Array.from(selectedKeys).map(key => Number(key))
-  // }, [selectedKeys])
+  const handleSelectionChange = (keys: Selection) => {
+    setSelectedKeys(keys)
+  }
 
-  // useEffect(() => {
-  //   const selected = data.filter(el => selectedUserIds.includes(el.loan_request_id))
-  //   console.log(selected)
-  // }, [selectedUserIds])
+  useEffect(() => {
+    const selected = data.filter((el) => selectedUserIds.includes(el.id))
+    console.log(selected)
+  }, [selectedUserIds])
+
+  console.log(data)
 
   return (
     <div className='w-full'>
@@ -138,7 +158,7 @@ export const TableContainer = ({
         renderCell={ renderUserCell }
         onSearchChange={ setFilterValue }
         onClearSearch={() => setFilterValue('')}
-        onSelectionChange={ setSelectedKeys }
+        onSelectionChange={ handleSelectionChange }
       />
     </div>
   )

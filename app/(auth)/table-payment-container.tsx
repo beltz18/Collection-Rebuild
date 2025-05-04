@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { CustomTable } from '@com/index'
 import { VerticalDotsIcon } from '@uti/consts'
 import { SYSTEM_ROUTES } from '@api/cache'
+import { format } from 'date-fns'
 import {
   useState,
   Key,
@@ -61,39 +62,59 @@ const renderUserCell = (payment: Payment, columnKey: Key) => {
       )
 
     case 'amount':
-      return <span>
-        { payment.amount }
-      </span>
+      return (
+        <span className='text-theme-text-default'>
+          { payment.amount }
+        </span>
+      )
 
     case 'capital':
-      return <span>
-        { payment.capital }
-      </span>
+      return (
+        <span className='text-theme-text-default'>
+          { payment.capital }
+        </span>
+      )
 
     case 'interest':
-      return <span>
-        { payment.interest_amount }
-      </span>
+      return (
+        <span className='text-theme-text-default'>
+          { payment.interest_amount }
+        </span>
+      )
 
     case 'due_date':
-      return <span className='capitalize'>
-        { payment.due_date }
-      </span>
+      return (
+        <span className='text-theme-text-default'>
+          { format(payment.due_date, 'PP') }
+        </span>
+      )
 
     case 'pay_date':
-      return <span className='capitalize'>
-        { payment.real_payment_date || "Not paid yet" }
-      </span>
+      return (
+        <span className='text-theme-text-default'>
+          {
+            payment.real_payment_date
+              ?
+            format(payment.real_payment_date, 'PP')
+              :
+            'Not paid yet'
+          }
+        </span>
+      )
 
     case 'company':
-      return <span>
-        { payment.company_name ?? 'No company' }
-      </span>
+      return (
+        <span className='text-theme-text-default'>
+          { payment.company_name ?? 'No company' }
+        </span>
+      )
 
     case 'pay_num':
-      return <span>
-        { payment.number_payment }
-      </span>
+      return (
+        <span className='text-theme-text-default'>
+          { payment.number_payment }
+        </span>
+      )
 
     case 'actions':
       return (

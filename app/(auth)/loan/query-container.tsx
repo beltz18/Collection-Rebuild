@@ -79,7 +79,7 @@ export const TableQueryContainer = () => {
 
   const loans = data.results.map((loan) => ({
     ...loan,
-    id: uuid4(),
+    id: loan.loan_request_id,
   }))
 
   return (

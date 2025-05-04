@@ -80,7 +80,7 @@ export function CustomTable<T>({
         <TableBody items={ data }>
           {
             (item: T) => (
-              <TableRow key={ (item as any).id ?? JSON.stringify(item) }>
+              <TableRow key={ (item as any).id }>
               {
                 (columnKey: React.Key) => (
                 <TableCell>
