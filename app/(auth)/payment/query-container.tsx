@@ -6,7 +6,7 @@ import MenuOptions from '@sec/menufilters'
 import { useGetPayments } from '@api/routes/payment'
 import { useTokenStore } from '@sts/useTokenStore'
 import type { Column } from '@typ/home-tables'
-import uuid4 from 'uuid4'
+import { useMenuStorePayment } from '@sts/useMenuStore'
 import {
   NoResults,
   LoadingComp,
@@ -25,7 +25,6 @@ const columns: Column[] = [
   { uid: 'name', name: 'Person Name' },
   { uid: 'status', name: 'Status' },
   { uid: 'amount', name: 'Amount' },
-  { uid: 'capital', name: 'Capital' },
   { uid: 'interest', name: 'Interest' },
   { uid: 'due_date', name: 'Due Date' },
   { uid: 'pay_date', name: 'Payment Date' },
@@ -36,6 +35,8 @@ const columns: Column[] = [
 
 export const TableQueryContainer = () => {
   const options = [30, 40, 50]
+
+  const { selectedCells } = useMenuStorePayment()
   const { token, logout } = useTokenStore()
 
   const [mounted, setMounted] = useState(false)
@@ -82,7 +83,7 @@ export const TableQueryContainer = () => {
 
   const payments = data.results.map((payment) => ({
     ...payment,
-    id: uuid4(),
+    id: payment.loan_payment_id,
   }))
 
   return (
@@ -90,6 +91,7 @@ export const TableQueryContainer = () => {
       <div className='text-default-600 flex justify-between items-center text-lg'>
         <MenuOptions
           title='All Payments'
+          cells={ selectedCells }
           options={ options }
           selected={ selected }
           setSelected={ setSelected }

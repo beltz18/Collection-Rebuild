@@ -35,5 +35,6 @@ export const SYSTEM_ROUTES = {
   loan: '/loan',
   payment: '/payment',
   goToALoan: (id: number) => { return `/loan/${id}` },
+  goToAPaymentFromLoan: (id: number) => { return `/loan/${id}?tab=payment` },
   goToAPayment: (id: number) => { return `/payment/${id}` },
 }

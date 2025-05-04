@@ -122,7 +122,7 @@ const renderUserCell = (loans: Loan, columnKey: Key) => {
             <DropdownItem
               key='view payments'
               as={ Link }
-              href={ SYSTEM_ROUTES.goToAPayment(loans.loan_request_id) }
+              href={ SYSTEM_ROUTES.goToAPaymentFromLoan(loans.loan_request_id) }
             >
               View payments
             </DropdownItem>

@@ -16,24 +16,24 @@ export const options : SidebarOptions = {
       Icon: <Icon icon='loans' size='md' />,
     },
     {
-      label: "Payments",
-      Icon: <Icon icon="payments" size="md" />,
+      label: 'Payments',
+      Icon: <Icon icon='payments' size='md' />,
       children: [
         {
-          label: "Payments",
-          url: "/payment",
+          label: 'Payments',
+          url: '/payment',
         },
         {
-          label: "Payment Processors",
-          url: "/payment/processor",
+          label: 'Payment Processors',
+          url: '/payment/processor',
         },
         {
-          label: "Payment Strategies",
-          url: "/payment/strategy",
+          label: 'Payment Strategies',
+          url: '/payment/strategy',
         },
         {
-          label: "Payment Steps",
-          url: "/payment/step",
+          label: 'Payment Steps',
+          url: '/payment/step',
         },
       ],
     },

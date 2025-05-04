@@ -1,4 +1,7 @@
-import { Loan, Payment } from '@typ/home-tables'
+import {
+  Loan,
+  Payment,
+} from '@typ/home-tables'
 
 export interface MenuPropsContext {
   search: string

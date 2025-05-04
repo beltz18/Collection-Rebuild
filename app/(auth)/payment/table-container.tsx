@@ -1,10 +1,7 @@
-import Link from 'next/link'
-import { CustomTable } from '@com/index'
-import { VerticalDotsIcon } from '@uti/consts'
-import { SYSTEM_ROUTES } from '@api/cache'
-import { format } from 'date-fns'
 import {
+  useMemo,
   useState,
+  useEffect,
   Key,
 } from 'react'
 import {
@@ -26,6 +23,13 @@ import {
   getStatusColor,
   paymentStatus,
 } from '@typ/payment-status'
+import Link from 'next/link'
+import { CustomTable } from '@com/index'
+import { VerticalDotsIcon } from '@uti/consts'
+import { SYSTEM_ROUTES } from '@api/cache'
+import { format } from 'date-fns'
+import { cn } from '@uti/cn'
+import { useMenuStorePayment } from '@sts/useMenuStore'
 
 type Props = {
   data: Payment[]
@@ -48,7 +52,7 @@ const renderUserCell = (payment: Payment, columnKey: Key) => {
       return (
         <Link
           href={ payment.customer_details_url }
-          className='capitalize text-blue-600 underline'
+          className='capitalize text-blue-600 underline w-full h-full overflow-hidden text-ellipsis whitespace-nowrap'
         >
           {`${payment.person.first_name} ${payment.person.last_name}`}
         </Link>
@@ -56,45 +60,67 @@ const renderUserCell = (payment: Payment, columnKey: Key) => {
     
     case 'status':
       return (
-        <Chip className={ getStatusColor(payment.payment_status.unique_description) }>
-          { paymentStatus[payment.payment_status.unique_description] }
-        </Chip>
+        <div className='max-w-[250px]'>
+          <Chip
+            className={
+              cn(
+                'w-full h-full overflow-hidden text-ellipsis whitespace-nowrap',
+                getStatusColor(payment.payment_status.unique_description)
+              )
+            }
+          >
+            { paymentStatus[payment.payment_status.unique_description] }
+          </Chip>
+        </div>
       )
 
     case 'amount':
-      return <span>
-        { payment.amount }
-      </span>
-
-    case 'capital':
-      return <span>
-        { payment.capital }
-      </span>
+      return (
+        <span className='text-theme-text-default'>
+          { payment.amount }
+        </span>
+      )
 
     case 'interest':
-      return <span>
-        { payment.interest_amount }
-      </span>
+      return (
+        <span className='text-theme-text-default'>
+          { payment.interest_amount }%
+        </span>
+      )
 
     case 'due_date':
-      return <span className='capitalize'>
-        { format(payment.due_date, 'PP') ?? 'No Date' }
-      </span>
+      return (
+        <span className='text-theme-text-default w-full h-full overflow-hidden text-ellipsis whitespace-nowrap'>
+          { format(payment.due_date, 'PP') }
+        </span>
+      )
 
     case 'pay_date':
-      return <span className='capitalize'>
-        { payment.real_payment_date || "Not paid yet" }
-      </span>
+      return (
+        <span className='text-theme-text-default'>
+          {
+            payment.real_payment_date
+              ?
+            format(payment.real_payment_date, 'PP')
+              :
+            'Not paid yet'
+          }
+        </span>
+      )
 
     case 'company':
-      return <span>
-        { payment.company_name ?? 'No company' }
-      </span>
+      return (
+        <span className='text-theme-text-default'>
+          { payment.company_name ?? 'No company' }
+        </span>
+      )
 
     case 'pay_num':
-      return <span>
-        { payment.number_payment }
-      </span>
+      return (
+        <span className='text-theme-text-default'>
+          { payment.number_payment }
+        </span>
+      )
 
     case 'actions':
       return (
@@ -124,6 +150,8 @@ export const TableContainer = ({
   data,
   columns,
 }: Props) => {
+  const { setSelectedCells } = useMenuStorePayment()
+
   const [filterValue, setFilterValue] = useState('')
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]))
   const visibleColumns = [
@@ -131,7 +159,6 @@ export const TableContainer = ({
     'name',
     'status',
     'amount',
-    'capital',
     'interest',
     'due_date',
     'pay_date',
@@ -140,14 +167,20 @@ export const TableContainer = ({
     'actions',
   ]
 
-  // const selectedUserIds = useMemo(() => {
-  //   return Array.from(selectedKeys).map(key => Number(key))
-  // }, [selectedKeys])
-
-  // useEffect(() => {
-  //   const selectedUsers = data.filter(el => selectedUserIds.includes(el.id))
-  //   console.log(selectedUsers)
-  // }, [selectedUserIds])
+  const selectedElements = useMemo(() => {
+      return Array.from(selectedKeys).map(key => Number(key))
+    }, [selectedKeys])
+  
+    const handleSelectionChange = (keys: Selection) =>
+      setSelectedKeys(keys)
+  
+    useEffect(() => {
+      const selected = data.filter(el => selectedElements.includes(el.id))
+      setSelectedCells(selected)
+  
+      if (selectedKeys == 'all')
+        setSelectedCells(data)
+    }, [selectedElements])
 
   return (
     <div className='w-full'>
@@ -160,7 +193,7 @@ export const TableContainer = ({
         renderCell={ renderUserCell }
         onSearchChange={ setFilterValue }
         onClearSearch={() => setFilterValue('')}
-        onSelectionChange={ setSelectedKeys }
+        onSelectionChange={ handleSelectionChange }
       />
     </div>
   )

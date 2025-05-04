@@ -1,5 +1,7 @@
 import {
+  useMemo,
   useState,
+  useEffect,
   Key,
 } from 'react'
 import {
@@ -24,6 +26,7 @@ import { getStatusColor } from '@typ/loans-status'
 import { SYSTEM_ROUTES } from '@api/cache'
 import { format } from 'date-fns'
 import { loanRequestStatus } from '@typ/loans-status'
+import { useMenuStoreLoan } from '@sts/useMenuStore'
 
 type Props = {
   data: Loan[]
@@ -85,7 +88,7 @@ const renderUserCell = (loans: Loan, columnKey: Key) => {
 
           <DropdownMenu>
             <DropdownItem
-              key='view'
+              key='view loan'
               as={ Link }
               href={ SYSTEM_ROUTES.goToALoan(loans.loan_request_id) }
             >
@@ -93,9 +96,9 @@ const renderUserCell = (loans: Loan, columnKey: Key) => {
             </DropdownItem>
 
             <DropdownItem
-              key='edit'
+              key='view payment'
               as={ Link }
-              href={ SYSTEM_ROUTES.goToAPayment(loans.loan_request_id) }
+              href={ SYSTEM_ROUTES.goToAPaymentFromLoan(loans.loan_request_id) }
             >
               View payments
             </DropdownItem>
@@ -112,20 +115,34 @@ export const TableContainer = ({
   data,
   columns,
 }: Props) => {
+  const { setSelectedCells } = useMenuStoreLoan()
+
   const [filterValue, setFilterValue] = useState('')
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]))
-  const visibleColumns = ['id', 'customer', 'approved_amount', 'request_date', 'term', 'status', 'actions']
+  const visibleColumns = [
+    'id',
+    'customer',
+    'approved_amount',
+    'request_date',
+    'term',
+    'status',
+    'actions',
+  ]
 
-  // console.log(data, columns)
+  const selectedElements = useMemo(() => {
+    return Array.from(selectedKeys).map(key => Number(key))
+  }, [selectedKeys])
 
-  // const selectedUserIds = useMemo(() => {
-  //   return Array.from(selectedKeys).map(key => Number(key))
-  // }, [selectedKeys])
+  const handleSelectionChange = (keys: Selection) =>
+    setSelectedKeys(keys)
 
-  // useEffect(() => {
-  //   const selected = data.filter(el => selectedUserIds.includes(el.loan_request_id))
-  //   console.log(selected)
-  // }, [selectedUserIds])
+  useEffect(() => {
+    const selected = data.filter(el => selectedElements.includes(el.id))
+    setSelectedCells(selected)
+    
+    if (selectedKeys == 'all')
+      setSelectedCells(data)
+  }, [selectedElements])
 
   return (
     <div className='w-full'>
@@ -138,7 +155,7 @@ export const TableContainer = ({
         renderCell={ renderUserCell }
         onSearchChange={ setFilterValue }
         onClearSearch={() => setFilterValue('')}
-        onSelectionChange={ setSelectedKeys }
+        onSelectionChange={ handleSelectionChange }
       />
     </div>
   )

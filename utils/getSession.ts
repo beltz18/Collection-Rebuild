@@ -1,4 +1,4 @@
-import { useTokenStore } from "@sts/useTokenStore"
+import { useTokenStore } from '@sts/useTokenStore'
 
 export const getSession = () => {
   const token = useTokenStore.getState().token

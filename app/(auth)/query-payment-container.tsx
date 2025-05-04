@@ -25,7 +25,6 @@ const columns: Column[] = [
   { uid: 'name', name: 'Person Name' },
   { uid: 'status', name: 'Status' },
   { uid: 'amount', name: 'Amount' },
-  { uid: 'capital', name: 'Capital' },
   { uid: 'interest', name: 'Interest' },
   { uid: 'due_date', name: 'Due Date' },
   { uid: 'pay_date', name: 'Payment Date' },
