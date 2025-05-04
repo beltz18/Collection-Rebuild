@@ -25,6 +25,8 @@ type Props = {
   cells?: Loan[] | Payment[]
   options: number[]
   selected: number
+  input: string | null
+  setInput: (input: string) => void
   setSelected: React.Dispatch<React.SetStateAction<number>>
 }
 
@@ -33,6 +35,8 @@ export const LittleMenu = ({
   cells,
   options,
   selected,
+  input,
+  setInput,
   setSelected,
 }: Props) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -65,9 +69,9 @@ export const LittleMenu = ({
             type='text'
             size='sm'
             placeholder='Search...'
-            endContent={
-              <Icon icon='search' className='text-default-400' size='md' />
-            }
+            endContent={ <Icon icon='search' className='text-default-400' size='md' /> }
+            value={ input ?? '' }
+            onChange={(e) => setInput(e.target.value)}
           />
         </div>
 

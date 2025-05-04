@@ -8,9 +8,12 @@ import { Card } from '@heroui/card'
 import { QueryContainer } from './query-container'
 import { useSidebarStore } from '@sts/useSidebarStore'
 import MenuPayment from './elements/menu/menuPayment'
+import { useDebounce } from '@uti/useDebounce'
 
 export const Wrapper = () => {
+  const [search, setSearch] = useState<string>('')
   const [mounted, setMounted] = useState(false)
+  const debouncedSearch = useDebounce(search, 500)
   
   const {
     setActiveTab,
@@ -54,9 +57,15 @@ export const Wrapper = () => {
             filters={ filters }
             setFilters={ setFilters }
             applyFilters={ applyFilters }
+            input={ search }
+            setInput={ setSearch }
           />
         </div>
-        <QueryContainer />
+
+        <QueryContainer
+          search={ debouncedSearch }
+          setSearch={ setSearch }
+        />
       </Card>
     </div>
   )

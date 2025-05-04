@@ -85,13 +85,12 @@ export const TableContainer = ({ data, columns }: Props) => {
     return Array.from(selectedKeys).map((key) => Number(key))
   }, [selectedKeys])
 
-  const handleSelectionChange = (keys: Selection) => {
+  const handleSelectionChange = (keys: Selection) =>
     setSelectedKeys(keys)
-  }
 
   useEffect(() => {
     const selectedUsers = data.filter((el) => selectedUserIds.includes(el.id))
-    console.log(selectedUsers)
+    // console.log(selectedUsers)
   }, [selectedUserIds])
 
   return (

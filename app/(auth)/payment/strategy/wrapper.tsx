@@ -5,14 +5,21 @@ import {
   useState,
 } from 'react'
 import { Card } from '@heroui/card'
-import { useSidebarStore } from '@sts/useSidebarStore'
 import { TableQueryContainer } from './query-container'
+import { useSidebarStore } from '@sts/useSidebarStore'
 import MenuPayment from './elements/menu/menuPayment'
+import { useDebounce } from '@uti/useDebounce'
 
 export const Wrapper = () => {
+  const [search, setSearch] = useState<string>('')
   const [mounted, setMounted] = useState(false)
-  const { setActiveTab, setActiveChildrenTab, setActiveChildrenIndex } =
-    useSidebarStore()
+  const debouncedSearch = useDebounce(search, 500)
+
+  const {
+    setActiveTab,
+    setActiveChildrenTab,
+    setActiveChildrenIndex,
+  } = useSidebarStore()
 
   const [filters, setFilters] = useState({
     status: '',
@@ -53,9 +60,15 @@ export const Wrapper = () => {
             filters={ filters }
             setFilters={ setFilters }
             applyFilters={ applyFilters }
+            input={ search }
+            setInput={ setSearch }
           />
         </div>
-        <TableQueryContainer />
+
+        <TableQueryContainer
+          search={ debouncedSearch }
+          setSearch={ setSearch }
+        />
       </Card>
     </div>
   )

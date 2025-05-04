@@ -7,6 +7,7 @@ import { useGetPayments } from '@api/routes/payment'
 import { useTokenStore } from '@sts/useTokenStore'
 import type { Column } from '@typ/home-tables'
 import { useMenuStorePayment } from '@sts/useMenuStore'
+import { useDebounce } from '@uti/useDebounce'
 import {
   NoResults,
   LoadingComp,
@@ -36,8 +37,13 @@ const columns: Column[] = [
 export default function PaymentTable() {
   const options = [4, 8, 12]
 
-  const { selectedCells } = useMenuStorePayment()
+  const {
+    search,
+    setSearch,
+    selectedCells,
+  } = useMenuStorePayment()
   const { token, logout } = useTokenStore()
+  const debouncedSearch = useDebounce(search, 500)
 
   const [mounted, setMounted] = useState(false)
   const [selected, setSelected] = useState<number>(8)
@@ -49,7 +55,14 @@ export default function PaymentTable() {
     isFetching,
     isError, 
     error 
-  } = useGetPayments(token, { page_size: selected, page: current })
+  } = useGetPayments(
+    token,
+    {
+      page_size: selected,
+      page: current,
+      search: debouncedSearch,
+    },
+  )
 
   useEffect(() => {
     setMounted(true)
@@ -73,13 +86,35 @@ export default function PaymentTable() {
         columns={ columns }
         options={ options }
         selected={ selected }
+        input={ search }
+        setInput={ setSearch }
         setSelected={ setSelected }
       />
     )
   }
 
-  if (!data?.results || data.results.length === 0)
-    return <NoResults title='Loans' />
+  if (!data?.results || data.results.length === 0) {
+    return (
+      <Card className='flex flex-col gap-4 p-4'>
+        <div className='text-default-600 flex justify-between items-center text-lg'>
+          <MenuOptions
+            title='Payments'
+            cells={ selectedCells }
+            options={ options }
+            selected={ selected }
+            input={ search }
+            setInput={ setSearch }
+            setSelected={ setSelected }
+          />
+        </div>
+
+        <NoResults
+          title='Payments'
+          description='No results found'
+        />
+      </Card>
+    )
+  }
 
   const payments = data.results.map((payment) => ({
     ...payment,
@@ -94,6 +129,8 @@ export default function PaymentTable() {
           cells={ selectedCells }
           options={ options }
           selected={ selected }
+          input={ search }
+          setInput={ setSearch }
           setSelected={ setSelected }
         />
       </div>

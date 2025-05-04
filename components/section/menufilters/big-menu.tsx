@@ -27,6 +27,8 @@ type Props = {
   cells?: Loan[] | Payment[]
   options: number[]
   selected: number
+  input: string | null
+  setInput: (input: string) => void
   setSelected: React.Dispatch<React.SetStateAction<number>>
 }
 
@@ -35,6 +37,8 @@ export const BigMenu = ({
   cells,
   options,
   selected,
+  input,
+  setInput,
   setSelected,
 }: Props) => {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
@@ -67,12 +71,14 @@ export const BigMenu = ({
             size='sm'
             placeholder='Search...'
             endContent={ <Search className='text-default-400' size={ 18 } /> }
+            value={ input ?? '' }
+            onChange={(e) => setInput(e.target.value)}
           />
         </div>
 
         <Tabs variant='solid'>
-          <Tabs.Tab title={<Icon icon='list' size='md' />} />
-          <Tabs.Tab title={<Icon icon='idCard' size='md' />} />
+          <Tabs.Tab title={ <Icon icon='list' size='md' /> } />
+          <Tabs.Tab title={ <Icon icon='idCard' size='md' /> } />
         </Tabs>
 
         <CustomDropdown>
@@ -116,7 +122,7 @@ export const BigMenu = ({
           {
             activeFiltersCount > 0 && (
               <span className='absolute -top-2 -right-2 flex h-[17px] min-w-[17px] items-center justify-center rounded-full bg-theme-text-hover px-[6px] text-[10px] font-bold text-white'>
-                {activeFiltersCount}
+                { activeFiltersCount }
               </span>
             )
           }

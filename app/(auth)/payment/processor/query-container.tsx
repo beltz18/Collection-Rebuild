@@ -16,6 +16,7 @@ import { ColumnEx } from './types'
 
 type Props = {
   search?: string
+  setSearch: (search: string) => void
 }
 
 const columns: ColumnEx[] = [
@@ -28,14 +29,28 @@ const columns: ColumnEx[] = [
   { uid: 'location_id', name: 'Location ID' },
 ]
 
-export const QueryContainer = ({ search }: Props) => {
+export const QueryContainer = ({
+  search,
+  setSearch,
+}: Props) => {
   const { token, logout } = useTokenStore()
 
   const [mounted, setMounted] = useState(false)
   const [selected, setSelected] = useState<number>(10)
 
-  const { data, isLoading, isFetching, isError, error } =
-    useGetProcessors(token)
+  const {
+    data,
+    isLoading,
+    isFetching,
+    isError,
+    error,
+  } = useGetProcessors(
+    token,
+    {
+      search,
+    },
+  )
+
   const options = data ? Array(data.length).fill(0) : []
 
   useEffect(() => {
@@ -61,23 +76,30 @@ export const QueryContainer = ({ search }: Props) => {
         options={ options }
         selected={ selected }
         setSelected={ setSelected }
+        input={ search ?? '' }
+        setInput={ setSearch }
+        headless
       />
     )
   }
 
-  if (!data || data.length === 0)
-    return <NoResults title='Payment Processors' />
+  if (!data || data.length === 0) {
+    return (
+      <NoResults
+        title='Payment Processors'
+        description='No results found'
+      />
+    )
+  }
 
   const processors = data.map((processor) => ({
     ...processor,
   }))
 
   return (
-    <div className='w-full flex items-center flex-col gap-4'>
-      <TableContainer 
-        data={ processors }
-        columns={ columns }
-      />
-    </div>
+    <TableContainer
+      data={ processors }
+      columns={ columns }
+    />
   )
 }

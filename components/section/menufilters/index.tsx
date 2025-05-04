@@ -11,6 +11,8 @@ type Props = {
   cells?: Loan[] | Payment[]
   options: number[]
   selected: number
+  input: string | null
+  setInput: (input: string) => void
   setSelected: React.Dispatch<React.SetStateAction<number>>
 }
 
@@ -19,6 +21,8 @@ export default function MenuOptions({
   cells,
   options,
   selected,
+  input,
+  setInput,
   setSelected,
 }: Props) {
   const { isTablet } = useResponsive()
@@ -30,6 +34,8 @@ export default function MenuOptions({
         cells={ cells }
         options={ options }
         selected={ selected }
+        input={ input }
+        setInput={ setInput }
         setSelected={ setSelected }
       />
     )
@@ -41,6 +47,8 @@ export default function MenuOptions({
       cells={ cells }
       options={ options }
       selected={ selected }
+      input={ input }
+      setInput={ setInput }
       setSelected={ setSelected }
     />
   )

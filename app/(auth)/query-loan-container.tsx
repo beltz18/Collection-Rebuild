@@ -7,6 +7,7 @@ import { useGetLoans } from '@api/routes/loan'
 import { useTokenStore } from '@sts/useTokenStore'
 import { Column } from '@typ/home-tables'
 import { useMenuStoreLoan } from '@sts/useMenuStore'
+import { useDebounce } from '@uti/useDebounce'
 import {
   NoResults,
   LoadingComp,
@@ -33,8 +34,13 @@ const columns: Column[] = [
 export default function LoansTable() {
   const options = [4, 8, 12]
 
-  const { selectedCells } = useMenuStoreLoan()
+  const {
+    search,
+    setSearch,
+    selectedCells,
+  } = useMenuStoreLoan()
   const { token, logout } = useTokenStore()
+  const debouncedSearch = useDebounce(search, 500)
 
   const [mounted, setMounted] = useState(false)
   const [selected, setSelected] = useState<number>(8)
@@ -46,7 +52,14 @@ export default function LoansTable() {
     isFetching,
     isError,
     error
-  } = useGetLoans(token, { page_size: selected, page: current })
+  } = useGetLoans(
+    token,
+    {
+      page_size: selected,
+      page: current,
+      search: debouncedSearch,
+    },
+  )
   
   useEffect(() => {
     setMounted(true)
@@ -70,13 +83,34 @@ export default function LoansTable() {
         columns={ columns }
         options={ options }
         selected={ selected }
+        input={ search }
+        setInput={ setSearch }
         setSelected={ setSelected }
       />
     )
   }
 
   if (!data?.results || data.results.length === 0) {
-    return <NoResults title='Loans' />
+    return (
+      <Card className='flex flex-col gap-4 p-4'>
+        <div className='text-default-600 flex justify-between items-center text-lg'>
+          <MenuOptions
+            title='Loans'
+            cells={ selectedCells }
+            options={ options }
+            selected={ selected }
+            input={ search }
+            setInput={ setSearch }
+            setSelected={ setSelected }
+          />
+        </div>
+
+        <NoResults
+          title='Loans'
+          description='No results found'
+        />
+      </Card>
+    )
   }
 
   const loans = data.results.map((loan) => ({
@@ -92,6 +126,8 @@ export default function LoansTable() {
           cells={ selectedCells }
           options={ options }
           selected={ selected }
+          input={ search }
+          setInput={ setSearch }
           setSelected={ setSelected }
         />
       </div>
