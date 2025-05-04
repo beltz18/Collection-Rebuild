@@ -19,6 +19,7 @@ import {
   SidebarItems,
   SidebarSubItems
 } from './sidebar.types'
+import { useResponsive } from '@uti/useResponsive'
 
 const SidebarContext = createContext<Ctx>({
   open: true,
@@ -59,12 +60,13 @@ function Trigger({ click }: { click: (newState: boolean) => void }) {
 
 function Content ({ children }: SidebarNodes) {
   const { open } = useContext(SidebarContext)
+  const { isMobile } = useResponsive()
 
   return (
     <div
       className={`bg-theme-primary text-theme-text fixed top-0 left-0 h-full
         flex justify-between flex-col transition-all duration-300 pt-[60px]
-        ${ open ? 'translate-x-0 w-[17rem]' : '-translate-x-0 w-[60px] px-1' }
+        ${ open && isMobile ? 'mt-[60px] pt-[0px] w-[75%]'  : open ? 'translate-x-0 w-[17rem]' : isMobile ? 'mt-[60px] pt-[0px] overflow-hidden h-0 w-0' :'-translate-x-0 w-[60px] px-1' }
       `}
     >
       { children }
