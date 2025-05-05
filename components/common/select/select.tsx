@@ -22,7 +22,9 @@ export const CustomSelect = ({
       >
         {
           values.map((val) => (
-            <SelectItem key={ val.key }>{ val.label }</SelectItem>
+            <SelectItem key={ val.key }>
+              { val.label }
+            </SelectItem>
           ))
         }
       </Select>

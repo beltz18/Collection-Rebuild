@@ -6,7 +6,8 @@ import MenuOptions from '@sec/menufilters'
 import { useGetLoans } from '@api/routes/loan'
 import { useTokenStore } from '@sts/useTokenStore'
 import { Column } from '@typ/home-tables'
-import uuid4 from 'uuid4'
+import { useMenuStoreLoan } from '@sts/useMenuStore'
+import { useDebounce } from '@uti/useDebounce'
 import {
   NoResults,
   LoadingComp,
@@ -32,7 +33,14 @@ const columns: Column[] = [
 
 export const TableQueryContainer = () => {
   const options = [30, 40, 50]
+
+  const {
+    search,
+    setSearch,
+    selectedCells,
+  } = useMenuStoreLoan()
   const { token, logout } = useTokenStore()
+  const debouncedSearch = useDebounce(search, 500)
 
   const [mounted, setMounted] = useState(false)
   const [selected, setSelected] = useState<number>(30)
@@ -45,7 +53,14 @@ export const TableQueryContainer = () => {
 
     isError,
     error
-  } = useGetLoans(token, { page_size: selected, page: current })
+  } = useGetLoans(
+    token,
+    {
+      page_size: selected,
+      page: current,
+      search: debouncedSearch,
+    },
+  )
   
   useEffect(() => {
     setMounted(true)
@@ -69,17 +84,39 @@ export const TableQueryContainer = () => {
         columns={ columns }
         options={ options }
         selected={ selected }
+        input={ search }
+        setInput={ setSearch }
         setSelected={ setSelected }
       />
     )
   }
 
-  if (!data?.results || data.results.length === 0)
-    return <NoResults title='Loans' />
+  if (!data?.results || data.results.length === 0) {
+    return (
+      <Card className='flex flex-col gap-4 p-4'>
+        <div className='text-default-600 flex justify-between items-center text-lg'>
+          <MenuOptions
+            title='Loans'
+            cells={ selectedCells }
+            options={ options }
+            selected={ selected }
+            input={ search }
+            setInput={ setSearch }
+            setSelected={ setSelected }
+          />
+        </div>
+
+        <NoResults
+          title='Loans'
+          description='No results found'
+        />
+      </Card>
+    )
+  }
 
   const loans = data.results.map((loan) => ({
     ...loan,
-    id: uuid4(),
+    id: loan.loan_request_id,
   }))
 
   return (
@@ -87,8 +124,11 @@ export const TableQueryContainer = () => {
       <div className='text-default-600 flex justify-between items-center text-lg'>
         <MenuOptions
           title='Loans'
+          cells={ selectedCells }
           options={ options }
           selected={ selected }
+          input={ search }
+          setInput={ setSearch }
           setSelected={ setSelected }
         />
       </div>

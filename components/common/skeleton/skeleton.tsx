@@ -1,3 +1,5 @@
+'use client'
+
 import { Skeleton as Ske } from '@heroui/skeleton'
 import { SkeletonProps } from '@heroui/skeleton'
 import { TableSkeletonProps } from './skeleton.types'

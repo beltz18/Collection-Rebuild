@@ -6,7 +6,8 @@ import MenuOptions from '@sec/menufilters'
 import { useGetPayments } from '@api/routes/payment'
 import { useTokenStore } from '@sts/useTokenStore'
 import type { Column } from '@typ/home-tables'
-import uuid4 from 'uuid4'
+import { useMenuStorePayment } from '@sts/useMenuStore'
+import { useDebounce } from '@uti/useDebounce'
 import {
   NoResults,
   LoadingComp,
@@ -25,7 +26,6 @@ const columns: Column[] = [
   { uid: 'name', name: 'Person Name' },
   { uid: 'status', name: 'Status' },
   { uid: 'amount', name: 'Amount' },
-  { uid: 'capital', name: 'Capital' },
   { uid: 'interest', name: 'Interest' },
   { uid: 'due_date', name: 'Due Date' },
   { uid: 'pay_date', name: 'Payment Date' },
@@ -36,7 +36,14 @@ const columns: Column[] = [
 
 export const TableQueryContainer = () => {
   const options = [30, 40, 50]
+
+  const {
+    search,
+    setSearch,
+    selectedCells,
+  } = useMenuStorePayment()
   const { token, logout } = useTokenStore()
+  const debouncedSearch = useDebounce(search, 500)
 
   const [mounted, setMounted] = useState(false)
   const [selected, setSelected] = useState<number>(30)
@@ -48,7 +55,14 @@ export const TableQueryContainer = () => {
     isFetching,
     isError,
     error,
-  } = useGetPayments(token, { page_size: selected, page: current })
+  } = useGetPayments(
+    token,
+    {
+      page_size: selected,
+      page: current,
+      search: debouncedSearch,
+    },
+  )
 
   useEffect(() => {
     setMounted(true)
@@ -72,26 +86,51 @@ export const TableQueryContainer = () => {
         columns={ columns }
         options={ options }
         selected={ selected }
+        input={ search }
+        setInput={ setSearch }
         setSelected={ setSelected }
       />
     )
   }
 
-  if (!data?.results || data.results.length === 0)
-    return <NoResults title='Loans' />
+  if (!data?.results || data.results.length === 0) {
+    return (
+      <Card className='flex flex-col gap-4 p-4'>
+        <div className='text-default-600 flex justify-between items-center text-lg'>
+          <MenuOptions
+            title='Payments'
+            cells={ selectedCells }
+            options={ options }
+            selected={ selected }
+            input={ search }
+            setInput={ setSearch }
+            setSelected={ setSelected }
+          />
+        </div>
+
+        <NoResults
+          title='Payments'
+          description='No results found'
+        />
+      </Card>
+    )
+  }
 
   const payments = data.results.map((payment) => ({
     ...payment,
-    id: uuid4(),
+    id: payment.loan_payment_id,
   }))
 
   return (
     <Card className='flex flex-col gap-4 p-4'>
       <div className='text-default-600 flex justify-between items-center text-lg'>
         <MenuOptions
-          title='All Payments'
+          title='Payments'
+          cells={ selectedCells }
           options={ options }
           selected={ selected }
+          input={ search }
+          setInput={ setSearch }
           setSelected={ setSelected }
         />
       </div>

@@ -1,64 +1,17 @@
-'use client'
-
-import { TableQueryContainer } from './query-container'
-import { Card } from '@heroui/card'
-import MenuPayment from './elements/menu/menuPayment'
 import AuthLayout from '../../layout'
 import { DefaultLayout } from '@lay/default'
-import { useSidebarStore } from '@sts/useSidebarStore'
-import { useEffect, useState } from 'react'
+import { Wrapper } from './wrapper'
+import { PAGES } from '@uti/var'
+
+export const metadata = {
+  title: PAGES.strategy,
+}
 
 export default function PaymentStrategiesTable() {
-  const [mounted, setMounted] = useState(false)
-  const { setActiveTab, setActiveChildrenTab, setActiveChildrenIndex } =
-    useSidebarStore()
-
-  const [filters, setFilters] = useState({
-    status: '',
-    default: '',
-    company_id: '',
-    branch_id: '',
-    days_before_due_to_start: '',
-    strict_mode: '',
-  })
-
-  const applyFilters = () => {
-    alert('works')
-    console.log(
-      filters.status,
-      filters.default,
-      filters.company_id,
-      filters.branch_id,
-      filters.days_before_due_to_start,
-      filters.strict_mode
-    )
-  }
-
-  useEffect(() => {
-    setMounted(true)
-    setActiveTab('Payments')
-    setActiveChildrenTab('Payment Strategies')
-    setActiveChildrenIndex(2)
-  }, [])
-
-  if (!mounted) return null
-
   return (
     <AuthLayout>
       <DefaultLayout>
-        <div className='p-4'>
-          <Card className='flex flex-col gap-4 p-4'>
-            <div className='text-default-600 flex justify-between items-center text-lg'>
-              <MenuPayment
-                title='Payment Strategies'
-                filters={filters}
-                setFilters={setFilters}
-                applyFilters={applyFilters}
-              />
-            </div>
-            <TableQueryContainer />
-          </Card>
-        </div>
+        <Wrapper />
       </DefaultLayout>
     </AuthLayout>
   )

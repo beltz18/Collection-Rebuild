@@ -19,7 +19,7 @@ export const StrategySelector = ({
   handleClick,
 }: CompProps) => {
   return (
-    <Card className='p-2 w-full min-w-xl max-w-xl rounded-md'>
+    <Card className='p-2 w-full max-w-xl rounded-md'>
       <Card.Header className='flex justify-center items-center'>
         <Heading
           level={ 1 }

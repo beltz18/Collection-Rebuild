@@ -15,23 +15,33 @@ import {
 
 type StrategiesResponse = StrategyT[]
 
-export const useGetStrategies = (token: string | null) => {
+type FilterStrategiesProps = Partial<{
+  search: string
+  active: boolean
+  default: boolean
+  company_id: number
+  branch_id: number
+  days_before_due_to_start: number
+  strict_mode: boolean
+}>
+
+export const useGetStrategies = (token: string | null, filters?: FilterStrategiesProps) => {
   return useCollectionQuery<StrategiesResponse>({
     fetcher: async () => await genericAuthRequest(METHODS.get,
-      API_ROUTES.strategy, { },
+      API_ROUTES.strategy, { ...filters },
       token ? { Authorization: `Bearer ${token}` } : undefined,
     ),
-    queryKey: [CACHE_KEYS.getStrategies],
+    queryKey: [CACHE_KEYS.getStrategies, filters],
   })
 }
 
-type FilterProps = {
+type FilterStepsProps = {
   strategy_id: number | undefined
 }
 
 export const useGetSteps = (
   token: string | null,
-  filters?: FilterProps,
+  filters?: FilterStepsProps,
   options?: { enabled: boolean },
 ) => {
   return useCollectionQuery<StepT[]>({

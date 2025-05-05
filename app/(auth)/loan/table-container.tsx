@@ -1,5 +1,7 @@
 import {
+  useMemo,
   useState,
+  useEffect,
   Key,
 } from 'react'
 import {
@@ -24,6 +26,8 @@ import { getStatusColor } from '@typ/loans-status'
 import { SYSTEM_ROUTES } from '@api/cache'
 import { format } from 'date-fns'
 import { loanRequestStatus } from '@typ/loans-status'
+import { cn } from '@uti/cn'
+import { useMenuStoreLoan } from '@sts/useMenuStore'
 
 type Props = {
   data: Loan[]
@@ -46,7 +50,7 @@ const renderUserCell = (loans: Loan, columnKey: Key) => {
       return (
         <Link
           href={ loans.customer_details_url }
-          className='capitalize text-blue-600 underline'
+          className='capitalize text-blue-600 underline w-full h-full overflow-hidden text-ellipsis whitespace-nowrap'
         >
           {`${loans.person.first_name} ${loans.person.last_name}`}
         </Link>
@@ -54,24 +58,45 @@ const renderUserCell = (loans: Loan, columnKey: Key) => {
 
     case 'approved_amount':
       return (
-        <span>{`${loans.approved_amount} ${loans.currency.code}`}</span>
+        <span className='text-theme-text-default w-full h-full overflow-hidden text-ellipsis whitespace-nowrap'>
+          {`${loans.approved_amount} ${loans.currency.code}`}
+        </span>
       )
     
     case 'request_date':
       return (
-        <span className=''>
-          { loans.request_date ? format(loans.request_date, 'PP') : 'No date' }
+        <span className='text-theme-text-default w-full h-full overflow-hidden text-ellipsis whitespace-nowrap'>
+          {
+            loans.request_date
+              ?
+            format(loans.request_date, 'PP')
+              :
+            'No date'
+          }
         </span>
       )
 
     case 'term':
-      return <span className='capitalize'>{ loans.term }</span>
+      return (
+        <span className='text-theme-text-default'>
+          { loans.term }
+        </span>
+      )
 
     case 'status':
       return (
-        <Chip className={ getStatusColor(loans.status.unique_description) }>
-          { loanRequestStatus[loans.status.unique_description] }
-        </Chip>
+        <div className='max-w-[250px]'>
+          <Chip
+            className={
+              cn(
+                'w-full h-full overflow-hidden text-ellipsis whitespace-nowrap',
+                getStatusColor(loans.status.unique_description)
+              )
+            }
+          >
+            { loanRequestStatus[loans.status.unique_description] }
+          </Chip>
+        </div>
       )
 
     case 'actions':
@@ -85,17 +110,17 @@ const renderUserCell = (loans: Loan, columnKey: Key) => {
 
           <DropdownMenu>
             <DropdownItem
-              key='view'
+              key='view loan'
               as={ Link }
               href={ SYSTEM_ROUTES.goToALoan(loans.loan_request_id) }
             >
-              View loan
+              View Loan
             </DropdownItem>
 
             <DropdownItem
-              key='edit'
+              key='view payments'
               as={ Link }
-              href={ SYSTEM_ROUTES.goToAPayment(loans.loan_request_id) }
+              href={ SYSTEM_ROUTES.goToAPaymentFromLoan(loans.loan_request_id) }
             >
               View payments
             </DropdownItem>
@@ -112,20 +137,34 @@ export const TableContainer = ({
   data,
   columns,
 }: Props) => {
+  const { setSelectedCells } = useMenuStoreLoan()
+
   const [filterValue, setFilterValue] = useState('')
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]))
-  const visibleColumns = ['id', 'customer', 'approved_amount', 'request_date', 'term', 'status', 'actions']
+  const visibleColumns = [
+    'id',
+    'customer',
+    'approved_amount',
+    'request_date',
+    'term',
+    'status',
+    'actions',
+  ]
 
-  // console.log(data, columns)
+  const selectedElements = useMemo(() => {
+    return Array.from(selectedKeys).map(key => Number(key))
+  }, [selectedKeys])
 
-  // const selectedUserIds = useMemo(() => {
-  //   return Array.from(selectedKeys).map(key => Number(key))
-  // }, [selectedKeys])
+  const handleSelectionChange = (keys: Selection) =>
+    setSelectedKeys(keys)
 
-  // useEffect(() => {
-  //   const selected = data.filter(el => selectedUserIds.includes(el.loan_request_id))
-  //   console.log(selected)
-  // }, [selectedUserIds])
+  useEffect(() => {
+    const selected = data.filter(el => selectedElements.includes(el.id))
+    setSelectedCells(selected)
+    
+    if (selectedKeys == 'all')
+      setSelectedCells(data)
+  }, [selectedElements])
 
   return (
     <div className='w-full'>
@@ -138,7 +177,7 @@ export const TableContainer = ({
         renderCell={ renderUserCell }
         onSearchChange={ setFilterValue }
         onClearSearch={() => setFilterValue('')}
-        onSelectionChange={ setSelectedKeys }
+        onSelectionChange={ handleSelectionChange }
       />
     </div>
   )

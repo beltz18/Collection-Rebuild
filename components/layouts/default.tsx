@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { useState } from 'react'
 import { Sidebar } from '@sec/index'
@@ -12,8 +14,10 @@ import {
   CompItem,
   CompSubItem,
 } from './elements/element-sidebar'
+import { useResponsive } from '@uti/useResponsive'
 
 export const DefaultLayout = ({ children }: LayoutProps) => {
+  const { isMobile} = useResponsive()
   const {
     activeTab,
     activeChildrenTab,
@@ -40,7 +44,7 @@ export const DefaultLayout = ({ children }: LayoutProps) => {
 
   return (
     <div className='flex h-screen w-full'>
-      <div className={`${ open ? 'w-[17rem]' : 'w-[60px]'} z-50`}>
+      <div className={`${ open && isMobile ? '' : open ? 'w-[17rem]' : isMobile ? 'w-0' : 'w-[60px]'} z-50`}>
         <Sidebar>
           <Sidebar.Trigger click={ handleSidebarToggle } />
           
@@ -163,7 +167,7 @@ export const DefaultLayout = ({ children }: LayoutProps) => {
       </div>
       
       <div className={`flex flex-col translate-x-0 z-0
-        ${open ? 'w-[calc(100%-17rem)]' : 'w-[calc(100%-60px)]'}
+        ${open && isMobile ? 'w-full' :open ? 'w-[calc(100%-17rem)]' : isMobile ? 'w-full' : 'w-[calc(100%-60px)]'}
       `}>
         <Navbar />
 

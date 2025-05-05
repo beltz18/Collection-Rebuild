@@ -1,6 +1,6 @@
 'use client'
 
-import { useId, useMemo } from 'react'
+import { useMemo } from 'react'
 import { variants } from '@uti/consts'
 import { useTheme } from '@ctx/themeContext'
 import {
@@ -80,7 +80,7 @@ export function CustomTable<T>({
         <TableBody items={ data }>
           {
             (item: T) => (
-              <TableRow key={ (item as any).id ?? JSON.stringify(item) }>
+              <TableRow key={ (item as any).id }>
               {
                 (columnKey: React.Key) => (
                 <TableCell>

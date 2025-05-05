@@ -51,11 +51,11 @@ const Filters = ({ filters, setFilters, onApplyFilters }: FiltersProps) => {
   return (
     <>
       <CustomSelect
-        classNames={styleSelect}
-        values={activeOptions}
+        classNames={ styleSelect }
+        values={ activeOptions }
         label='Status'
         placeholder='Select Status'
-        selectedKeys={filters.status ? [filters.status] : []}
+        selectedKeys={ filters.status ? [filters.status] : [] }
         onChange={(item: ChangeEvent<HTMLSelectElement>) =>
           setFilters((prev) => ({
             ...prev,
@@ -65,11 +65,11 @@ const Filters = ({ filters, setFilters, onApplyFilters }: FiltersProps) => {
       />
 
       <CustomSelect
-        classNames={styleSelect}
-        values={defaultOptions}
+        classNames={ styleSelect }
+        values={ defaultOptions}
         label='Processor Type'
         placeholder='Select Processor Type'
-        selectedKeys={filters.default ? [filters.default] : []}
+        selectedKeys={ filters.default ? [filters.default] : [] }
         onChange={(item: ChangeEvent<HTMLSelectElement>) =>
           setFilters((prev) => ({
             ...prev,
@@ -79,11 +79,11 @@ const Filters = ({ filters, setFilters, onApplyFilters }: FiltersProps) => {
       />
 
       <CustomSelect
-        classNames={styleSelect}
-        values={companyOptions}
+        classNames={ styleSelect }
+        values={ companyOptions }
         label='SEC Code'
         placeholder='Select SEC Code'
-        selectedKeys={filters.company_id ? [filters.company_id] : []}
+        selectedKeys={ filters.company_id ? [filters.company_id] : [] }
         onChange={(item: ChangeEvent<HTMLSelectElement>) =>
           setFilters((prev) => ({
             ...prev,
@@ -93,11 +93,11 @@ const Filters = ({ filters, setFilters, onApplyFilters }: FiltersProps) => {
       />
 
       <CustomSelect
-        classNames={styleSelect}
-        values={branchOptions}
+        classNames={ styleSelect }
+        values={ branchOptions }
         label='Use Same Day ACH'
         placeholder='Select Use Same Day ACH'
-        selectedKeys={filters.branch_id ? [filters.branch_id] : []}
+        selectedKeys={ filters.branch_id ? [filters.branch_id] : [] }
         onChange={(item: ChangeEvent<HTMLSelectElement>) =>
           setFilters((prev) => ({
             ...prev,
@@ -107,8 +107,8 @@ const Filters = ({ filters, setFilters, onApplyFilters }: FiltersProps) => {
       />
 
       <CustomSelect
-        classNames={styleSelect}
-        values={daysBeforeDueOptions}
+        classNames={ styleSelect }
+        values={ daysBeforeDueOptions }
         label='Select Unique Name'
         placeholder='Select Unique Name'
         selectedKeys={
@@ -125,11 +125,11 @@ const Filters = ({ filters, setFilters, onApplyFilters }: FiltersProps) => {
       />
 
       <CustomSelect
-        classNames={styleSelect}
-        values={strictModeOptions}
+        classNames={ styleSelect }
+        values={ strictModeOptions }
         label='Select Unique Name'
         placeholder='Select Unique Name'
-        selectedKeys={filters.strict_mode ? [filters.strict_mode] : []}
+        selectedKeys={ filters.strict_mode ? [filters.strict_mode] : [] }
         onChange={(item: ChangeEvent<HTMLSelectElement>) =>
           setFilters((prev) => ({
             ...prev,
@@ -141,10 +141,11 @@ const Filters = ({ filters, setFilters, onApplyFilters }: FiltersProps) => {
       <Button
         className='flex justify-center items-center w-full'
         color='primary'
-        onPress={onApplyFilters}
+        onPress={ onApplyFilters }
       >
         Apply Filters
       </Button>
+
       <Button
         className='flex justify-center items-center w-full'
         variant='flat'
@@ -172,6 +173,8 @@ export default function MenuPayment({
   filters,
   setFilters,
   applyFilters,
+  input,
+  setInput,
 }: MenuPaymentProps) {
   const { isTablet } = useResponsive()
   const [isOpen, setIsOpen] = useState(false)
@@ -204,11 +207,17 @@ export default function MenuPayment({
     return (
       <div className='w-full flex flex-col justify-between items-center gap-3'>
         <div className='w-full flex flex-row justify-between'>
-          {title && (
-            <Heading level={1} className='text-theme-text-title/60 text-2xl'>
-              {title}
-            </Heading>
-          )}
+          {
+            title && (
+              <Heading
+                level={ 1 }
+                className='text-theme-text-title/60 text-2xl'
+              >
+                { title }
+              </Heading>
+            )
+          }
+
           <Button 
             className='flex justify-center items-center' 
             color='primary' 
@@ -218,15 +227,19 @@ export default function MenuPayment({
             Add New
           </Button>
         </div>
+
         <div className='flex flex-row justify-between w-full items-center gap-3'>
           <div className='w-[300] h-[32px] relative flex items-center'>
             <Input
               type='text'
               size='sm'
               placeholder='Search...'
-              startContent={<Search className='text-default-400' size={18} />}
+              startContent={ <Search className='text-default-400' size={ 18 } /> }
+              value={ input ?? '' }
+              onChange={(e) => setInput(e.target.value)}
             />
           </div>
+
           <div className='flex flex-row justify-end items-center gap-2 w-full'>
             <Button
               className='flex justify-center items-center'
@@ -236,24 +249,11 @@ export default function MenuPayment({
               <Icon icon='eraser' size='sm' />
               Clear Applied Filters
             </Button>
-            <Button
-              className='flex justify-center items-center'
-              color='primary'
-              onPress={handleRefresh}
-              isDisabled={isRefreshing}
-            >
-              <Icon
-                icon='refreshCw'
-                size='sm'
-                className={isRefreshing ? 'animate-spin' : ''}
-              />
-              Refresh
-            </Button>
 
             <Button
               className='flex justify-center items-center'
               color='primary'
-              isDisabled={isViewDisabled}
+              isDisabled={ isViewDisabled }
             >
               <Icon icon='eye' size='sm' />
               View Details
@@ -263,11 +263,12 @@ export default function MenuPayment({
               className='flex justify-center items-center'
               variant='ghost'
               color='danger'
-              isDisabled={isDeleteDisabled}
+              isDisabled={ isDeleteDisabled }
             >
               <Icon icon='trash' size='sm' />
-              Deactivate {selectedCount > 0 && `(${selectedCount})`}
+              Deactivate { selectedCount > 0 && `(${selectedCount})` }
             </Button>
+
             <CustomPopover placement='bottom-end'>
               <CustomPopover.Trigger>
                 <Button
@@ -278,11 +279,12 @@ export default function MenuPayment({
                   Filters
                 </Button>
               </CustomPopover.Trigger>
+
               <CustomPopover.Content className='bg-theme-background p-3 shadow-md rounded-lg flex flex-col gap-2 w-52'>
                 <Filters
-                  filters={filters}
-                  setFilters={setFilters}
-                  onApplyFilters={applyFilters}
+                  filters={ filters }
+                  setFilters={ setFilters }
+                  onApplyFilters={ applyFilters }
                 />
               </CustomPopover.Content>
             </CustomPopover>
@@ -303,11 +305,17 @@ export default function MenuPayment({
   return (
     <div className='w-full flex flex-col justify-between gap-2 relative'>
       <div className='w-full flex flex-row justify-between'>
-        {title && (
-          <Heading level={1} className='text-theme-text-title/60 text-2xl'>
-            {title}
-          </Heading>
-        )}
+        {
+          title && (
+            <Heading
+              level={ 1 }
+              className='text-theme-text-title/60 text-2xl'
+            >
+              { title }
+            </Heading>
+          )
+        }
+
         <Button 
           className='flex justify-center items-center' 
           color='primary' 
@@ -317,22 +325,23 @@ export default function MenuPayment({
           Add New
         </Button>
       </div>
+
       <div className='flex flex-row justify-between items-center gap-2'>
         <div className='max-w-[240px] h-[24px] relative flex items-center'>
           <Input
             type='text'
             size='sm'
             placeholder='Search...'
-            endContent={
-              <Icon icon='search' className='text-default-400' size='md' />
-            }
+            endContent={ <Icon icon='search' className='text-default-400' size='md' /> }
+            value={ input ?? '' }
+            onChange={(e) => setInput(e.target.value)}
           />
         </div>
 
         <CustomPopover
           placement='bottom-end'
-          isOpen={isMobileMenuOpen}
-          onOpenChange={setIsMobileMenuOpen}
+          isOpen={ isMobileMenuOpen }
+          onOpenChange={ setIsMobileMenuOpen }
         >
           <CustomPopover.Trigger>
             <button>
@@ -343,6 +352,7 @@ export default function MenuPayment({
               />
             </button>
           </CustomPopover.Trigger>
+
           <CustomPopover.Content className='bg-theme-background p-3 shadow-md rounded-lg flex flex-col gap-2 w-52'>
             <Button
               className='flex justify-center items-center w-full'
@@ -352,24 +362,11 @@ export default function MenuPayment({
               <Icon icon='eraser' size='sm' />
               Clear Applied Filters
             </Button>
-            <Button
-              className='flex justify-center items-center w-full'
-              color='primary'
-              onPress={handleRefresh}
-              isDisabled={isRefreshing}
-            >
-              <Icon
-                icon='refreshCw'
-                size='sm'
-                className={isRefreshing ? 'animate-spin' : ''}
-              />
-              Refresh
-            </Button>
 
             <Button
               className='flex justify-center items-center w-full'
               color='primary'
-              isDisabled={isViewDisabled}
+              isDisabled={ isViewDisabled }
             >
               <Icon icon='eye' size='sm' />
               View Details
@@ -379,11 +376,12 @@ export default function MenuPayment({
               className='flex justify-center items-center w-full'
               variant='ghost'
               color='danger'
-              isDisabled={isDeleteDisabled}
+              isDisabled={ isDeleteDisabled }
             >
               <Icon icon='trash' size='sm' />
-              Deactivate {selectedCount > 0 && `(${selectedCount})`}
+              Deactivate { selectedCount > 0 && `(${selectedCount})` }
             </Button>
+
             <CustomPopover placement='left'>
               <CustomPopover.Trigger>
                 <Button
@@ -394,11 +392,12 @@ export default function MenuPayment({
                   Filters
                 </Button>
               </CustomPopover.Trigger>
+
               <CustomPopover.Content className='bg-theme-background p-3 shadow-md rounded-lg flex flex-col gap-2 w-52'>
                 <Filters
-                  filters={filters}
-                  setFilters={setFilters}
-                  onApplyFilters={applyFilters}
+                  filters={ filters }
+                  setFilters={ setFilters }
+                  onApplyFilters={ applyFilters }
                 />
               </CustomPopover.Content>
             </CustomPopover>
