@@ -6,6 +6,7 @@ import { CustomPopover } from '@com/popover/popover'
 import { ChangeEvent, useState } from 'react'
 import { CustomSelect } from '@com/select/select'
 import { FiltersProps, MenuPaymentProps } from './menuPayment.types'
+import { PaymentProcessorDrawer } from '../drawer/drawer'
 
 const styleSelect = {
   trigger: 'h-10 min-h-10',
@@ -160,12 +161,25 @@ export default function MenuPayment({
 }: MenuPaymentProps) {
   const { isMobile, isTablet } = useResponsive()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const [viewMode, setViewMode] = useState<"view" | "edit" | "add">("view")
+  const [selectedProcessor, setSelectedProcessor] = useState<any>(null)
 
   const handleRefresh = () => {
     setIsRefreshing(true)
     setTimeout(() => setIsRefreshing(false), 1000)
+  }
+
+  const handleOpenDrawer = (mode: "view" | "edit" | "add", processor: any = null) => {
+    setViewMode(mode)
+    setSelectedProcessor(processor)
+    setIsDrawerOpen(true)
+    console.log("Opening processor drawer with mode:", mode)
+  }
+
+  const handleSave = (processor: any) => {
+    console.log("Processor saved:", processor)
   }
 
   const isViewDisabled = selectedCount !== 1
@@ -180,7 +194,11 @@ export default function MenuPayment({
               {title}
             </Heading>
           )}
-          <Button className='flex justify-center items-center' color='primary'>
+          <Button 
+            className='flex justify-center items-center' 
+            color='primary'
+            onPress={ () => handleOpenDrawer("add", null) }
+          >
             <Icon icon='plus' size='sm' />
             Add New
           </Button>
@@ -255,6 +273,14 @@ export default function MenuPayment({
             </CustomPopover>
           </div>
         </div>
+
+        <PaymentProcessorDrawer
+          isOpen={isDrawerOpen}
+          onClose={() => setIsDrawerOpen(false)}
+          isViewMode={viewMode}
+          processor={selectedProcessor}
+          onSave={handleSave}
+        />
       </div>
     )
   }
@@ -267,7 +293,11 @@ export default function MenuPayment({
             {title}
           </Heading>
         )}
-        <Button className='flex justify-center items-center' color='primary'>
+        <Button 
+          className='flex justify-center items-center' 
+          color='primary'
+          onPress={ () => handleOpenDrawer("add", null) }
+        >
           <Icon icon='plus' size='sm' />
           Add New
         </Button>
@@ -360,6 +390,14 @@ export default function MenuPayment({
           </CustomPopover.Content>
         </CustomPopover>
       </div>
+
+      <PaymentProcessorDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        isViewMode={viewMode}
+        processor={selectedProcessor}
+        onSave={handleSave}
+      />
     </div>
   )
 }

@@ -8,6 +8,7 @@ import StrategyForm from "./form"
 import { Strategy } from "@typ/strategy"
 import { StrategyDrawerProps } from "./types"
 import { ScrollShadow } from "@heroui/scroll-shadow"
+import { useResponsive } from "@uti/useResponsive"
 
 export function StrategyDrawer({ 
   isOpen, 
@@ -18,6 +19,7 @@ export function StrategyDrawer({
   token, 
   onSave 
 }: StrategyDrawerProps) {
+  const { isMobile } = useResponsive()
   const [formData, setFormData] = useState<Strategy>({
     id: "",
     name: "",
@@ -106,7 +108,7 @@ export function StrategyDrawer({
       onClose={onClose}
       placement="right"
       size="lg"
-      className="max-w-[60%] p-6"
+      className={`${isMobile ? 'w-full p-4' : 'max-w-[60%] p-6' }`}
       headerClassName="py-0 px-0"
       bodyClassName="p-0 h-full"
       title={

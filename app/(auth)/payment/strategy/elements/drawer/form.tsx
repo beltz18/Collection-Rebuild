@@ -28,13 +28,8 @@ export default function StrategyForm({ formData, updateFormData, isViewMode = fa
 
   return (
     <div className="h-full min-h-full py-4 px-15">
-      <Card className="bg-default-50 border-none rounded-md shadow-none dark:bg-default-100/50 h-full">
+      <Card className="border-none rounded-md shadow-none h-full">
         <CardBody className="gap-3 overflow-hidden">
-          <div className="flex flex-col gap-2 mb-2">
-            <h3 className="text-xl font-semibold text-foreground">Payment Configuration</h3>
-            <p className="text-sm text-foreground-500">Configure the settings for your collection strategy</p>
-          </div>
-
           <div className="flex flex-col gap-6">
             <div className="flex items-start">
               <div className="flex-1">

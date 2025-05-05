@@ -6,6 +6,7 @@ import { CustomPopover } from '@com/popover/popover'
 import { ChangeEvent, useState } from 'react'
 import { CustomSelect } from '@com/select/select'
 import { FiltersProps, MenuPaymentProps } from './menuPayment.types'
+import { StrategyDrawer } from '../drawer/drawer'
 
 const styleSelect = {
   trigger: 'h-10 min-h-10',
@@ -173,6 +174,9 @@ export default function MenuPayment({
   applyFilters,
 }: MenuPaymentProps) {
   const { isTablet } = useResponsive()
+  const [isOpen, setIsOpen] = useState(false)
+  const [viewMode, setViewMode] = useState<"view" | "edit" | "add">("view")
+  const [selectedStrategy, setSelectedStrategy] = useState<any>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -180,6 +184,17 @@ export default function MenuPayment({
   const handleRefresh = () => {
     setIsRefreshing(true)
     setTimeout(() => setIsRefreshing(false), 1000)
+  }
+
+  const handleOpenDrawer = (mode: "view" | "edit" | "add", strategy: any = null) => {
+    setViewMode(mode)
+    setSelectedStrategy(strategy)
+    setIsOpen(true)
+    console.log("Opening drawer with mode:", mode, "isOpen set to:", true)
+  }
+
+  const handleSave = (strategy: any) => {
+    console.log("Strategy saved:", strategy)
   }
 
   const isViewDisabled = selectedCount !== 1
@@ -194,7 +209,11 @@ export default function MenuPayment({
               {title}
             </Heading>
           )}
-          <Button className='flex justify-center items-center' color='primary'>
+          <Button 
+            className='flex justify-center items-center' 
+            color='primary' 
+            onPress={ () => handleOpenDrawer("add") }
+          >
             <Icon icon='plus' size='sm' />
             Add New
           </Button>
@@ -269,6 +288,14 @@ export default function MenuPayment({
             </CustomPopover>
           </div>
         </div>
+
+        <StrategyDrawer
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          isViewMode={viewMode}
+          strategy={selectedStrategy}
+          onSave={handleSave}
+        />
       </div>
     )
   }
@@ -281,7 +308,11 @@ export default function MenuPayment({
             {title}
           </Heading>
         )}
-        <Button className='flex justify-center items-center' color='primary'>
+        <Button 
+          className='flex justify-center items-center' 
+          color='primary' 
+          onPress={ () => handleOpenDrawer("add") }
+        >
           <Icon icon='plus' size='sm' />
           Add New
         </Button>
@@ -374,6 +405,14 @@ export default function MenuPayment({
           </CustomPopover.Content>
         </CustomPopover>
       </div>
+
+      <StrategyDrawer
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        isViewMode={viewMode}
+        strategy={selectedStrategy}
+        onSave={handleSave}
+      />
     </div>
   )
 }
