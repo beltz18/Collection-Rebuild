@@ -50,10 +50,7 @@ export const StepsQueryContainer = ({ strategyId }: Props) => {
     error,
   } = useGetStrategies(token)
 
-  const {
-    data: s,
-    refetch,
-  } = useGetSteps(
+  const { refetch } = useGetSteps(
     token,
     { strategy_id: selectedStrategy?.id },
     { enabled: false },
@@ -62,10 +59,7 @@ export const StepsQueryContainer = ({ strategyId }: Props) => {
   const { data: methods } = useGetMethods(token)
   const { data: processors } = useGetProcessors(token)
   const { data: company } = useGetCompanies(token)
-  const {
-    data: b,
-    refetch: refetchBranch,
-  } = useGetBranches(
+  const { refetch: refetchBranch } = useGetBranches(
     token,
     { company_id: selectedStrategy?.company },
     { enabled: false },
@@ -131,6 +125,7 @@ export const StepsQueryContainer = ({ strategyId }: Props) => {
           ?
         <ComponentContainer
           data={ dataSteps }
+          setData={ setDataSteps }
         />
           :
         <div className='px-4 w-full flex justify-center'>

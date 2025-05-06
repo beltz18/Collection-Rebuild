@@ -1,13 +1,28 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import {
+  useState,
+  useEffect,
+} from 'react'
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from '@sec/modal'
+import {
+  AddNodeModalProps,
+  FormData,
+} from './add.types'
+import {
+  Button,
+  warningToast,
+} from '@com/index'
 import { Tabs } from '@com/tabs/tabs'
-import { Button } from '@com/index'
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@sec/modal'
-import type { AddNodeModalProps, FormData } from './add.types'
+import { getInitialFormData } from './utils'
 import { BasicInfoTab } from './basic-info-tab'
 import { PaymentConfigTab } from './config-tab'
-import { createNodeData, getInitialFormData } from './utils'
 import { AnimatedButtonIcon } from './button-animated'
 
 export default function AddNodeModal({
@@ -16,7 +31,7 @@ export default function AddNodeModal({
   onAdd,
   currentStrategyId,
   nextStepOrder,
-  strategyName = 'Default Strategy',
+  strategyName,
 }: AddNodeModalProps) {
   const [activeTab, setActiveTab] = useState('basic')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -33,40 +48,44 @@ export default function AddNodeModal({
   }, [currentStrategyId, nextStepOrder])
 
   const handleSelectChange = (name: string, value: string) => {
-    if (name === 'method') {
-      setSelectedMethod(value)
-    } else if (name === 'processor') {
-      setSelectedProcessor(value)
-    }
+    if (name === 'method') setSelectedMethod(value)
+    else if (name === 'processor') setSelectedProcessor(value)
+    
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSwitchChange = (name: string, checked: boolean) => {
+  const handleSwitchChange = (name: string, checked: boolean) =>
     setFormData((prev) => ({ ...prev, [name]: checked }))
-  }
 
-  const handleNumberChange = (name: string, value: string) => {
+  const handleNumberChange = (name: string, value: string) =>
     setFormData((prev) => ({ ...prev, [name]: Number.parseInt(value) || 0 }))
-  }
 
   const handleSubmit = async () => {
     setIsSubmitting(true)
-
-    const nodeData = createNodeData(activeTab, formData, strategyName)
+    if (
+      !formData.method ||
+      !formData.processor ||
+      !formData.strategy ||
+      !formData.order
+    ) {
+      warningToast({
+        body: 'Method and processor must be defined!',
+        duration: 3000,
+      })
+    } else {
+      onAdd?.(formData)
+      setFormData(getInitialFormData(currentStrategyId, nextStepOrder))
+      setActiveTab('basic')
+    }
     await new Promise((resolve) => setTimeout(resolve, 600))
-
-    onAdd?.(nodeData)
-
-    setFormData(getInitialFormData(currentStrategyId, nextStepOrder))
-    setActiveTab('basic')
     setIsSubmitting(false)
     onClose()
   }
 
   return (
     <Modal 
-      isOpen={isOpen}
-      onClose={onClose}
+      isOpen={ isOpen }
+      onClose={ onClose }
       size='xl'
       scrollBehavior='inside'
       classNames={{
@@ -84,7 +103,7 @@ export default function AddNodeModal({
 
             <ModalBody className='py-4'>
               <Tabs
-                selectedKey={activeTab}
+                selectedKey={ activeTab }
                 onSelectionChange={(key) => setActiveTab(key as string)}
                 aria-label='Step configuration tabs'
                 variant='solid'
@@ -94,34 +113,59 @@ export default function AddNodeModal({
                   tabContent: 'w-full',
                 }}
               >
-                <Tabs.Tab key='basic' title='Basic Information' className='w-full'>
+                <Tabs.Tab
+                  key='basic'
+                  title='Basic Information'
+                >
                   <BasicInfoTab
-                    formData={formData}
-                    strategyName={strategyName}
-                    handleNumberChange={handleNumberChange}
-                    handleSwitchChange={handleSwitchChange}
+                    formData={ formData }
+                    strategyName={ strategyName }
+                    handleNumberChange={ handleNumberChange }
+                    handleSwitchChange={ handleSwitchChange }
                   />
                 </Tabs.Tab>
-                <Tabs.Tab key='strategy' title='Payment Configuration'>
+
+                <Tabs.Tab
+                  key='strategy'
+                  title='Payment Configuration'
+                >
                   <PaymentConfigTab
-                    formData={formData}
-                    selectedMethod={selectedMethod}
-                    selectedProcessor={selectedProcessor}
-                    handleSelectChange={handleSelectChange}
-                    handleNumberChange={handleNumberChange}
+                    formData={ formData }
+                    selectedMethod={ selectedMethod }
+                    selectedProcessor={ selectedProcessor }
+                    handleSelectChange={ handleSelectChange }
+                    handleNumberChange={ handleNumberChange }
+                    handleSwitchChange={ handleSwitchChange }
                   />
                 </Tabs.Tab>
               </Tabs>
             </ModalBody>
 
             <ModalFooter className='border-t border-default-500/10 pt-3'>
-              <Button
-                color='primary'
-                onPress={handleSubmit}
-                disabled={isSubmitting}
-                startContent={<AnimatedButtonIcon isSubmitting={isSubmitting} />}
-                placeholder={isSubmitting ? 'Creating...' : 'Create Step'}
-              />
+              {
+                activeTab === 'basic'
+                  ?
+                <Button
+                  color='secondary'
+                  onPress={() => setActiveTab('strategy')}
+                  placeholder='Next'
+                />
+                  :
+                <>
+                  <Button
+                    color='primary'
+                    onPress={() => setActiveTab('basic')}
+                    placeholder='Back'
+                  />
+
+                  <Button
+                    color='secondary'
+                    onPress={ handleSubmit }
+                    startContent={ <AnimatedButtonIcon isSubmitting={ isSubmitting } /> }
+                    placeholder={ isSubmitting ? 'Creating...' : 'Create Step' }
+                  />
+                </>
+              }
             </ModalFooter>
           </>
         )}

@@ -33,17 +33,26 @@ export interface Strategy {
   days_before_due_to_start?: number
 }
 
-export interface StepT {
-  id: number
-  create_date: Date | string | null
-  update_date: Date | string | null
-  active: boolean
+export interface Step {
   strategy: number
   method: number | string
   processor: number | string
   order: number
   attempts: number
   min_hours_between_attempts: number
-  min_hours_before_next_step: number | null
+  min_hours_before_next_step: number
   is_basic_step: boolean
+  active: boolean
+  admin_config?: {} | null
+}
+
+export interface StepResponse {
+  message: string,
+  data: Step,
+}
+
+export interface StepT extends Step {
+  id: number
+  create_date: Date | string | null
+  update_date: Date | string | null
 }

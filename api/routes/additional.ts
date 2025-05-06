@@ -11,6 +11,7 @@ import {
   Company,
   Branch,
   Method,
+  MethodProcessor,
 } from '@typ/base'
 
 type FilterCompanies = Partial<{
@@ -62,7 +63,7 @@ type FilterMethods = Partial<{
 export const useGetMethods = (
   token: string | null,
   filters?: FilterMethods,
-  options?: { enabled: true },
+  options?: { enabled: boolean },
 ) => {
   return useCollectionQuery<Method[]>({
     fetcher: async () => await genericAuthRequest(METHODS.get,
@@ -70,6 +71,26 @@ export const useGetMethods = (
       token ? { Authorization: `Bearer ${token}` } : undefined,
     ),
     queryKey: [CACHE_KEYS.getMethods],
+    ...options,
+  })
+}
+
+type FilterProcessorMethod = Partial<{
+  payment_processor: number
+  payment_method: number
+}>
+
+export const useGetProcessorMethodCrossed = (
+  token: string | null,
+  filters?: FilterProcessorMethod,
+  options?: { enabled: boolean },
+) => {
+  return useCollectionQuery<MethodProcessor[]>({
+    fetcher: async () => await genericAuthRequest(METHODS.get,
+      API_ROUTES.methodProcessor, { ...filters },
+      token ? { Authorization: `Bearer ${token}` } : undefined,
+    ),
+    queryKey: [CACHE_KEYS.getMethodProcessors],
     ...options,
   })
 }

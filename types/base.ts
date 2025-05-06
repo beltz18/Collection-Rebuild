@@ -54,3 +54,12 @@ export interface Method {
   create_date: Date | string | null
   update_date: Date | string | null
 }
+
+export interface MethodProcessor {
+  id: number
+  payment_processor: number
+  payment_method: number
+  active: boolean
+  create_date: Date | string | null
+  update_date: Date | string | null
+}

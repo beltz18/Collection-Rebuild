@@ -1,9 +1,11 @@
-"use client"
+'use client'
 
-import type React from "react"
-import { Chip } from "@com/chip"
-import type { FormData } from "./add.types"
-import { InputField, SwitchField } from "./form-field"
+import {
+  InputField,
+  SwitchField,
+} from './form-field'
+import { Chip } from '@com/chip'
+import { FormData } from './add.types'
 
 interface BasicInfoTabProps {
   formData: FormData
@@ -19,36 +21,39 @@ export const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
   handleSwitchChange,
 }) => {
   return (
-    <form className="space-y-6">
-      <div className="grid grid-cols-4 items-start gap-4">
-        <label htmlFor="strategy" className="text-right text-sm font-medium">
+    <form className='space-y-6'>
+      <div className='grid grid-cols-4 items-start gap-4'>
+        <label htmlFor='strategy' className='text-right text-sm font-medium'>
           Strategy
         </label>
-        <div className="col-span-3">
-          <Chip color="primary" variant="flat" className="text-sm font-medium">
-            {strategyName}
+
+        <div className='col-span-3'>
+          <Chip
+            color='primary'
+            variant='flat'
+            className='text-sm font-medium capitalize'
+          >
+            { strategyName }
           </Chip>
         </div>
       </div>
 
       <InputField
-        label="Step Order"
-        id="order"
-        name="order"
-        type="number"
-        value={formData.order.toString()}
-        onChange={handleNumberChange}
-        helpText="The order determines the sequence of execution for this step. Lower numbers execute first."
+        label='Step Order'
+        id='order'
+        name='order'
+        type='number'
+        value={ isNaN(Number(formData.order)) ? '1' : formData.order.toString() }
+        onChange={ handleNumberChange }
+        helpText='The order determines the sequence of execution for this step. Lower numbers execute first.'
+        disabled
       />
 
-      <SwitchField label="Active" id="active" isSelected={formData.active} onChange={handleSwitchChange} />
-
       <SwitchField
-        label="Is Basic Step"
-        id="is_basic_step"
-        isSelected={formData.is_basic_step}
-        onChange={handleSwitchChange}
-        helpText="If true, must be the last step in strategy and only one allowed per strategy."
+        label='Active'
+        id='active'
+        isSelected={ formData.active }
+        onChange={ handleSwitchChange }
       />
     </form>
   )

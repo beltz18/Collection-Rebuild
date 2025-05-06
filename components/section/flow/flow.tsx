@@ -18,13 +18,19 @@ import {
   type OnConnect,
   type ColorMode,
 } from '@xyflow/react'
-import { type NodeData } from './elements/node'
+import {
+  StrategyT,
+  StepT,
+} from '@typ/strategy'
+import { ChevronLeft } from 'lucide-react'
+import { NodeData } from './elements/node'
 import { Line } from './elements/line'
 import { CustomSelect } from '@com/select/select'
 import { PlusCircle } from 'lucide-react'
 import AddNodeModal from './modal/add'
 import { Button } from '@com/index'
 import { useTheme } from '@ctx/themeContext'
+import { useFlowStore } from '@sts/useFlowStore'
 
 import CustomNode from './elements/node'
 import CustomEdge from './elements/edge'
@@ -45,12 +51,15 @@ const defaultEdgeOptions = {
 type Props = {
   initialNodes: Node<NodeData>[]
   initialEdges: Edge[]
+  setData: React.Dispatch<React.SetStateAction<[StrategyT, ...StepT[]] | null>>
 }
 
 export const Flow = ({
   initialNodes,
   initialEdges,
+  setData,
 }: Props) => {
+  const { strategy } = useFlowStore()
   const { flowTheme, setFlowTheme } = useTheme()
 
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -65,14 +74,30 @@ export const Flow = ({
   )
 
   const handleAddNode = (nodeData: any) => {
+    const id = String(Number(nodes[nodes.length-1].id)+1)
+
     const newNode = {
-      id: `node-${nodes.length + 1}`,
-      position: { x: 250, y: 150 },
+      id,
+      position: {
+        x: Number(nodes[nodes.length-1].position.x)+250,
+        y: Number(nodes[nodes.length-1].position.y),
+      },
       type: 'turbo',
-      data: nodeData,
+      data: {
+        Data: nodeData,
+        title: '',
+        type: 'step' as 'step',
+      },
+    }
+
+    const newEdge = {
+      id: `e-str-ste-${nodes[nodes.length-1].id}-${id}`,
+      source: String(nodes[nodes.length-1].id),
+      target: String(id),
     }
 
     setNodes((prev) => [...prev, newNode])
+    setEdges((prev) => [...prev, newEdge])
     setIsModalOpen(false)
   }
 
@@ -105,7 +130,17 @@ export const Flow = ({
         <Controls showInteractive={ false } />
         <Line />
 
-        <Panel className='flex gap-3' position="top-right">
+        <Panel position='top-left'>
+          <div
+            className='bg-theme-background text-theme-text-title rounded-md flex items-center justify-center gap-2 w-[80px] h-[48px] text-sm cursor-pointer hover:bg-theme-text-on-primary hover:text-theme-primary hover:border'
+            onClick={() => setData(null)}
+          >
+            <ChevronLeft size={ 14 } />
+            Back
+          </div>
+        </Panel>
+
+        <Panel className='flex gap-3' position='top-right'>
           <CustomSelect
             values={ options }
             label='Theme'
@@ -130,9 +165,9 @@ export const Flow = ({
         isOpen={ isModalOpen }
         onClose={() => setIsModalOpen(false)}
         onAdd={ handleAddNode }
-        currentStrategyId='1'
-        nextStepOrder={ nodes.length + 1 }
-        strategyName='Default Payment Strategy'
+        currentStrategyId={ strategy?.id ?? 0 }
+        nextStepOrder={ Number(nodes[nodes.length-1].data.Data?.order)+1 }
+        strategyName={ strategy?.name ?? '' }
       />
     </>
   )

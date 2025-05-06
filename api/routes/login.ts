@@ -2,7 +2,6 @@ import {
   API_ROUTES,
   METHODS,
 } from '@api/cache'
-
 import {
   genericAuthRequest,
   useCollectionMutation,

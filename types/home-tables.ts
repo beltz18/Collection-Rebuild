@@ -115,5 +115,3 @@ export interface Payment {
   create_date: string
   update_date: string
 }
-
-export type PaymentEx = any

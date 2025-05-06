@@ -19,9 +19,6 @@ export const generateEdges = (nodes: Node<NodeData>[]): Edge[] => {
       id: `e-str-ste-${source}-${target}`,
       source,
       target,
-      data: {
-        label: `label ${i+1}`
-      }
     })
   }
 
