@@ -14,6 +14,8 @@ type Props = {
   input: string | null
   setInput: (input: string) => void
   setSelected: React.Dispatch<React.SetStateAction<number>>
+  handlerDownload: (title: 'Loan' | 'Payment', data: Loan[] | Payment[], type: 'CSV' | 'PDF') => void
+  page: 'Loan' | 'Payment'
 }
 
 export default function MenuOptions({
@@ -24,6 +26,8 @@ export default function MenuOptions({
   input,
   setInput,
   setSelected,
+  handlerDownload,
+  page,
 }: Props) {
   const { isTablet } = useResponsive()
 
@@ -37,6 +41,8 @@ export default function MenuOptions({
         input={ input }
         setInput={ setInput }
         setSelected={ setSelected }
+        handlerDownload={ handlerDownload }
+        page={ page }
       />
     )
   }
@@ -50,6 +56,8 @@ export default function MenuOptions({
       input={ input }
       setInput={ setInput }
       setSelected={ setSelected }
+      handlerDownload={ handlerDownload }
+      page={ page }
     />
   )
 }
