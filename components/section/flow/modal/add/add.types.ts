@@ -3,8 +3,14 @@ export interface FormData {
   order: number
   active: boolean
   is_basic_step: boolean
-  method: number
-  processor: number
+  method: {
+    id: number
+    name: string
+  }
+  processor: {
+    id: number
+    name: string
+  }
   attempts: number
   minHoursBetweenAttempts: number
   minHoursBeforeNextStep: number

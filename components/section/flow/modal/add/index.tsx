@@ -35,9 +35,9 @@ export default function AddNodeModal({
 }: AddNodeModalProps) {
   const [activeTab, setActiveTab] = useState('basic')
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [selectedMethod, setSelectedMethod] = useState<string | null>(null)
-  const [selectedProcessor, setSelectedProcessor] = useState<string | null>(null)
-  const [formData, setFormData] = useState<FormData>(getInitialFormData(currentStrategyId, nextStepOrder))
+  const [selectedMethod, setSelectedMethod] = useState<{ id: string, name: string } | null>(null)
+  const [selectedProcessor, setSelectedProcessor] = useState<{ id: string, name: string } | null>(null)
+  const [formData, setFormData] = useState<FormData>({ ...getInitialFormData(currentStrategyId, nextStepOrder) })
 
   useEffect(() => {
     setFormData((prev) => ({
@@ -47,7 +47,7 @@ export default function AddNodeModal({
     }))
   }, [currentStrategyId, nextStepOrder])
 
-  const handleSelectChange = (name: string, value: string) => {
+  const handleSelectChange = (name: string, value: any) => {
     if (name === 'method') setSelectedMethod(value)
     else if (name === 'processor') setSelectedProcessor(value)
     
@@ -63,23 +63,23 @@ export default function AddNodeModal({
   const handleSubmit = async () => {
     setIsSubmitting(true)
     if (
-      !formData.method ||
-      !formData.processor ||
-      !formData.strategy ||
-      !formData.order
+      !formData.method.id || !formData.method.name ||
+      !formData.processor.id || !formData.processor.name ||
+      !formData.strategy || !formData.order
     ) {
       warningToast({
         body: 'Method and processor must be defined!',
         duration: 3000,
       })
-    } else {
+    }
+    else {
       onAdd?.(formData)
-      setFormData(getInitialFormData(currentStrategyId, nextStepOrder))
+      setSelectedMethod({ id: '', name: '' })
+      setSelectedProcessor({ id: '', name: '' })
       setActiveTab('basic')
     }
     await new Promise((resolve) => setTimeout(resolve, 600))
     setIsSubmitting(false)
-    onClose()
   }
 
   return (
@@ -131,8 +131,8 @@ export default function AddNodeModal({
                 >
                   <PaymentConfigTab
                     formData={ formData }
-                    selectedMethod={ selectedMethod }
-                    selectedProcessor={ selectedProcessor }
+                    selectedMethod={ selectedMethod ?? { id: '', name: '' } }
+                    selectedProcessor={ selectedProcessor ?? { id: '', name: '' } }
                     handleSelectChange={ handleSelectChange }
                     handleNumberChange={ handleNumberChange }
                     handleSwitchChange={ handleSwitchChange }

@@ -28,9 +28,11 @@ import { Line } from './elements/line'
 import { CustomSelect } from '@com/select/select'
 import { PlusCircle } from 'lucide-react'
 import AddNodeModal from './modal/add'
-import { Button } from '@com/index'
+import { Button, errorToast, successToast } from '@com/index'
 import { useTheme } from '@ctx/themeContext'
 import { useFlowStore } from '@sts/useFlowStore'
+import { useTokenStore } from '@sts/useTokenStore'
+import { useCreateNewStep } from '@api/routes/step'
 
 import CustomNode from './elements/node'
 import CustomEdge from './elements/edge'
@@ -61,6 +63,8 @@ export const Flow = ({
 }: Props) => {
   const { strategy } = useFlowStore()
   const { flowTheme, setFlowTheme } = useTheme()
+  const { token } = useTokenStore()
+  const addNewStep = useCreateNewStep(token)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [colorMode, setColorMode] = useState<ColorMode>(flowTheme)
@@ -84,7 +88,11 @@ export const Flow = ({
       },
       type: 'turbo',
       data: {
-        Data: nodeData,
+        Data: {
+          ...nodeData,
+          'method': nodeData.method.name,
+          'processor': nodeData.processor.name,
+        },
         title: '',
         type: 'step' as 'step',
       },
@@ -96,8 +104,26 @@ export const Flow = ({
       target: String(id),
     }
 
-    setNodes((prev) => [...prev, newNode])
-    setEdges((prev) => [...prev, newEdge])
+    try {
+      const d = addNewStep.mutateAsync({
+        ...nodeData,
+        'method': nodeData.method.id,
+        'processor': nodeData.processor.id,
+      })
+      console.log(d)
+      setNodes((prev) => [...prev, newNode])
+      setEdges((prev) => [...prev, newEdge])
+      successToast({
+        title: 'Succes!',
+        body: 'New step created',
+      })
+    } catch (err) {
+      console.log(err)
+      errorToast({
+        title: 'Error',
+        body: 'Step could not be created',
+      })
+    }
     setIsModalOpen(false)
   }
 

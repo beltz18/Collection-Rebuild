@@ -9,8 +9,14 @@ export const getInitialFormData = (
     order: nextStepOrder,
     active: true,
     is_basic_step: false,
-    method: 0,
-    processor: 0,
+    method: {
+      id: 0,
+      name: '',
+    },
+    processor: {
+      id: 0,
+      name: '',
+    },
     attempts: 3,
     minHoursBetweenAttempts: 24,
     minHoursBeforeNextStep: 0,

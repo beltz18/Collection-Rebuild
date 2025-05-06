@@ -18,9 +18,9 @@ import { ProcessorT } from '@typ/processor'
 
 interface PaymentConfigTabProps {
   formData: FormData
-  selectedMethod: string | null
-  selectedProcessor: string | null
-  handleSelectChange: (name: string, value: string) => void
+  selectedMethod: { id: string, name: string }
+  selectedProcessor: { id: string, name: string }
+  handleSelectChange: (name: string, value: any) => void
   handleNumberChange: (name: string, value: string) => void
   handleSwitchChange: (name: string, checked: boolean) => void
 }
@@ -41,7 +41,7 @@ export const PaymentConfigTab: React.FC<PaymentConfigTabProps> = ({
 
   const { refetch } = useGetProcessorMethodCrossed(
     token,
-    { payment_method: Number(selectedMethod), },
+    { payment_method: Number(selectedMethod.id), },
     { enabled: false },
   )
 
@@ -85,8 +85,11 @@ export const PaymentConfigTab: React.FC<PaymentConfigTabProps> = ({
         <div className='col-span-3'>
           <Select
             id='method'
-            selectedKeys={ selectedMethod ? [selectedMethod] : [] }
-            onChange={(e) => handleSelectChange('method', e.target.value)}
+            selectedKeys={ selectedMethod ? [selectedMethod.id.toString()] : [] }
+            onChange={(e) => {
+              const value = method?.find((el) => el.id == Number(e.target.value))
+              handleSelectChange('method', { id: value?.id, name: value?.name })
+            }}
             placeholder='Select payment method'
             className='w-full'
             size='sm'
@@ -95,7 +98,7 @@ export const PaymentConfigTab: React.FC<PaymentConfigTabProps> = ({
               method?.map((method) => (
                 <SelectItem
                   key={ method.id }
-                  data-value={ method.id }
+                  data-value={ method.id.toString() }
                   className='hover:outline-none'
                 >
                   { method.name }
@@ -123,8 +126,11 @@ export const PaymentConfigTab: React.FC<PaymentConfigTabProps> = ({
         <div className='col-span-3'>
           <Select
             id='processor'
-            selectedKeys={ selectedProcessor ? [selectedProcessor] : [] }
-            onChange={(e) => handleSelectChange('processor', e.target.value)}
+            selectedKeys={ selectedProcessor ? [selectedProcessor.id.toString()] : [] }
+            onChange={(e) => {
+              const value = available?.find((el) => el.id == Number(e.target.value))
+              handleSelectChange('processor', { id: value?.id, name: value?.name })
+            }}
             placeholder='Select payment processor'
             className='w-full'
             size='sm'
@@ -134,7 +140,8 @@ export const PaymentConfigTab: React.FC<PaymentConfigTabProps> = ({
                 available?.map((processor) => (
                   <SelectItem
                     key={ processor.id }
-                    data-value={ processor.id }
+                    data-value={ processor.id.toString() }
+                    className='hover:outline-none'
                   >
                     { processor.name }
                   </SelectItem>
