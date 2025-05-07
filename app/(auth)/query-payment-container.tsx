@@ -96,9 +96,9 @@ export default function PaymentTable() {
   }
 
   const handlerDownload = (title: 'Loan' | 'Payment', data: Loan[] | Payment[], type: 'CSV' | 'PDF') => {
-      if (type === 'CSV') generateCSV(title, data)
-      else generatePDF(title, data)
-    }
+    if (type === 'CSV') generateCSV(title, data)
+    else generatePDF(title, data)
+  }
 
   if (!data?.results || data.results.length === 0) {
     return (

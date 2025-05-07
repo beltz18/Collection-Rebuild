@@ -8,6 +8,12 @@ import { useTokenStore } from '@sts/useTokenStore'
 import type { Column } from '@typ/home-tables'
 import { useMenuStorePayment } from '@sts/useMenuStore'
 import { useDebounce } from '@uti/useDebounce'
+import { generateCSV } from '@uti/csv'
+import { generatePDF } from '@uti/pdf'
+import { 
+  Loan, 
+  Payment
+} from '@typ/home-tables'
 import {
   NoResults,
   LoadingComp,
@@ -93,6 +99,11 @@ export const TableQueryContainer = () => {
     )
   }
 
+  const handlerDownload = (title: 'Loan' | 'Payment', data: Loan[] | Payment[], type: 'CSV' | 'PDF') => {
+    if (type === 'CSV') generateCSV(title, data)
+    else generatePDF(title, data)
+  }
+
   if (!data?.results || data.results.length === 0) {
     return (
       <Card className='flex flex-col gap-4 p-4'>
@@ -105,6 +116,8 @@ export const TableQueryContainer = () => {
             input={ search }
             setInput={ setSearch }
             setSelected={ setSelected }
+            handlerDownload={ handlerDownload }
+            page='Payment'
           />
         </div>
 
@@ -132,6 +145,8 @@ export const TableQueryContainer = () => {
           input={ search }
           setInput={ setSearch }
           setSelected={ setSelected }
+          handlerDownload={ handlerDownload }
+          page='Payment'
         />
       </div>
 

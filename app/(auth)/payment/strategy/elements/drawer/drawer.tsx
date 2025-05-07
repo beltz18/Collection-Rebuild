@@ -9,6 +9,8 @@ import { Strategy } from "@typ/strategy"
 import { StrategyDrawerProps } from "./types"
 import { ScrollShadow } from "@heroui/scroll-shadow"
 import { useResponsive } from "@uti/useResponsive"
+import { usePostStrategies } from "@api/routes/strategy"
+import { successToast } from "@com/index"
 
 export function StrategyDrawer({ 
   isOpen, 
