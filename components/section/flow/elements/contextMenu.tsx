@@ -8,29 +8,39 @@ export const ContextMenu = () => {
   const handleItemClick = ({ id, props }: any) => {
     const { type, isBasic, order } = props || {}
 
-    console.log(props)
-
     switch (id) {
-      case 'edit':
-        console.log('[Edit]', type, order)
+      case 'edit-step':
+        console.log('Edit step')
         break
 
-      case 'basic':
-        console.log('[Toggle Basic]', isBasic ? 'Revert to normal' : 'Make basic')
+      case 'edit-strategy':
+        console.log('Edit strategy')
         break
 
-      case 'delete':
-        console.log('[Delete]', type, order)
+      case 'revoke-basic':
+        console.log('Revoke basic step')
+        break
+
+      case 'make-basic':
+        console.log('Make basic step')
+        break
+
+      case 'delete-step':
+        console.log('Delete step')
+        break
+
+      case 'delete-step':
+        console.log('Delete strategy')
         break
     }
   }
 
   return (
     <>
-      <DefaultStepsMenu handleItemClick={ handleItemClick } />
-      <LastStepNotBAsic handleItemClick={ handleItemClick } />
-      <LastStepBAsic handleItemClick={ handleItemClick } />
-      <DefaultStrategy handleItemClick={ handleItemClick } />
+      <DefaultStepsMenu    handleItemClick={ handleItemClick } />
+      <LastStepNotBAsic    handleItemClick={ handleItemClick } />
+      <LastStepBAsic       handleItemClick={ handleItemClick } />
+      <DefaultStrategy     handleItemClick={ handleItemClick } />
       <StrategyWithNoSteps handleItemClick={ handleItemClick } />
     </>
   )
