@@ -6,5 +6,8 @@ export {
   ModalBody,
   ModalFooter,
   useModalContext,
-} from "./modal/modal"
-export { closeModal, openModal } from "./modal/modal-events"
+} from './modal/modal'
+export {
+  closeModal,
+  openModal,
+} from './modal/modal-events'

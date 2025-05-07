@@ -1,5 +1,6 @@
 import '@sty/globals.css'
 import 'react-day-picker/style.css'
+import "react-contexify/dist/ReactContexify.css"
 
 import { Metadata } from 'next'
 import { ClientProviders } from './client-providers'

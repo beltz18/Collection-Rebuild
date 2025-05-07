@@ -1,8 +1,8 @@
 import '@xyflow/react/dist/base.css'
 
 import {
-  useCallback,
   useState,
+  useCallback,
   ChangeEventHandler,
 } from 'react'
 import {
@@ -33,6 +33,7 @@ import { useTheme } from '@ctx/themeContext'
 import { useFlowStore } from '@sts/useFlowStore'
 import { useTokenStore } from '@sts/useTokenStore'
 import { useCreateNewStep } from '@api/routes/step'
+import { ContextMenu } from './elements/contextMenu'
 
 import CustomNode from './elements/node'
 import CustomEdge from './elements/edge'
@@ -61,13 +62,14 @@ export const Flow = ({
   initialEdges,
   setData,
 }: Props) => {
-  const { strategy } = useFlowStore()
+  const { strategy, clearData } = useFlowStore()
   const { flowTheme, setFlowTheme } = useTheme()
   const { token } = useTokenStore()
   const addNewStep = useCreateNewStep(token)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [colorMode, setColorMode] = useState<ColorMode>(flowTheme)
+
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 
@@ -138,7 +140,7 @@ export const Flow = ({
   }
 
   return (
-    <>
+    <div className="w-full h-full relative">
       <ReactFlow
         nodes={ nodes }
         edges={ edges }
@@ -159,7 +161,10 @@ export const Flow = ({
         <Panel position='top-left'>
           <div
             className='bg-theme-background text-theme-text-title rounded-md flex items-center justify-center gap-2 w-[80px] h-[48px] text-sm cursor-pointer hover:bg-theme-text-on-primary hover:text-theme-primary hover:border'
-            onClick={() => setData(null)}
+            onClick={() => {
+              setData(null)
+              clearData()
+            }}
           >
             <ChevronLeft size={ 14 } />
             Back
@@ -187,6 +192,8 @@ export const Flow = ({
         </Panel>
       </ReactFlow>
 
+      <ContextMenu />
+
       <AddNodeModal
         isOpen={ isModalOpen }
         onClose={() => setIsModalOpen(false)}
@@ -195,6 +202,6 @@ export const Flow = ({
         nextStepOrder={ Number(nodes[nodes.length-1].data.Data?.order)+1 }
         strategyName={ strategy?.name ?? '' }
       />
-    </>
+    </div>
   )
 }
