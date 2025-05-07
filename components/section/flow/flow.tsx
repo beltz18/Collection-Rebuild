@@ -1,5 +1,3 @@
-import '@xyflow/react/dist/base.css'
-
 import {
   useState,
   useEffect,
