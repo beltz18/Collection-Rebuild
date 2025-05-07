@@ -2,6 +2,7 @@ import '@xyflow/react/dist/base.css'
 
 import {
   useState,
+  useEffect,
   useCallback,
   ChangeEventHandler,
 } from 'react'
@@ -12,66 +13,55 @@ import {
   useEdgesState,
   addEdge,
   MiniMap,
-  Panel,
-  type Node,
-  type Edge,
   type OnConnect,
   type ColorMode,
 } from '@xyflow/react'
 import {
-  StrategyT,
-  StepT,
-} from '@typ/strategy'
-import { ChevronLeft } from 'lucide-react'
-import { NodeData } from './elements/node'
-import { Line } from './elements/line'
-import { CustomSelect } from '@com/select/select'
-import { PlusCircle } from 'lucide-react'
+  errorToast,
+  successToast,
+} from '@com/index'
+import {
+  FlowProps,
+  nodeTypes,
+  edgeTypes,
+  defaultEdgeOptions,
+} from './util/util'
+import {
+  CustomRightPanel,
+  CustomLeftPanel,
+} from './elements/panel'
 import AddNodeModal from './modal/add'
-import { Button, errorToast, successToast } from '@com/index'
+import { useNodesChanged } from './util/checkNodes'
+import { Line } from './elements/line'
 import { useTheme } from '@ctx/themeContext'
 import { useFlowStore } from '@sts/useFlowStore'
 import { useTokenStore } from '@sts/useTokenStore'
 import { useCreateNewStep } from '@api/routes/step'
 import { ContextMenu } from './elements/contextMenu'
 
-import CustomNode from './elements/node'
-import CustomEdge from './elements/edge'
-
-const nodeTypes = {
-  turbo: CustomNode,
-}
-
-const edgeTypes = {
-  turbo: CustomEdge,
-}
-
-const defaultEdgeOptions = {
-  type: 'turbo',
-  markerEnd: 'edge-circle',
-}
-
-type Props = {
-  initialNodes: Node<NodeData>[]
-  initialEdges: Edge[]
-  setData: React.Dispatch<React.SetStateAction<[StrategyT, ...StepT[]] | null>>
-}
-
 export const Flow = ({
   initialNodes,
   initialEdges,
   setData,
-}: Props) => {
+}: FlowProps) => {
   const { strategy, clearData } = useFlowStore()
   const { flowTheme, setFlowTheme } = useTheme()
   const { token } = useTokenStore()
+
   const addNewStep = useCreateNewStep(token)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [colorMode, setColorMode] = useState<ColorMode>(flowTheme)
+  const [hasChanges, setHasChanges] = useState<boolean>(false)
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
+
+  const hasNodeChanged = useNodesChanged(nodes)
+
+  useEffect(() => {
+    if (hasNodeChanged) setHasChanges(true)
+  }, [nodes])
 
   const onConnect: OnConnect = useCallback(
     (params) => setEdges((els) =>
@@ -126,6 +116,7 @@ export const Flow = ({
         body: 'Step could not be created',
       })
     }
+
     setIsModalOpen(false)
   }
 
@@ -158,38 +149,17 @@ export const Flow = ({
         <Controls showInteractive={ false } />
         <Line />
 
-        <Panel position='top-left'>
-          <div
-            className='bg-theme-background text-theme-text-title rounded-md flex items-center justify-center gap-2 w-[80px] h-[48px] text-sm cursor-pointer hover:bg-theme-text-on-primary hover:text-theme-primary hover:border'
-            onClick={() => {
-              setData(null)
-              clearData()
-            }}
-          >
-            <ChevronLeft size={ 14 } />
-            Back
-          </div>
-        </Panel>
+        <CustomLeftPanel
+          setData={ setData }
+          clearData={ clearData }
+        />
 
-        <Panel className='flex gap-3' position='top-right'>
-          <CustomSelect
-            values={ options }
-            label='Theme'
-            onChange={ onChange }
-            size='sm'
-            className='w-[120px] text-theme-text-default'
-          />
-          
-          <Button
-            type='button'
-            placeholder='Add Step'
-            variant='bordered'
-            color='secondary'
-            className='rounded-md text-xs h-[48px] font-medium z-50 bg-theme-background text-theme-text-title'
-            startContent={ <PlusCircle size={ 14 } /> }
-            onPress={() => setIsModalOpen(true)}
-          />
-        </Panel>
+        <CustomRightPanel
+          hasChanges={ hasChanges }
+          onChange={ onChange }
+          options={ options }
+          setIsModalOpen={ setIsModalOpen }
+        />
       </ReactFlow>
 
       <ContextMenu />
