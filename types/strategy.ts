@@ -56,3 +56,34 @@ export interface StepT extends Step {
   create_date: Date | string | null
   update_date: Date | string | null
 }
+
+export type StrategiesResponse = StrategyT[]
+
+export type FilterStrategiesProps = Partial<{
+  search: string
+  active: boolean
+  default: boolean
+  company_id: number
+  branch_id: number
+  days_before_due_to_start: number
+  strict_mode: boolean
+}>
+
+export type FilterStepsProps = {
+  strategy_id: number | undefined
+}
+
+export type SendStrategiesProps = {
+  active?: boolean
+  default?: boolean
+  name: string
+  days_before_due_to_start?: string
+  strict_mode?: boolean
+  company?: number
+  branch?: number
+}
+
+export type StrategiesResponseProps = {
+  data: StrategyT,
+  message: string
+}

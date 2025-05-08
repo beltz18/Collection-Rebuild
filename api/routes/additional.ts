@@ -23,8 +23,8 @@ type FilterCompanies = Partial<{
 
 export const useGetCompanies = (token: string | null, filters?: FilterCompanies) => {
   return useCollectionQuery<Company[]>({
-    fetcher: async () => await genericAuthRequest(METHODS.get,
-      API_ROUTES.company, { ...filters },
+    fetcher: async () => await genericAuthRequest(
+      METHODS.get, API_ROUTES.company, { ...filters },
       token ? { Authorization: `Bearer ${token}` } : undefined,
     ),
     queryKey: [CACHE_KEYS.getCompanies],
@@ -44,8 +44,8 @@ export const useGetBranches = (
   options?: { enabled: boolean },
 ) => {
   return useCollectionQuery<Branch[]>({
-    fetcher: async () => await genericAuthRequest(METHODS.get,
-      API_ROUTES.branch, { ...filters },
+    fetcher: async () => await genericAuthRequest(
+      METHODS.get, API_ROUTES.branch, { ...filters },
       token ? { Authorization: `Bearer ${token}` } : undefined,
     ),
     queryKey: [CACHE_KEYS.getBranches],
@@ -66,8 +66,8 @@ export const useGetMethods = (
   options?: { enabled: boolean },
 ) => {
   return useCollectionQuery<Method[]>({
-    fetcher: async () => await genericAuthRequest(METHODS.get,
-      API_ROUTES.method, { ...filters },
+    fetcher: async () => await genericAuthRequest(
+      METHODS.get, API_ROUTES.method, { ...filters },
       token ? { Authorization: `Bearer ${token}` } : undefined,
     ),
     queryKey: [CACHE_KEYS.getMethods],
@@ -86,8 +86,8 @@ export const useGetProcessorMethodCrossed = (
   options?: { enabled: boolean },
 ) => {
   return useCollectionQuery<MethodProcessor[]>({
-    fetcher: async () => await genericAuthRequest(METHODS.get,
-      API_ROUTES.methodProcessor, { ...filters },
+    fetcher: async () => await genericAuthRequest(
+      METHODS.get, API_ROUTES.methodProcessor, { ...filters },
       token ? { Authorization: `Bearer ${token}` } : undefined,
     ),
     queryKey: [CACHE_KEYS.getMethodProcessors],
