@@ -176,7 +176,6 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  border-radius: 100%;
 }
 
 .react-flow__node-turbo .wrapper.gradient:before {
@@ -222,7 +221,6 @@
 }
 
 .react-flow__node-turbo .cloud {
-  border-radius: 100%;
   width: 12px;
   height: 12px;
   padding: 2px;
@@ -234,7 +232,6 @@
 .react-flow__node-turbo .cloud div {
   background-color: var(--bg-flow-color);
   flex-grow: 1;
-  border-radius: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

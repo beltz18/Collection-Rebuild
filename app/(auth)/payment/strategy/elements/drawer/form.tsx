@@ -1,21 +1,53 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Input, Checkbox, Card, Select, SelectItem, CardBody } from "@heroui/react"
 import { StrategyFormProps } from "./types"
+import { useTokenStore } from "@sts/useTokenStore"
+import { 
+  useGetCompanies, 
+  useGetBranches 
+} from "@api/routes/additional"
+import { 
+  Company, 
+  Branch 
+} from "@typ/company-branch"
 import { mockBranches, mockCompanies } from "../../mock/mock-data"
 
 export default function StrategyForm({ formData, updateFormData, isViewMode = false }: StrategyFormProps) {
+  const [ selectedCompany, setSelectedCompany ] = useState<Company[] | null>([])
+  const [ selectedBranch, setSelectedBranch ] = useState<Branch[] | null>([])
+
+  /* const { token } = useTokenStore()
+  const { data: companys } = useGetCompanies(token)
+  const { refetch } = useGetBranches(
+    token,
+    { company_id: Number(selectedCompany?company_id), },
+    { enabled: false },
+  ) */
+
   const company = mockCompanies
   const branch = mockBranches
 
   const handleCompanyChange = (value: string) => {
     const selectedCompany = company?.find((c) => String(c.id) === value)
+    //setSelectedCompany(selectedCompany)
 
     updateFormData({
       company_id: value,
       company: selectedCompany?.name || "",
     })
   }
+
+  /* useEffect(() => {
+    const fetchData = async () => {
+      const { data: crossedProcessors } = await refetch()
+      if (!crossedProcessors) return
+      setSelectedBranch
+    }
+    
+    if (selectedCompany) fetchData()
+  }, [selectedCompany]) */
 
   const handleBranchChange = (value: string) => {
     const selectedBranch = branch?.find((b) => String(b.id) === value)
