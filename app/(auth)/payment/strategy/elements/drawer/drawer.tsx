@@ -11,6 +11,10 @@ import { ScrollShadow } from "@heroui/scroll-shadow"
 import { useResponsive } from "@uti/useResponsive"
 import { usePostStrategies } from "@api/routes/strategy"
 import { successToast } from "@com/index"
+import { 
+  useGetCompanies, 
+  useGetBranches,
+} from "@api/routes/additional"
 
 export function StrategyDrawer({ 
   isOpen, 
