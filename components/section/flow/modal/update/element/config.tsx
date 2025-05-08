@@ -176,8 +176,8 @@ export const ConfigTab: React.FC<PaymentConfigTabProps> = ({
 
       <InputField
         label='Min Hours Between Attempts'
-        id='minHoursBetweenAttempts'
-        name='minHoursBetweenAttempts'
+        id='min_hours_between_attempts'
+        name='min_hours_between_attempts'
         type='number'
         value={ formData?.min_hours_between_attempts.toString() ?? '24' }
         onChange={ handleNumberChange }
@@ -186,8 +186,8 @@ export const ConfigTab: React.FC<PaymentConfigTabProps> = ({
 
       <InputField
         label='Min Hours Before Next Step'
-        id='minHoursBeforeNextStep'
-        name='minHoursBeforeNextStep'
+        id='min_hours_before_next_step'
+        name='min_hours_before_next_step'
         type='number'
         value={ formData?.min_hours_before_next_step.toString() ?? '0' }
         onChange={ handleNumberChange }

@@ -11,7 +11,9 @@ import {
   ModalBody,
   ModalFooter,
 } from '@sec/modal'
-import { Button } from '@com/index'
+import { Node } from '@xyflow/react'
+import { NodeData } from '@sec/flow/elements/node'
+import { Button, errorToast } from '@com/index'
 import { StepT } from '@typ/strategy'
 import { Tabs } from '@com/tabs/tabs'
 import { BasicTab } from './element/basic'
@@ -21,22 +23,32 @@ import { AnimatedButtonIcon } from '../add/button-animated'
 import { useGetMethods } from '@api/routes/additional'
 import { useGetProcessors } from '@api/routes/processor'
 import { useTokenStore } from '@sts/useTokenStore'
+import { isEqual } from 'radash'
+import { useUpdateStep } from '@api/routes/step'
+import { generateNewNode } from '@sec/flow/util/util'
+import { StepExtended } from '@typ/step'
 
 type Props = {
   open: boolean
   close: Dispatch<SetStateAction<boolean>>
   tab: 'basic' | 'config'
   id?: number
+  nodes: Node<NodeData>[]
+  setNodes: Dispatch<SetStateAction<Node<NodeData>[]>>
 }
 
 export const EditStepModal = ({
   id,
   open,
   tab,
+  nodes,
   close,
+  setNodes,
 }: Props) => {
-  const { steps } = useFlowStore()
+  const { steps, setSteps } = useFlowStore()
   const { token } = useTokenStore()
+
+  const updateStep = useUpdateStep(token, id)
 
   const { data: method } = useGetMethods(token)
   const { data: processor } = useGetProcessors(token)
@@ -79,9 +91,49 @@ export const EditStepModal = ({
   const handleNumberChange = (name: string, value: string) =>
     setFormData((prev) => prev ? { ...prev, [name]: Number.parseInt(value) || 0 } : prev)
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setIsSubmitting(true)
-    console.log(formData)
+    
+    if (formData) {
+      const idx = steps?.findIndex((e) => e.id == formData?.id)
+      const egp = Array.isArray(steps) ? [...steps] : []
+      const tre : StepT = {
+        ...formData,
+        id: formData?.id,
+        method: Number(selectedMethod?.id),
+        processor: Number(selectedProcessor?.id),
+      }
+
+      if (idx && !isEqual(tre, (steps ?? [])[idx])) {
+        try {
+          const r = await updateStep.mutateAsync(tre as StepExtended)
+          if (r.data) {
+            if (egp && idx && egp?.length >= idx) egp.splice(idx, 1, tre)
+            setSteps(egp)
+    
+            const gp1 = nodes.findIndex((e) => e.data.Data?.id == id)
+            const nd1 = generateNewNode(
+              nodes[gp1].id, nodes[gp1].position.x, nodes[gp1].position.y,
+              formData, '', 'step'
+            )
+    
+            const ndD = [ ...nodes ]
+            const ndA = ndD.toSpliced(gp1, 1, nd1)
+            setNodes(ndA)
+            setIsSubmitting(false)
+            onClose()
+          } else {
+            console.log('Error here')
+          }
+        } catch (err) {
+          console.log(err)
+          errorToast({
+            title: 'Error',
+            body: 'Step could not be updated',
+          })
+        }
+      } else onClose()
+    }
   }
 
   return (

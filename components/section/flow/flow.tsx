@@ -93,7 +93,6 @@ export const Flow = ({
         'method': nodeData.method.id,
         'processor': nodeData.processor.id,
       })
-      console.log(d)
       setNodes((prev) => [...prev, newNode])
       setEdges((prev) => [...prev, newEdge])
       successToast({
@@ -164,6 +163,8 @@ export const Flow = ({
         selectedType={ selectedType }
         isOpen={ isOpen }
         setIsOpen={ setIsOpen }
+        nodes={ nodes }
+        setNodes={ setNodes }
       />
 
       <AddNodeModal

@@ -25,7 +25,7 @@ export const useCreateNewStep = (token: string | null) => {
   })
 }
 
-export const useUpdateStep = (token: string, stepId: number) => {
+export const useUpdateStep = (token: string | null, stepId: number | undefined) => {
   return useCollectionMutation<StepExtended, StepUpdateResponse>({
     fetcher: async (data) => await genericAuthRequest(
       METHODS.patch, API_ROUTES.updateStep(stepId), { ...data },

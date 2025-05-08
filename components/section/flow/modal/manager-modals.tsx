@@ -8,19 +8,25 @@ import { MakeBasicStepModal } from './update/make-step'
 import { RevokeBasicStepModal } from './update/revoke-step'
 import { EditStepModal } from './update/edit-step'
 import { ModalTypeProps } from '../elements/types'
+import { Node } from '@xyflow/react'
+import { NodeData } from '../elements/node'
 
 type Props = {
   modalType: ModalTypeProps | null
   selectedType: 'step' | 'strategy' | null
   isOpen: boolean
   setIsOpen: Dispatch<SetStateAction<boolean>>
+  nodes: Node<NodeData>[]
+  setNodes: Dispatch<SetStateAction<Node<NodeData>[]>>
 }
 
 export const ManagerModals = ({
   modalType,
   selectedType,
   isOpen,
+  nodes,
   setIsOpen,
+  setNodes,
 }: Props) => {
   if (modalType?.modal == 'delete') {
     if (selectedType == 'step') {
@@ -60,6 +66,8 @@ export const ManagerModals = ({
           close={ setIsOpen }
           id={ modalType.id }
           tab='basic'
+          nodes={ nodes }
+          setNodes={ setNodes }
         />
       )
     } else if (selectedType == 'strategy') {
