@@ -28,3 +28,27 @@ export type FlowProps = {
   initialEdges: Edge[]
   setData: React.Dispatch<React.SetStateAction<[StrategyT, ...StepT[]] | null>>
 }
+
+export const generateNewNode = (
+  id: string,
+  x: number,
+  y: number,
+  nodeData: any,
+  title: string,
+  type: 'step',
+) => {
+  return {
+    id,
+    position: { x, y },
+    type: 'turbo',
+    data: {
+      Data: {
+        ...nodeData,
+        'method': nodeData.method.name,
+        'processor': nodeData.processor.name,
+      },
+      title,
+      type: type as 'step',
+    },
+  }
+}

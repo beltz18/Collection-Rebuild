@@ -29,6 +29,7 @@ import {
   CustomLeftPanel,
 } from './elements/panel'
 import AddNodeModal from './modal/add'
+import { generateNewNode } from './util/util'
 import { useNodesChanged } from './util/checkNodes'
 import { Line } from './elements/line'
 import { useTheme } from '@ctx/themeContext'
@@ -70,23 +71,10 @@ export const Flow = ({
   const handleAddNode = (nodeData: any) => {
     const id = String(Number(nodes[nodes.length-1].id)+1)
 
-    const newNode = {
-      id,
-      position: {
-        x: Number(nodes[nodes.length-1].position.x)+250,
-        y: Number(nodes[nodes.length-1].position.y),
-      },
-      type: 'turbo',
-      data: {
-        Data: {
-          ...nodeData,
-          'method': nodeData.method.name,
-          'processor': nodeData.processor.name,
-        },
-        title: '',
-        type: 'step' as 'step',
-      },
-    }
+    const newNode = generateNewNode(
+      id, Number(nodes[nodes.length-1].position.x)+250,
+      Number(nodes[nodes.length-1].position.y), nodeData, '', 'step'
+    )
 
     const newEdge = {
       id: `e-str-ste-${nodes[nodes.length-1].id}-${id}`,
