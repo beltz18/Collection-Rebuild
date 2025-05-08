@@ -93,7 +93,7 @@ export const EditStepModal = ({
 
   const handleSubmit = async () => {
     setIsSubmitting(true)
-    
+
     if (formData) {
       const idx = steps?.findIndex((e) => e.id == formData?.id)
       const egp = Array.isArray(steps) ? [...steps] : []
@@ -107,23 +107,29 @@ export const EditStepModal = ({
       if (idx && !isEqual(tre, (steps ?? [])[idx])) {
         try {
           const r = await updateStep.mutateAsync(tre as StepExtended)
+
           if (r.data) {
             if (egp && idx && egp?.length >= idx) egp.splice(idx, 1, tre)
             setSteps(egp)
-    
+
             const gp1 = nodes.findIndex((e) => e.data.Data?.id == id)
             const nd1 = generateNewNode(
-              nodes[gp1].id, nodes[gp1].position.x, nodes[gp1].position.y,
-              formData, '', 'step'
+              nodes[gp1].id, nodes[gp1].position.x,
+              nodes[gp1].position.y, formData, '', 'step'
             )
-    
+
             const ndD = [ ...nodes ]
             const ndA = ndD.toSpliced(gp1, 1, nd1)
+
             setNodes(ndA)
             setIsSubmitting(false)
             onClose()
           } else {
             console.log('Error here')
+            errorToast({
+              title: 'Error',
+              body: 'Something wrong happened...',
+            })
           }
         } catch (err) {
           console.log(err)
