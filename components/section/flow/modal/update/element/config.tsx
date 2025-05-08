@@ -3,42 +3,40 @@ import {
   SelectItem,
 } from '@heroui/react'
 import {
-  useGetMethods,
-  useGetProcessorMethodCrossed,
-} from '@api/routes/additional'
-import {
   useEffect,
   useState,
 } from 'react'
+import { useGetProcessorMethodCrossed } from '@api/routes/additional'
 import { Heading } from '@com/heading'
-import { FormData } from './add.types'
-import { InputField } from './form-field'
-import { useGetProcessors } from '@api/routes/processor'
+import { StepT } from '@typ/strategy'
+import { InputField } from '../../add/form-field'
 import { useTokenStore } from '@sts/useTokenStore'
 import { ProcessorT } from '@typ/processor'
+import { Method } from '@typ/base'
 
 interface PaymentConfigTabProps {
-  formData: FormData
+  formData: StepT | undefined
   selectedMethod: { id: string, name: string }
   selectedProcessor: { id: string, name: string }
+  methods: Method[]
+  processors: ProcessorT[]
   handleSelectChange: (name: string, value: any) => void
   handleNumberChange: (name: string, value: string) => void
   handleSwitchChange: (name: string, checked: boolean) => void
 }
 
-export const PaymentConfigTab: React.FC<PaymentConfigTabProps> = ({
+export const ConfigTab: React.FC<PaymentConfigTabProps> = ({
   formData,
   selectedMethod,
   selectedProcessor,
+  methods,
+  processors,
   handleSelectChange,
   handleNumberChange,
   handleSwitchChange,
 }) => {
   const [available, setAvailable] = useState<ProcessorT[] | null>([])
   const { token } = useTokenStore()
-
-  const { data: method } = useGetMethods(token)
-  const { data: processor } = useGetProcessors(token)
 
   const { refetch } = useGetProcessorMethodCrossed(
     token,
@@ -50,16 +48,16 @@ export const PaymentConfigTab: React.FC<PaymentConfigTabProps> = ({
     const fetchData = async () => {
       const { data: crossedProcessors } = await refetch()
 
-      if (!crossedProcessors || !processor) return
+      if (!crossedProcessors || !processors) return
 
       const validProcessorIds = crossedProcessors.map(p => p.payment_processor)
-      const filteredProcessors = processor.filter(p => validProcessorIds.includes(p.id))
+      const filteredProcessors = processors.filter(p => validProcessorIds.includes(p.id))
 
       setAvailable(filteredProcessors)
     }
     
     if (selectedMethod) fetchData()
-    if (!formData.order) {
+    if (formData && !formData.order) {
       console.log('order setted')
       handleNumberChange('order', '1')
       handleSwitchChange('is_basic_step', true)
@@ -88,7 +86,7 @@ export const PaymentConfigTab: React.FC<PaymentConfigTabProps> = ({
             id='method'
             selectedKeys={ selectedMethod ? [selectedMethod.id.toString()] : [] }
             onChange={(e) => {
-              const value = method?.find((el) => el.id == Number(e.target.value))
+              const value = methods?.find((el) => el.id == Number(e.target.value))
               handleSelectChange('method', { id: value?.id, name: value?.name })
             }}
             placeholder='Select payment method'
@@ -96,7 +94,7 @@ export const PaymentConfigTab: React.FC<PaymentConfigTabProps> = ({
             size='sm'
           >
             {
-              method?.map((method) => (
+              methods?.map((method) => (
                 <SelectItem
                   key={ method.id }
                   data-value={ method.id.toString() }
@@ -171,7 +169,7 @@ export const PaymentConfigTab: React.FC<PaymentConfigTabProps> = ({
         id='attempts'
         name='attempts'
         type='number'
-        value={ formData.attempts.toString() }
+        value={ formData?.attempts.toString() ?? '3' }
         onChange={ handleNumberChange }
         helpText='Maximum number of retry attempts for this step.'
       />
@@ -181,7 +179,7 @@ export const PaymentConfigTab: React.FC<PaymentConfigTabProps> = ({
         id='minHoursBetweenAttempts'
         name='minHoursBetweenAttempts'
         type='number'
-        value={ formData.minHoursBetweenAttempts.toString() }
+        value={ formData?.min_hours_between_attempts.toString() ?? '24' }
         onChange={ handleNumberChange }
         helpText='Required waiting period (in hours) between retry attempts.'
       />
@@ -191,7 +189,7 @@ export const PaymentConfigTab: React.FC<PaymentConfigTabProps> = ({
         id='minHoursBeforeNextStep'
         name='minHoursBeforeNextStep'
         type='number'
-        value={ formData.minHoursBeforeNextStep.toString() }
+        value={ formData?.min_hours_before_next_step.toString() ?? '0' }
         onChange={ handleNumberChange }
       />
     </form>

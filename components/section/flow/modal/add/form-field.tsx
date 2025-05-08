@@ -40,7 +40,7 @@ interface InputFieldProps {
   name: string
   type?: string
   value: string
-  onChange: (name: string, value: string) => void
+  onChange?: (name: string, value: string) => void
   className?: string
   helpText?: string
   disabled?: boolean
@@ -67,7 +67,7 @@ export const InputField: React.FC<InputFieldProps> = ({
         name={ name }
         type={ type }
         value={ value }
-        onChange={(e) => onChange(name, e.target.value)}
+        onChange={(e) => onChange?.(name, e.target.value)}
         className={ cn('w-full', className) }
         disabled={ disabled }
         size='sm'
