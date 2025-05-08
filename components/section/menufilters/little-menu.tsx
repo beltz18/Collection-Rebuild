@@ -19,6 +19,8 @@ import { FilterIcon } from 'lucide-react'
 import { CustomDropdown } from '@com/dropdown/dropdown'
 import { CustomPopover } from '@com/popover/popover'
 import { FilterDialog } from '@com/modal/filters'
+import { useMenuStoreLoan } from '@sts/useMenuStore'
+import { useMenuStorePayment } from '@sts/useMenuStore'
 
 type Props = {
   title?: string
@@ -28,6 +30,8 @@ type Props = {
   input: string | null
   setInput: (input: string) => void
   setSelected: React.Dispatch<React.SetStateAction<number>>
+  handlerDownload: (title: 'Loan' | 'Payment', data: Loan[] | Payment[], type: 'CSV' | 'PDF') => void
+  page: 'Loan' | 'Payment'
 }
 
 export const LittleMenu = ({
@@ -38,12 +42,17 @@ export const LittleMenu = ({
   input,
   setInput,
   setSelected,
+  handlerDownload,
+  page,
 }: Props) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
   const [appliedFilters, setAppliedFilters] = useState<LoanFilters | null>(null)
 
   const activeFiltersCount = countActiveFilters(appliedFilters)
+
+  const { selectedCells: dataLoan } = useMenuStoreLoan()
+  const { selectedCells: dataPayment } = useMenuStorePayment()
 
   const handleFiltersApplied = (filters: LoanFilters) => {
     setAppliedFilters(filters)
@@ -118,8 +127,8 @@ export const LittleMenu = ({
                 <CustomDropdown.Item
                   key="pdf"
                   onPress={() => {
-                    if (!cells || cells.length === 0)
-                      return
+                    if (!cells || cells.length === 0) return
+                    else handlerDownload(page, page === 'Loan' ? dataLoan : dataPayment, 'PDF')
                   }}
                   className={`text-default-600 hover:bg-default-100 ${!cells || cells.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
@@ -129,8 +138,8 @@ export const LittleMenu = ({
                 <CustomDropdown.Item
                   key="csv"
                   onPress={() => {
-                    if (!cells || cells.length === 0)
-                      return
+                    if (!cells || cells.length === 0) return
+                    else handlerDownload(page, page === 'Loan' ? dataLoan : dataPayment, 'CSV')
                   }}
                   className={`text-default-600 hover:bg-default-100 ${!cells || cells.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
