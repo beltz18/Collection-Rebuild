@@ -30,8 +30,8 @@ type Props = {
   input: string | null
   setInput: (input: string) => void
   setSelected: React.Dispatch<React.SetStateAction<number>>
-  handlerDownload: (title: 'Loan' | 'Payment', data: Loan[] | Payment[], type: 'CSV' | 'PDF') => void
-  page: 'Loan' | 'Payment'
+  handlerDownload?: (title: 'Loan' | 'Payment', data: Loan[] | Payment[], type: 'CSV' | 'PDF') => void
+  page?: 'Loan' | 'Payment'
 }
 
 export const LittleMenu = ({
@@ -128,7 +128,8 @@ export const LittleMenu = ({
                   key="pdf"
                   onPress={() => {
                     if (!cells || cells.length === 0) return
-                    else handlerDownload(page, page === 'Loan' ? dataLoan : dataPayment, 'PDF')
+                    else handlerDownload &&
+                      handlerDownload(page ?? 'Loan', page === 'Loan' ? dataLoan : dataPayment, 'PDF')
                   }}
                   className={`text-default-600 hover:bg-default-100 ${!cells || cells.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
@@ -139,7 +140,8 @@ export const LittleMenu = ({
                   key="csv"
                   onPress={() => {
                     if (!cells || cells.length === 0) return
-                    else handlerDownload(page, page === 'Loan' ? dataLoan : dataPayment, 'CSV')
+                    else handlerDownload &&
+                      handlerDownload(page ?? 'Loan', page === 'Loan' ? dataLoan : dataPayment, 'CSV')
                   }}
                   className={`text-default-600 hover:bg-default-100 ${!cells || cells.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
