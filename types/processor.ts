@@ -26,3 +26,14 @@ export type SEC_Code =
   'icl' |
   'ic2' |
   'rtp'
+
+export type FilterProps = Partial<{
+  search: string
+  processor_type: ProcessorType
+  active: boolean
+  sec_code: SEC_Code
+  use_same_day_ach: boolean
+  unique_name: string
+}>
+
+export type ProcessorsResponse = ProcessorT[]

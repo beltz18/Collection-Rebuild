@@ -10,9 +10,13 @@ import { Flow as CustomFlow } from '@sec/flow/flow'
 
 type Props = {
   data: [StrategyT, ...StepT[]]
+  setData: React.Dispatch<React.SetStateAction<[StrategyT, ...StepT[]] | null>>
 }
 
-export const ComponentContainer = ({ data }: Props) => {
+export const ComponentContainer = ({
+  data,
+  setData,
+}: Props) => {
   const initialNodes = generateSerpentineNodes(data)
   const initialEdges = generateEdges(initialNodes)
 
@@ -21,6 +25,7 @@ export const ComponentContainer = ({ data }: Props) => {
       <CustomFlow
         initialNodes={ initialNodes }
         initialEdges={ initialEdges }
+        setData={ setData }
       />
     </div>
   )

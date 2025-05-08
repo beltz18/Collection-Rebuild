@@ -12,8 +12,6 @@ export const Wrapper = () => {
   const searchParams = useSearchParams()
   const [strategy, setStrategy] = useState<string | null>('')
 
-  console.log(strategy)
-
   const {
     setActiveTab,
     setActiveChildrenTab,

@@ -1,4 +1,5 @@
 type posT   = 'bottom-center' | 'bottom-left' | 'bottom-right' | 'top-center' | 'top-left' | 'top-right'
+
 type ThemeT = 'light' | 'dark'
 
 export type ToastT = {

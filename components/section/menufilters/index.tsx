@@ -1,22 +1,7 @@
-import {
-  Loan,
-  Payment,
-} from '@typ/home-tables'
+import { MenuFilterProps } from '@typ/home-tables'
 import { useResponsive } from '@uti/useResponsive'
 import { LittleMenu } from './little-menu'
 import { BigMenu } from './big-menu'
-
-type Props = {
-  title?: string
-  cells?: Loan[] | Payment[]
-  options: number[]
-  selected: number
-  input: string | null
-  setInput: (input: string) => void
-  setSelected: React.Dispatch<React.SetStateAction<number>>
-  handlerDownload: (title: 'Loan' | 'Payment', data: Loan[] | Payment[], type: 'CSV' | 'PDF') => void
-  page: 'Loan' | 'Payment'
-}
 
 export default function MenuOptions({
   title = 'Page',
@@ -28,7 +13,7 @@ export default function MenuOptions({
   setSelected,
   handlerDownload,
   page,
-}: Props) {
+}: MenuFilterProps) {
   const { isTablet } = useResponsive()
 
   if (!isTablet) {

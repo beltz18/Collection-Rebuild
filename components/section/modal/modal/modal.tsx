@@ -1,7 +1,11 @@
-"use client"
+'use client'
 
-import type React from "react"
-import { createContext, useContext, useEffect, useId } from "react"
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useId,
+} from 'react'
 import {
   Modal as HeroModal,
   ModalContent as HeroModalContent,
@@ -10,9 +14,9 @@ import {
   ModalFooter as HeroModalFooter,
   useDisclosure,
   ModalProps
-} from "@heroui/react"
-import { cn } from "@uti/cn"
-import { modalEvents } from "./modal-events"
+} from '@heroui/react'
+import { cn } from '@uti/cn'
+import { modalEvents } from './modal-events'
 
 export type ModalCtx = {
   isOpen: boolean
@@ -26,7 +30,7 @@ export const ModalContext = createContext<ModalCtx | null>(null)
 
 export const useModalContext = () => {
   const ctx = useContext(ModalContext)
-  if (!ctx) throw new Error("Modal must be used within a ModalProvider")
+  if (!ctx) throw new Error('Modal must be used within a ModalProvider')
   return ctx
 }
 
@@ -38,7 +42,11 @@ export const Modal = ({
   children: React.ReactNode
   id?: string
 } & Partial<ModalProps>) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const {
+    isOpen,
+    onOpen,
+    onOpenChange,
+  } = useDisclosure()
 
   const generatedId = useId()
   const id = providedId || generatedId
@@ -56,16 +64,12 @@ export const Modal = ({
   }
 
   useEffect(() => {
-    const unsubscribe = modalEvents.on("close", (payload) => {
-      if (!payload.id || payload.id === id) {
-        onClose()
-      }
+    const unsubscribe = modalEvents.on('close', (payload) => {
+      if (!payload.id || payload.id === id) onClose()
     })
 
-    const unsubscribeOpen = modalEvents.on("open", (payload) => {
-      if (payload.id === id) {
-        onOpen()
-      }
+    const unsubscribeOpen = modalEvents.on('open', (payload) => {
+      if (payload.id === id) onOpen()
     })
 
     return () => {
@@ -74,7 +78,11 @@ export const Modal = ({
     }
   }, [id, onOpen])
 
-  return <ModalContext.Provider value={contextValue}>{children}</ModalContext.Provider>
+  return (
+    <ModalContext.Provider value={ contextValue }>
+      { children }
+    </ModalContext.Provider>
+  )
 }
 
 export const ModalTrigger = ({
@@ -89,8 +97,12 @@ export const ModalTrigger = ({
   const { onOpen } = useModalContext()
 
   return (
-    <div onClick={onOpen} className={className} {...props}>
-      {children}
+    <div
+      onClick={ onOpen }
+      className={ className }
+      { ...props }
+    >
+      { children }
     </div>
   )
 }
@@ -104,23 +116,27 @@ export const ModalContent = ({
 }) => {
   const { isOpen, onClose, modalProps } = useModalContext()
 
-  const backdropValue = modalProps.backdrop || customProps.backdrop || "opaque"
+  const backdropValue = modalProps.backdrop || customProps.backdrop || 'opaque'
   const validBackdrop =
-    backdropValue === "opaque" || backdropValue === "transparent" || backdropValue === "blur" ? backdropValue : "opaque"
+    backdropValue === 'opaque' ||
+    backdropValue === 'transparent' ||
+    backdropValue === 'blur' ? backdropValue : 'opaque'
 
   const mergedProps = {
     backdrop: validBackdrop,
     ...modalProps,
-    ...customProps
+    ...customProps,
   }
 
   return (
     <HeroModal
-      isOpen={isOpen}
-      onOpenChange={onClose}
+      isOpen={ isOpen }
+      onOpenChange={ onClose }
       { ...mergedProps }
     >
-      <HeroModalContent>{typeof children === "function" ? children(onClose) : children}</HeroModalContent>
+      <HeroModalContent>
+        { typeof children === 'function' ? children(onClose) : children }
+      </HeroModalContent>
     </HeroModal>
   )
 }
@@ -136,12 +152,20 @@ export const ModalHeader = ({
 }) => {
   return (
     <HeroModalHeader
-      className={cn("w-full h-[2.5rem] p-[.75rem] flex items-center justify-between", className)}
-      {...props}
+      className={
+        cn(
+          'w-full h-[2.5rem] p-[.75rem] flex items-center justify-between',
+          className,
+        )
+      }
+      { ...props }
     >
-      {children}
+      { children }
     </HeroModalHeader>
   )
 }
 
-export { HeroModalBody as ModalBody, HeroModalFooter as ModalFooter }
+export {
+  HeroModalBody as ModalBody,
+  HeroModalFooter as ModalFooter,
+}

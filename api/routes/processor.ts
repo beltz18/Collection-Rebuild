@@ -9,26 +9,14 @@ import {
   useCollectionMutation
 } from '@api/config'
 import {
-  ProcessorT,
-  ProcessorType,
-  SEC_Code,
+  FilterProps,
+  ProcessorsResponse,
 } from '@typ/processor'
-
-type ProcessorsResponse = ProcessorT[]
-
-type FilterProps = Partial<{
-  search: string
-  processor_type: ProcessorType
-  active: boolean
-  sec_code: SEC_Code
-  use_same_day_ach: boolean
-  unique_name: string
-}>
 
 export const useGetProcessors = (token: string | null, filters?: FilterProps) => {
   return useCollectionQuery<ProcessorsResponse>({
-    fetcher: async () => await genericAuthRequest(METHODS.get,
-      API_ROUTES.processor, { ...filters },
+    fetcher: async () => await genericAuthRequest(
+      METHODS.get, API_ROUTES.processor, { ...filters },
       token ? { Authorization: `Bearer ${token}` } : undefined
     ),
     queryKey: [CACHE_KEYS.getProcessors, filters],
@@ -62,8 +50,7 @@ export const usePostProcessors = (token: string | null) => {
   return useCollectionMutation<SendProps, {}>({
     fetcher: async (data) =>
       await genericAuthRequest(
-      METHODS.post, 
-      API_ROUTES.processor, data,
+      METHODS.post, API_ROUTES.processor, data,
       token ? { Authorization: `Bearer ${token}` } : undefined,
     )
   })
