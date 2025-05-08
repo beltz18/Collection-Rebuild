@@ -37,6 +37,8 @@ import { useFlowStore } from '@sts/useFlowStore'
 import { useTokenStore } from '@sts/useTokenStore'
 import { useCreateNewStep } from '@api/routes/step'
 import { ContextMenu } from './elements/contextMenu'
+import { ModalTypeProps } from './elements/types'
+import { ManagerModals } from './modal/manager-modals'
 
 export const Flow = ({
   initialNodes,
@@ -49,9 +51,12 @@ export const Flow = ({
 
   const addNewStep = useCreateNewStep(token)
 
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [colorMode, setColorMode] = useState<ColorMode>(flowTheme)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [modalType, setModalType] = useState<ModalTypeProps | null>(null)
+  const [selectedType, setSelectedType] = useState<'step' | 'strategy' | null>(null)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
   const [hasChanges, setHasChanges] = useState<boolean>(false)
+  const [colorMode, setColorMode] = useState<ColorMode>(flowTheme)
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
@@ -88,7 +93,6 @@ export const Flow = ({
         'method': nodeData.method.id,
         'processor': nodeData.processor.id,
       })
-      console.log(d)
       setNodes((prev) => [...prev, newNode])
       setEdges((prev) => [...prev, newEdge])
       successToast({
@@ -117,7 +121,7 @@ export const Flow = ({
   }
 
   return (
-    <div className="w-full h-full relative">
+    <div className='w-full h-full relative'>
       <ReactFlow
         nodes={ nodes }
         edges={ edges }
@@ -148,7 +152,20 @@ export const Flow = ({
         />
       </ReactFlow>
 
-      <ContextMenu />
+      <ContextMenu
+        setModalType={ setModalType }
+        setSelectedType={ setSelectedType }
+        setIsOpen={ setIsOpen }
+      />
+
+      <ManagerModals
+        modalType={ modalType }
+        selectedType={ selectedType }
+        isOpen={ isOpen }
+        setIsOpen={ setIsOpen }
+        nodes={ nodes }
+        setNodes={ setNodes }
+      />
 
       <AddNodeModal
         isOpen={ isModalOpen }

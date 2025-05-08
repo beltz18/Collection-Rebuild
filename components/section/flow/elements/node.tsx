@@ -60,7 +60,6 @@ const getIdFromContext = ({ type, isLast, isBasic, stepsNum }: Props) : string =
   } else return 'default'
 }
 
-
 export default memo (({
   data: {
     title,
@@ -83,8 +82,6 @@ export default memo (({
       preventDefault: () => {},
       stopPropagation: () => {},
     } as unknown as React.MouseEvent
-
-    console.log(type)
 
     show({
       id: getIdFromContext({

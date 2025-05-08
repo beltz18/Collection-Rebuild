@@ -1,5 +1,5 @@
-import { TableQueryContainer } from './query-container'
 import AuthLayout from '../layout'
+import { TableQueryContainer } from './query-container'
 import { DefaultLayout } from '@lay/default'
 import { Wrapper } from './wrapper'
 import { PAGES } from '@uti/var'

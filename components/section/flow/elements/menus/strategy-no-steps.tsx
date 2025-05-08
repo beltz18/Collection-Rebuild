@@ -26,8 +26,10 @@ export const StrategyWithNoSteps = ({ handleItemClick }: Props) => {
         id='delete-strategy'
         onClick={ handleItemClick }
       >
-        <Trash size={ 14 } />&nbsp;
-        Delete strategy
+        <span className='w-full flex items-center text-red-600 hover:text-white'>
+          <Trash size={ 14 } />&nbsp;
+          Delete strategy
+        </span>
       </Item>
     </Menu>
   )

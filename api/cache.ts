@@ -30,7 +30,7 @@ export const API_ROUTES = {
   branch: '/api/branches/',
   method: '/api/payment-methods/',
   methodProcessor: '/api/processor-payment-methods/',
-  updateStep: (stepId: number) => { return `/api/payment-steps/${stepId}/` },
+  updateStep: (stepId: number | undefined) => { return `/api/payment-steps/${stepId}/` },
 }
 
 export const SYSTEM_ROUTES = {
