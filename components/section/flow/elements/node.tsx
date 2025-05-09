@@ -290,14 +290,14 @@ const CompStep = (data: any) => {
               content: 'py-0',
             }}
             title={
-              <div className='flex items-center justify-center w-full px-2'>
-                <div className='flex items-center bg-slate-400/15 p-1 justify-center rounded-md gap-1 text-white'>
+              <div className='flex items-center justify-center w-full'>
+                <div className='flex items-center bg-slate-400/15 p-1 justify-center rounded-[4px] gap-1 text-white'>
                   {
                     isExpanded
                       ?
-                    <ChevronUp size={ 9 } />
+                    <ChevronUp size={ 8 } />
                       :
-                    <ChevronDown size={ 9 } />
+                    <ChevronDown size={ 8 } />
                   }
                 </div>
               </div>
@@ -305,13 +305,13 @@ const CompStep = (data: any) => {
           >
             <div
               ref={ accordionRef }
-              className='w-full px-1 flex flex-col justify-start'
+              className='w-full flex flex-col justify-start'
             >
-              <div className='flex justify-end mb-1'>
+              <div className='flex justify-end mb-1 pt-1'>
                 <Button
                   size='sm'
                   variant='light'
-                  className='p-0 h-[14px] min-w-0 w-[14px] flex text-center rounded-[4px] text-white bg-slate-400/10 items-center justify-center'
+                  className='p-1 h-[14px] min-w-0 w-[16px] flex text-center rounded-[4px] text-white bg-slate-400/10 items-center justify-center'
                   onPress={ toggleEditMode }
                 >
                   {
@@ -348,8 +348,8 @@ const CompStep = (data: any) => {
                     radius='sm'
                     placeholder='Enter description (max 40 letters)'
                     classNames={{
-                      input: 'text-[7px] text-white p-1',
-                      inputWrapper: 'h-[18px] bg-slate-100/10 data-[hover=true]:bg-slate-200/10',
+                      input: 'text-[7px] text-white p-[2px]',
+                      inputWrapper: 'bg-slate-200/60 data-[hover=true]:bg-slate-100/60',
                     }}
                   />
                     :
@@ -371,7 +371,7 @@ const CompStep = (data: any) => {
                 }
               </div>
 
-              <div>
+              <div className='mb-2'>
                 <div className='flex justify-between items-center mb-0.5'>
                   <b>Notes:</b>
                   {
@@ -395,8 +395,8 @@ const CompStep = (data: any) => {
                     radius='sm'
                     placeholder='Enter notes (max 40 letters)'
                     classNames={{
-                      input: 'text-[7px] text-white p-1',
-                      inputWrapper: 'h-[18px] bg-slate-100/10 data-[hover=true]:bg-slate-200/10',
+                      input: 'text-[7px] text-white p-[2px]',
+                      inputWrapper: 'bg-slate-200/60 data-[hover=true]:bg-slate-100/60',
                     }}
                   />
                     :
