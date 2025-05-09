@@ -14,11 +14,8 @@ export const ContextMenu = ({
   setIsOpen,
 }: ContextMenuProps) => {
   const handleItemClick = ({ id, props }: any) => {
-    const { type, isBasic, order } = props || {}
-
     switch (id) {
       case 'edit-step':
-        console.log('Edit step')
         setSelectedType('step')
         setModalType({ modal: 'edit', id: props.id })
         setIsOpen(true)
@@ -32,16 +29,14 @@ export const ContextMenu = ({
         break
 
       case 'revoke-basic':
-        console.log('Revoke basic step')
         setSelectedType('step')
-        setModalType({ modal: 'revoke' })
+        setModalType({ modal: 'revoke', id: props.id })
         setIsOpen(true)
         break
 
       case 'make-basic':
-        console.log('Make basic step')
         setSelectedType('step')
-        setModalType({ modal: 'make' })
+        setModalType({ modal: 'make', id: props.id })
         setIsOpen(true)
         break
 

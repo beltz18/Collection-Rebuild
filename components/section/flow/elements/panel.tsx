@@ -1,26 +1,20 @@
-import { ChangeEventHandler } from 'react'
+
 import { Panel } from '@xyflow/react'
 import { CustomSelect } from '@com/select/select'
 import { Button } from '@com/index'
 import {
+  RightPanelProps,
+  LeftPanelProps,
+} from './types'
+import {
   PlusCircle,
   ChevronLeft,
 } from 'lucide-react'
-import {
-  StrategyT,
-  StepT,
-} from '@typ/strategy'
-
-type RightPanelProps = {
-  hasChanges: boolean
-  options: { label: string, key: string }[]
-  onChange: ChangeEventHandler<HTMLSelectElement>
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-}
 
 export const CustomRightPanel = ({
   hasChanges,
   options,
+  hasBasic,
   onChange,
   setIsModalOpen,
 }: RightPanelProps) => {
@@ -47,22 +41,21 @@ export const CustomRightPanel = ({
         className='w-[120px] text-theme-text-default'
       />
 
-      <Button
-        type='button'
-        placeholder='Add Step'
-        variant='bordered'
-        color='secondary'
-        className='rounded-md text-xs h-[48px] font-medium z-50 bg-theme-background text-theme-text-title'
-        startContent={ <PlusCircle size={ 14 } /> }
-        onPress={() => setIsModalOpen(true)}
-      />
+      {
+        !hasBasic && (
+          <Button
+            type='button'
+            placeholder='Add Step'
+            variant='bordered'
+            color='secondary'
+            className='rounded-md text-xs h-[48px] font-medium z-50 bg-theme-background text-theme-text-title'
+            startContent={ <PlusCircle size={ 14 } /> }
+            onPress={() => setIsModalOpen(true)}
+          />
+        )
+      }
     </Panel>
   )
-}
-
-type LeftPanelProps = {
-  setData: React.Dispatch<React.SetStateAction<[StrategyT, ...StepT[]] | null>>
-  clearData: VoidFunction
 }
 
 export const CustomLeftPanel = ({

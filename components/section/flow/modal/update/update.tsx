@@ -7,12 +7,14 @@ import {
 import { Button } from '@com/index'
 import { CircleHelpIcon } from 'lucide-react'
 import { DeleteConfirmationModalProps } from '@sec/flow/elements/types'
+import { AnimatedButtonIcon } from '../add/button-animated'
 
 export default function MakeRevokeConfirmationModal({
   isOpen,
   onClose,
   selectedCount,
   onConfirm,
+  isSubmit=false,
   title = 'Deactivate',
   actionText = 'deactivate',
   entityName = 'processor',
@@ -63,13 +65,15 @@ export default function MakeRevokeConfirmationModal({
                 </p>
 
                 <p className='text-gray-500'>
-                  {
-                    actionText === 'make'
-                      ?
-                    'If you do this, you will not be able to add new steps.'
-                      :
-                    'You will be able to create steps again.'
-                  }
+                  <b>
+                    {
+                      actionText === 'make'
+                        ?
+                      '(If you do this, you will not be able to add new steps)'
+                        :
+                      '(You will be able to create steps again)'
+                    }
+                  </b>
                 </p>
               </div>
             </ModalBody>
@@ -86,10 +90,9 @@ export default function MakeRevokeConfirmationModal({
               <Button
                 className='bg-orange-500 text-white rounded-xl py-6 px-8 font-medium min-w-[120px]'
                 onPress={ handleConfirm }
-                placeholder={ title }
-              >
-                { title }
-              </Button>
+                startContent={ <AnimatedButtonIcon isSubmitting={ isSubmit } /> }
+                placeholder={ isSubmit ? 'Updating...' : title }
+              />
             </ModalFooter>
           </>
         )}

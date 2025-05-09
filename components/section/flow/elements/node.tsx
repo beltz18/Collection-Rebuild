@@ -10,7 +10,7 @@ import {
   ChevronUp, 
   Edit2, 
   Check,
-} from "lucide-react"
+} from 'lucide-react'
 import {
   useState,
   useEffect,
@@ -172,9 +172,9 @@ export default memo (({
 
 const testData = {
   description:
-    "This is a sample description for testing purposes. It contains enough text to demonstrate the tooltip functionality when the content is too long to display in the input field.",
+    'This is a sample description for testing purposes. It contains enough text to demonstrate the tooltip functionality when the content is too long to display in the input field.',
   notes:
-    "These are sample notes that will be used to test the editing and display functionality of the accordion component.",
+    'These are sample notes that will be used to test the editing and display functionality of the accordion component.',
 }
 
 const CompStep = (data: any) => {
@@ -191,7 +191,7 @@ const CompStep = (data: any) => {
   const notesRef = useRef<HTMLInputElement>(null)
   const accordionRef = useRef<HTMLDivElement>(null)
 
-  const itemKey = `step-${data.data.order || "unknown"}`
+  const itemKey = `step-${data.data.order || 'unknown'}`
 
   function countWords(text: string): number {
     return text.trim().split(/\s+/).length
@@ -204,9 +204,9 @@ const CompStep = (data: any) => {
   }
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside)
+    document.addEventListener('mousedown', handleClickOutside)
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
+      document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [isEditing])
 
@@ -226,31 +226,39 @@ const CompStep = (data: any) => {
 
   const toggleEditMode = () => { setIsEditing(!isEditing) }
 
-  const isExpanded = expandedItems[itemKey]?.includes("details")
+  const isExpanded = expandedItems[itemKey]?.includes('details')
 
   return (
-    <div className="w-full flex flex-col text-[8px]">
-      <div className="w-full flex items-center justify-between">
+    <div className='w-full flex flex-col text-[8px]'>
+      <div className='w-full flex items-center justify-between'>
         <b>Method:</b>
-        <span>{data.data.method}</span>
+        <span>
+          { data.data.method }
+        </span>
       </div>
 
-      <div className="w-full flex items-center justify-between">
+      <div className='w-full flex items-center justify-between'>
         <b>Processor:</b>
-        <span>{data.data.processor}</span>
+        <span>
+          { data.data.processor }
+        </span>
       </div>
 
-      <div className="w-full flex items-center justify-between">
+      <div className='w-full flex items-center justify-between'>
         <b>Attemps:</b>
-        <span>{data.data.attempts}</span>
+        <span>
+          { data.data.attempts }
+        </span>
       </div>
 
-      <div className="w-full flex items-center justify-between">
+      <div className='w-full flex items-center justify-between'>
         <b>Order:</b>
-        <span>{data.data.order}</span>
+        <span>
+          { data.data.order }
+        </span>
       </div>
 
-      <div className="w-full mt-1">
+      <div className='w-full mt-1'>
         <CustomAccordion
           selectedKeys={expandedItems[itemKey] || []}
           onSelectionChange={(keys) => {
@@ -259,103 +267,155 @@ const CompStep = (data: any) => {
               [itemKey]: Array.from(keys) as string[],
             }))
 
-            if (isExpanded && Array.from(keys).length === 0) { setIsEditing(false) }
+            if (isExpanded && Array.from(keys).length === 0)
+              setIsEditing(false)
           }}
-          className="w-full p-0"
+          className='w-full p-0'
           hideIndicator
-          variant="light"
+          variant='light'
         >
           <CustomAccordion.Item
-            key="details"
-            aria-label="Additional Details"
-            className="text-[8px] p-0 py-0 w-full"
+            key='details'
+            aria-label='Additional Details'
+            className='text-[8px] p-0 py-0 w-full'
             classNames={{
-              base: "py-0",
-              heading: "py-0",
-              trigger: "py-0",
-              titleWrapper: "py-0",
-              title: "py-0",
-              subtitle: "py-0",
-              startContent: "py-0",
-              indicator: "py-0",
-              content: "py-0",
+              base: 'py-0',
+              heading: 'py-0',
+              trigger: 'py-0',
+              titleWrapper: 'py-0',
+              title: 'py-0',
+              subtitle: 'py-0',
+              startContent: 'py-0',
+              indicator: 'py-0',
+              content: 'py-0',
             }}
             title={
-              <div className="flex items-center justify-center w-full px-2">
-                <div className="flex items-center bg-slate-400/15 p-1 justify-center rounded-md gap-1 text-white">
-                  {isExpanded ? <ChevronUp size={9} /> : <ChevronDown size={9} />}
+              <div className='flex items-center justify-center w-full'>
+                <div className='flex items-center bg-slate-400/15 p-1 justify-center rounded-[4px] gap-1 text-white'>
+                  {
+                    isExpanded
+                      ?
+                    <ChevronUp size={ 8 } />
+                      :
+                    <ChevronDown size={ 8 } />
+                  }
                 </div>
               </div>
             }
           >
-            <div ref={accordionRef} className="w-full px-1 flex flex-col justify-start">
-              <div className="flex justify-end mb-1">
+            <div
+              ref={ accordionRef }
+              className='w-full flex flex-col justify-start'
+            >
+              <div className='flex justify-end mb-1 pt-1'>
                 <Button
-                  size="sm"
-                  variant="light"
-                  className="p-0 h-[14px] min-w-0 w-[14px] flex text-center rounded-[4px] text-white bg-slate-400/10 items-center justify-center"
-                  onPress={toggleEditMode}
+                  size='sm'
+                  variant='light'
+                  className='p-1 h-[14px] min-w-0 w-[16px] flex text-center rounded-[4px] text-white bg-slate-400/10 items-center justify-center'
+                  onPress={ toggleEditMode }
                 >
-                  {isEditing ? <Check size={8} /> : <Edit2 size={8} />}
+                  {
+                    isEditing
+                      ?
+                    <Check size={ 8 } />
+                      :
+                    <Edit2 size={ 8 } />
+                  }
                 </Button>
               </div>
 
-              <div className="mb-2">
-                <div className="flex justify-between items-center mb-0.5">
+              <div className='mb-2'>
+                <div className='flex justify-between items-center mb-0.5'>
                   <b>Description:</b>
-                  {isEditing && <span className="text-[6px] text-gray-400">{wordCount.description}/40 words</span>}
+                  {
+                    isEditing
+                      &&
+                    <span className='text-[6px] text-gray-400'>
+                      { wordCount.description }/40
+                    </span>
+                  }
                 </div>
 
-                {isEditing ? (
+                {
+                  isEditing
+                    ?
                   <Input
-                    ref={descriptionRef}
-                    value={description}
+                    ref={ descriptionRef }
+                    value={ description }
                     onChange={(e) => handleDescriptionChange(e.target.value)}
-                    className="w-full text-white text-[7px]"
-                    size="sm"
-                    radius="sm"
-                    placeholder="Enter description (max 40 words)"
+                    className='w-full text-white text-[7px]'
+                    size='sm'
+                    radius='sm'
+                    placeholder='Enter description (max 40 letters)'
                     classNames={{
-                      input: "text-[7px] text-white p-1",
-                      inputWrapper: "h-[18px] bg-slate-100/10 data-[hover=true]:bg-slate-200/10",
+                      input: 'text-[7px] text-white p-[2px]',
+                      inputWrapper: 'bg-slate-200/60 data-[hover=true]:bg-slate-100/60',
                     }}
                   />
-                ) : (
-                  <Tooltip content={description} placement="bottom" className='w-[16.50rem]'>
-                    <p className="text-[8px] mt-0.5 truncate w-[7.81rem]">
-                      {description || <span className="text-zinc-300/45 italic">No description available</span>}
+                    :
+                  <Tooltip
+                    content={ description }
+                    placement='bottom'
+                    className='w-[16.50rem]'
+                  >
+                    <p className='text-[8px] mt-0.5 truncate w-[7.81rem]'>
+                      {
+                        description
+                          ||
+                        <span className='text-zinc-300/45 italic'>
+                          No description available
+                        </span>
+                      }
                     </p>
                   </Tooltip>
-                )}
+                }
               </div>
 
-              <div>
-                <div className="flex justify-between items-center mb-0.5">
+              <div className='mb-2'>
+                <div className='flex justify-between items-center mb-0.5'>
                   <b>Notes:</b>
-                  {isEditing && <span className="text-[6px] text-gray-400">{wordCount.notes}/40 words</span>}
+                  {
+                    isEditing
+                      &&
+                    <span className='text-[6px] text-gray-400'>
+                      { wordCount.notes }/40
+                    </span>
+                  }
                 </div>
 
-                {isEditing ? (
+                {
+                  isEditing
+                    ?
                   <Input
-                    ref={notesRef}
-                    value={notes}
+                    ref={ notesRef }
+                    value={ notes }
                     onChange={(e) => handleNotesChange(e.target.value)}
-                    className="w-full text-[7px]"
-                    size="sm"
-                    radius="sm"
-                    placeholder="Enter notes (max 40 words)"
+                    className='w-full text-[7px]'
+                    size='sm'
+                    radius='sm'
+                    placeholder='Enter notes (max 40 letters)'
                     classNames={{
-                      input: "text-[7px] text-white p-1",
-                      inputWrapper: "h-[18px] bg-slate-100/10 data-[hover=true]:bg-slate-200/10",
+                      input: 'text-[7px] text-white p-[2px]',
+                      inputWrapper: 'bg-slate-200/60 data-[hover=true]:bg-slate-100/60',
                     }}
                   />
-                ) : (
-                  <Tooltip content={notes} placement="bottom" className='w-[16.50rem]'>
-                    <p className="text-[8px] mt-0.5 truncate w-[7.81rem]">
-                      {notes || <span className="text-zinc-300/45 italic">No notes available</span>}
+                    :
+                  <Tooltip
+                    content={ notes }
+                    placement='bottom'
+                    className='w-[16.50rem]'
+                  >
+                    <p className='text-[8px] mt-0.5 truncate w-[7.81rem]'>
+                      {
+                        notes
+                          ||
+                        <span className='text-zinc-300/45 italic'>
+                          No notes available
+                        </span>
+                      }
                     </p>
                   </Tooltip>
-                )}
+                }
               </div>
             </div>
           </CustomAccordion.Item>

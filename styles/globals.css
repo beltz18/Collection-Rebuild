@@ -156,6 +156,8 @@
   overflow: hidden;
   display: flex;
   padding: 2px;
+  width: 100%;
+  height: 100%;
   position: relative;
   border-radius: var(--node-border-radius);
   flex-grow: 1;
@@ -164,10 +166,10 @@
 .gradient:before {
   content: '';
   position: absolute;
-  padding-bottom: calc(100% * 1.41421356237);
-  width: calc(100% * 1.41421356237);
+  padding-bottom: calc(100% * 1.41421356237 + 100px);
+  width: calc(100% * 1.41421356237 + 600px);
   background: conic-gradient(
-    from -160deg at 50% 50%,
+    from -160deg at 0% 0%,
     #e92a67 0deg,
     #a853ba 120deg,
     #2a8af6 240deg,
@@ -187,7 +189,7 @@
     #2a8af6 240deg,
     rgba(42, 138, 246, 0) 360deg
   );
-  animation: spinner 4s linear infinite;
+  animation: spinner 5s linear infinite;
   transform: translate(-50%, -50%) rotate(0deg);
   z-index: -1;
 }
@@ -198,7 +200,7 @@
 
 .react-flow__node-turbo .inner {
   background: var(--bg-flow-color);
-  padding: 16px 10px;
+  padding: 16px 10px 10px 10px;
   border-radius: var(--node-border-radius);
   display: flex;
   flex-direction: column;

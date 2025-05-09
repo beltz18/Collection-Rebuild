@@ -49,6 +49,9 @@ export const ManagerModals = ({
       <MakeBasicStepModal
         open={ isOpen }
         setOpen={ setIsOpen }
+        id={ modalType.id }
+        nodes={ nodes }
+        setNodes={ setNodes }
       />
     )
   } else if (modalType?.modal == 'revoke' && selectedType == 'step') {
@@ -56,6 +59,9 @@ export const ManagerModals = ({
       <RevokeBasicStepModal
         open={ isOpen }
         setOpen={ setIsOpen }
+        id={ modalType.id }
+        nodes={ nodes }
+        setNodes={ setNodes }
       />
     )
   } else if (modalType?.modal == 'edit') {
