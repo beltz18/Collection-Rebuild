@@ -12,49 +12,45 @@ import {
   Company, 
   Branch 
 } from "@typ/company-branch"
-import { mockBranches, mockCompanies } from "../../mock/mock-data"
 
 export default function StrategyForm({ formData, updateFormData, isViewMode = false }: StrategyFormProps) {
   const [ selectedCompany, setSelectedCompany ] = useState<Company[] | null>([])
   const [ selectedBranch, setSelectedBranch ] = useState<Branch[] | null>([])
 
-  /* const { token } = useTokenStore()
-  const { data: companys } = useGetCompanies(token)
+  const { token } = useTokenStore()
+  const { data: companies } = useGetCompanies(token)
   const { refetch } = useGetBranches(
     token,
-    { company_id: Number(selectedCompany?company_id), },
+    { company: selectedCompany?.[0]?.company_id },
     { enabled: false },
-  ) */
-
-  const company = mockCompanies
-  const branch = mockBranches
+  )
 
   const handleCompanyChange = (value: string) => {
-    const selectedCompany = company?.find((c) => String(c.id) === value)
-    //setSelectedCompany(selectedCompany)
+    const selectedCompany = companies?.find((c) => String(c.company_id) === value)
+    selectedCompany && setSelectedCompany([selectedCompany as Company])
 
     updateFormData({
       company_id: value,
-      company: selectedCompany?.name || "",
     })
   }
 
-  /* useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
-      const { data: crossedProcessors } = await refetch()
-      if (!crossedProcessors) return
-      setSelectedBranch
+      const { data: crossedBranches } = await refetch()
+      if (!crossedBranches) return
+      setSelectedBranch(crossedBranches)
     }
     
     if (selectedCompany) fetchData()
-  }, [selectedCompany]) */
+  }, [selectedCompany])
 
   const handleBranchChange = (value: string) => {
-    const selectedBranch = branch?.find((b) => String(b.id) === value)
+    const selected = selectedBranch?.find((b) => String(b.branch_id) === value)
+    console.log(selected);
+    
 
     updateFormData({
       branch_id: value,
-      branch: selectedBranch?.name || "",
     })
   }
 
@@ -93,10 +89,10 @@ export default function StrategyForm({ formData, updateFormData, isViewMode = fa
                     value: "text-foreground",
                   }}
                 >
-                  {(company ?? []).length > 0 ? (
-                    (company ?? []).map((company, index) => (
-                      <SelectItem key={company.id || index} data-value={String(company.id)}>
-                        {company.name || `Company ${company.id}`}
+                  {(companies ?? []).length > 0 ? (
+                    (companies ?? []).map((company, index) => (
+                      <SelectItem key={company.company_id || index} data-value={String(company.company_id)}>
+                        {company.name || `Company ${company.company_id}`}
                       </SelectItem>
                     ))
                   ) : (
@@ -128,10 +124,10 @@ export default function StrategyForm({ formData, updateFormData, isViewMode = fa
                     value: "text-foreground",
                   }}
                 >
-                  {(branch ?? []).length > 0 ? (
-                    (branch ?? []).map((branch, index) => (
-                      <SelectItem key={branch.id || index} data-value={String(branch.id)}>
-                        {branch.name || `Branch ${branch.id}`}
+                  {(selectedBranch ?? []).length > 0 ? (
+                    (selectedBranch ?? []).map((branch, index) => (
+                      <SelectItem key={branch.branch_id || index} data-value={String(branch.branch_id)}>
+                        {branch.name || `Branch ${branch.branch_id}`}
                       </SelectItem>
                     ))
                   ) : (
@@ -185,12 +181,11 @@ export default function StrategyForm({ formData, updateFormData, isViewMode = fa
                 placeholder="Enter days"
                 labelPlacement="outside"
                 type="number"
-                value={(formData.days_before_due_to_start || formData.days_before_due || 0).toString()}
+                value={(formData.days_before_due_to_start || formData.days_before_due_to_start || 0).toString()}
                 isReadOnly={isViewMode}
                 onChange={(e) =>
                   updateFormData({
                     days_before_due_to_start: Number.parseInt(e.target.value) || 0,
-                    days_before_due: Number.parseInt(e.target.value) || 0,
                   })
                 }
                 classNames={{

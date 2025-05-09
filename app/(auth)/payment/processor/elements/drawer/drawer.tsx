@@ -10,6 +10,11 @@ import { NavigationTabs } from "./tabs"
 import { FormContent } from "./content"
 import { initialFormData } from "./constants"
 import type { PaymentProcessorFormData } from "./types"
+import { useTokenStore } from "@sts/useTokenStore"
+import { errorToast, successToast } from "@com/index"
+import { usePostProcessors } from "@api/routes/processor"
+import { CACHE_KEYS } from "@api/cache"
+import { useQueryClient } from "@tanstack/react-query"
 import { Heading } from "@com/heading"
 import { AnimatePresence } from "framer-motion"
 
@@ -18,9 +23,6 @@ interface PaymentProcessorDrawerProps {
   onClose: () => void
   isViewMode: "view" | "edit" | "add"
   processor?: any
-  refresh?: () => void
-  token?: string
-  onSave?: (processor: PaymentProcessorFormData) => void
 }
 
 export function PaymentProcessorDrawer({
@@ -28,14 +30,18 @@ export function PaymentProcessorDrawer({
   onClose,
   isViewMode,
   processor,
-  refresh,
-  token,
-  onSave,
 }: PaymentProcessorDrawerProps) {
   const { isMobile } = useResponsive()
   const [selectedOption, setSelectedOption] = useState("basic")
-  const [isEditing, setIsEditing] = useState(isViewMode === "add" || isViewMode === "edit")
+  const [isEditing, setIsEditing] = useState(
+    isViewMode === "add" || isViewMode === "edit"
+  )
   const [formData, setFormData] = useState<PaymentProcessorFormData>(initialFormData)
+
+  const queryClient = useQueryClient()
+  const { token } = useTokenStore()
+  const auth = usePostProcessors(token)
+  const { isPending, isSuccess } = auth
 
   useEffect(() => {
     if (processor && isViewMode === "view") {
@@ -69,9 +75,43 @@ export function PaymentProcessorDrawer({
   }
 
   const handleSave = async () => {
-    console.log("Data being sent:", formData)
-    onSave?.(formData)
-    onClose()
+    if (!formData.name) {
+      errorToast({
+        title: "Error",
+        body: "Name can not be empty",
+      })
+    } else {
+      try {
+        const r = await auth.mutateAsync({
+          ...formData,
+        })
+        console.log(r)
+
+        if (r && r.message == "Payment processor created successfully") {
+          queryClient.refetchQueries({ queryKey: [CACHE_KEYS.getProcessors] })
+          successToast({
+            title: "Success!",
+            body: "Payment processor created successfully!",
+          })
+
+          setTimeout(() => {
+            onClose()
+          }, 1000)
+        } else {
+          errorToast({
+            title: "Error",
+            body: "We could not validate you",
+          })
+        }
+      } catch (err: unknown) {
+        if (err instanceof Error && (err as any)?.response?.data) {
+          errorToast({
+            title: "Error",
+            body: (err as any).response.data.message,
+          })
+        } else console.log(err)
+      }
+    }
   }
 
   const handleEdit = () => {
@@ -107,7 +147,13 @@ export function PaymentProcessorDrawer({
       <Button color="danger" variant="light" onPress={handleCancel}>
         Cancel
       </Button>
-      <Button color="primary" className="bg-[#023047]" onPress={handleSave}>
+      <Button 
+        color="primary" 
+        className="bg-[#023047]" 
+        onPress={handleSave}
+        disabled={ isPending }
+        isLoading={ isPending && !isSuccess }
+      >
         Save
       </Button>
     </div>
@@ -134,17 +180,26 @@ export function PaymentProcessorDrawer({
       title={
         <div className="flex flex-col w-full">
           <Heading level={2} className="text-xl font-bold">
-            {isViewMode === "add" ? "Add Payment Processor" : "Payment Processor Details"}
+            {isViewMode === "add"
+              ? "Add Payment Processor"
+              : "Payment Processor Details"}
           </Heading>
 
-          <NavigationTabs selectedOption={selectedOption} setSelectedOption={setSelectedOption} />
+          <NavigationTabs
+            selectedOption={selectedOption}
+            setSelectedOption={setSelectedOption}
+          />
         </div>
       }
       footer={footerContent}
     >
       {isViewMode === "view" && (
         <div className="w-full mb-4">
-          <Button color="primary" onPress={handleEdit} className="gap-3 bg-[#023047]">
+          <Button
+            color="primary"
+            onPress={handleEdit}
+            className="gap-3 bg-[#023047]"
+          >
             <Edit2 size={12} />
             Enable Edit Mode
           </Button>

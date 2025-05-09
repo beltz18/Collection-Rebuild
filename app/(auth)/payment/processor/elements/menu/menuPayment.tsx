@@ -169,20 +169,11 @@ export default function MenuPayment({
   const [viewMode, setViewMode] = useState<"view" | "edit" | "add">("view")
   const [selectedProcessor, setSelectedProcessor] = useState<any>(null)
 
-  const handleRefresh = () => {
-    setIsRefreshing(true)
-    setTimeout(() => setIsRefreshing(false), 1000)
-  }
-
   const handleOpenDrawer = (mode: "view" | "edit" | "add", processor: any = null) => {
     setViewMode(mode)
     setSelectedProcessor(processor)
     setIsDrawerOpen(true)
     console.log("Opening processor drawer with mode:", mode)
-  }
-
-  const handleSave = (processor: any) => {
-    console.log("Processor saved:", processor)
   }
 
   const isViewDisabled = selectedCount !== 1
@@ -281,7 +272,6 @@ export default function MenuPayment({
           onClose={() => setIsDrawerOpen(false)}
           isViewMode={viewMode}
           processor={selectedProcessor}
-          onSave={handleSave}
         />
       </div>
     )
@@ -395,7 +385,6 @@ export default function MenuPayment({
         onClose={() => setIsDrawerOpen(false)}
         isViewMode={viewMode}
         processor={selectedProcessor}
-        onSave={handleSave}
       />
     </div>
   )

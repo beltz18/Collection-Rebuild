@@ -46,8 +46,13 @@ type SendProps = {
   active?: boolean
 }
 
+export type ProcessorResponseProps = {
+  data: any,
+  message: string
+}
+
 export const usePostProcessors = (token: string | null) => {
-  return useCollectionMutation<SendProps, {}>({
+  return useCollectionMutation<SendProps, ProcessorResponseProps>({
     fetcher: async (data) =>
       await genericAuthRequest(
       METHODS.post, API_ROUTES.processor, data,

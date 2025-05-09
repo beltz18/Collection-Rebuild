@@ -23,8 +23,8 @@ export function BasicInformationForm({ formData, updateFormData, isViewMode }: B
   }
 
   const options = [
-    { key: "both", label: "Both" },
-    { key: "debit", label: "Debit" },
+    { key: "both",   label: "Both" },
+    { key: "debit",  label: "Debit" },
     { key: "credit", label: "Credit" },
   ]
 

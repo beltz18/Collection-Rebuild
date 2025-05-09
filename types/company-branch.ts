@@ -5,12 +5,17 @@ export interface Company {
   acronym?: string
   code?: string
   active?: boolean
-  rnc?: string
+  rnc?: number
   main_email?: string
-  risk_level?: string
-  risk_value?: number
+  risk_level?: number | null
+  risk_value?: string
   create_date?: string
   update_date?: string
+  address?: boolean
+  company_agreement?: boolean
+  founding_date?: string
+  registry_id?: number
+  url?: string
 }
 
 export interface Branch {
@@ -19,7 +24,7 @@ export interface Branch {
   name?: string
   default?: boolean
   active?: boolean
-  responsible_name?: string
-  create_date?: string
-  update_date?: string
+  responsible_name?: string | null
+  create_date?: string | Date | null
+  update_date?: string | Date | null
 }

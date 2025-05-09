@@ -2,6 +2,7 @@
 
 import { Input, Select, SelectItem, Switch, Card, CardBody } from "@heroui/react"
 import { optionsSecCode } from "../constants"
+import { secCode } from "../types"
 import type { PaymentProcessorFormData } from "../types"
 
 interface AdditionalSettingsFormProps {
@@ -80,7 +81,7 @@ export function AdditionalSettingsForm({ formData, updateFormData, isViewMode }:
                 label="SEC Code"
                 placeholder={formData.sec_code ? formData.sec_code : "Select SEC Code"}
                 value={formData.sec_code}
-                onChange={(e) => updateFormData({ sec_code: e.target.value })}
+                onChange={(e) => updateFormData({ sec_code: e.target.value as secCode })}
               >
                 {optionsSecCode.map((option) => (
                   <SelectItem key={option.key}>{option.label}</SelectItem>

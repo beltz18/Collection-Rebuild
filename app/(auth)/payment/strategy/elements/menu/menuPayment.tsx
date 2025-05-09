@@ -182,22 +182,11 @@ export default function MenuPayment({
   const [selectedStrategy, setSelectedStrategy] = useState<any>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  const [isRefreshing, setIsRefreshing] = useState(false)
-
-  const handleRefresh = () => {
-    setIsRefreshing(true)
-    setTimeout(() => setIsRefreshing(false), 1000)
-  }
-
   const handleOpenDrawer = (mode: "view" | "edit" | "add", strategy: any = null) => {
     setViewMode(mode)
     setSelectedStrategy(strategy)
     setIsOpen(true)
     console.log("Opening drawer with mode:", mode, "isOpen set to:", true)
-  }
-
-  const handleSave = (strategy: any) => {
-    console.log("Strategy saved:", strategy)
   }
 
   const isViewDisabled = selectedCount !== 1
@@ -296,7 +285,6 @@ export default function MenuPayment({
           onClose={() => setIsOpen(false)}
           isViewMode={viewMode}
           strategy={selectedStrategy}
-          onSave={handleSave}
         />
       </div>
     )
@@ -410,7 +398,6 @@ export default function MenuPayment({
         onClose={() => setIsOpen(false)}
         isViewMode={viewMode}
         strategy={selectedStrategy}
-        onSave={handleSave}
       />
     </div>
   )

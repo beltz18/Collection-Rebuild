@@ -34,7 +34,7 @@ export const useGetCompanies = (token: string | null, filters?: FilterCompanies)
 type FilterBranches = Partial<{
   active: boolean
   name: string
-  company_id: number | string | null
+  company: number | string | null
   default: boolean
 }>
 
