@@ -65,13 +65,15 @@ export default function MakeRevokeConfirmationModal({
                 </p>
 
                 <p className='text-gray-500'>
-                  {
-                    actionText === 'make'
-                      ?
-                    'If you do this, you will not be able to add new steps.'
-                      :
-                    'You will be able to create steps again.'
-                  }
+                  <b>
+                    {
+                      actionText === 'make'
+                        ?
+                      '(If you do this, you will not be able to add new steps)'
+                        :
+                      '(You will be able to create steps again)'
+                    }
+                  </b>
                 </p>
               </div>
             </ModalBody>

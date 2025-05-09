@@ -7,8 +7,11 @@ import { Node } from '@xyflow/react'
 import { NodeData } from '@sec/flow/elements/node'
 import { StepT } from '@typ/strategy'
 import { useTokenStore } from '@sts/useTokenStore'
-import { errorToast, successToast } from '@com/index'
 import { StepExtended } from '@typ/step'
+import {
+  errorToast,
+  successToast,
+} from '@com/index'
 
 export const MakeBasicStepModal = ({
   id,
@@ -75,7 +78,7 @@ export const MakeBasicStepModal = ({
     } else {
       errorToast({
         title: 'Error',
-        body: 'Something wrong happened',
+        body: 'Something wrong happened...',
       })
     }
   }
