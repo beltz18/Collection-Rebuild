@@ -14,6 +14,7 @@ import {
 type RightPanelProps = {
   hasChanges: boolean
   options: { label: string, key: string }[]
+  hasBasic: boolean
   onChange: ChangeEventHandler<HTMLSelectElement>
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -21,6 +22,7 @@ type RightPanelProps = {
 export const CustomRightPanel = ({
   hasChanges,
   options,
+  hasBasic,
   onChange,
   setIsModalOpen,
 }: RightPanelProps) => {
@@ -47,15 +49,19 @@ export const CustomRightPanel = ({
         className='w-[120px] text-theme-text-default'
       />
 
-      <Button
-        type='button'
-        placeholder='Add Step'
-        variant='bordered'
-        color='secondary'
-        className='rounded-md text-xs h-[48px] font-medium z-50 bg-theme-background text-theme-text-title'
-        startContent={ <PlusCircle size={ 14 } /> }
-        onPress={() => setIsModalOpen(true)}
-      />
+      {
+        !hasBasic && (
+          <Button
+            type='button'
+            placeholder='Add Step'
+            variant='bordered'
+            color='secondary'
+            className='rounded-md text-xs h-[48px] font-medium z-50 bg-theme-background text-theme-text-title'
+            startContent={ <PlusCircle size={ 14 } /> }
+            onPress={() => setIsModalOpen(true)}
+          />
+        )
+      }
     </Panel>
   )
 }

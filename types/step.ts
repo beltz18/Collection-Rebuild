@@ -2,7 +2,7 @@ export interface StepExtended {
   id: number
   create_date?: Date | string | null
   update_date?: Date | string | null
-  active: boolean
+  active?: boolean
   strategy: number
   method: number
   processor: number

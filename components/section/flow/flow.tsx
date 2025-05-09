@@ -149,6 +149,7 @@ export const Flow = ({
           onChange={ onChange }
           options={ options }
           setIsModalOpen={ setIsModalOpen }
+          hasBasic={ nodes.find((e) => e.data.Data?.is_basic_step == true) ? true : false  }
         />
       </ReactFlow>
 

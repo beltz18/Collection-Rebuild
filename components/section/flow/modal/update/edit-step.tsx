@@ -11,9 +11,13 @@ import {
   ModalBody,
   ModalFooter,
 } from '@sec/modal'
+import {
+  Button,
+  errorToast,
+  successToast,
+} from '@com/index'
 import { Node } from '@xyflow/react'
 import { NodeData } from '@sec/flow/elements/node'
-import { Button, errorToast } from '@com/index'
 import { StepT } from '@typ/strategy'
 import { Tabs } from '@com/tabs/tabs'
 import { BasicTab } from './element/basic'
@@ -124,6 +128,10 @@ export const EditStepModal = ({
             setNodes(ndA)
             setIsSubmitting(false)
             onClose()
+            successToast({
+              title: 'Done!',
+              body: 'Updated step data',
+            })
           } else {
             console.log('Error here')
             errorToast({

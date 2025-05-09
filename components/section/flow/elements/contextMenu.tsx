@@ -41,7 +41,7 @@ export const ContextMenu = ({
       case 'make-basic':
         console.log('Make basic step')
         setSelectedType('step')
-        setModalType({ modal: 'make' })
+        setModalType({ modal: 'make', id: props.id })
         setIsOpen(true)
         break
 
