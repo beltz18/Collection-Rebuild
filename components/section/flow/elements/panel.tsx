@@ -1,23 +1,15 @@
-import { ChangeEventHandler } from 'react'
+
 import { Panel } from '@xyflow/react'
 import { CustomSelect } from '@com/select/select'
 import { Button } from '@com/index'
 import {
+  RightPanelProps,
+  LeftPanelProps,
+} from './types'
+import {
   PlusCircle,
   ChevronLeft,
 } from 'lucide-react'
-import {
-  StrategyT,
-  StepT,
-} from '@typ/strategy'
-
-type RightPanelProps = {
-  hasChanges: boolean
-  options: { label: string, key: string }[]
-  hasBasic: boolean
-  onChange: ChangeEventHandler<HTMLSelectElement>
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-}
 
 export const CustomRightPanel = ({
   hasChanges,
@@ -64,11 +56,6 @@ export const CustomRightPanel = ({
       }
     </Panel>
   )
-}
-
-type LeftPanelProps = {
-  setData: React.Dispatch<React.SetStateAction<[StrategyT, ...StepT[]] | null>>
-  clearData: VoidFunction
 }
 
 export const CustomLeftPanel = ({

@@ -1,7 +1,12 @@
 import {
   Dispatch,
   SetStateAction,
+  ChangeEventHandler,
 } from 'react'
+import {
+  StrategyT,
+  StepT,
+} from '@typ/strategy'
 import { Node } from '@xyflow/react'
 import { NodeData } from './node'
 
@@ -33,4 +38,17 @@ export type ModalProps = {
   id?: number
   nodes?: Node<NodeData>[]
   setNodes?: Dispatch<SetStateAction<Node<NodeData>[]>>
+}
+
+export type RightPanelProps = {
+  hasChanges: boolean
+  options: { label: string, key: string }[]
+  hasBasic: boolean
+  onChange: ChangeEventHandler<HTMLSelectElement>
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export type LeftPanelProps = {
+  setData: Dispatch<SetStateAction<[StrategyT, ...StepT[]] | null>>
+  clearData: VoidFunction
 }
