@@ -11,7 +11,11 @@ node version used for this project is v^20.
 Create a new file called `.env` in the root of your project and add the following environment variables: 
 
 - `NEXT_PUBLIC_SERVER` = Add the API URL
+- `NEXT_PUBLIC_APPNAME` = Application's name
+- `NEXT_PUBLIC_DESCRIPTION` = Application's description
+- `NEXT_PUBLIC_ENTITY_PDF` = Logo entity URL but for PDF's files
 - `NEXT_PUBLIC_ENTITY` = Logo entity URL
+- `NEXT_PUBLIC_ENTITY_CONTRAST` = Logo entity in white colour
 - `NEXT_PUBLIC_FOOTER` = Logo footer URL
 
 ## Running Locally

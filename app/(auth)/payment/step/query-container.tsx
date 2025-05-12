@@ -111,10 +111,11 @@ export const StepsQueryContainer = ({ strategyId }: Props) => {
 
         setStrategy(selectedStrategy)
         setSteps(stepsData ?? [])
-
         setDataSteps([strategyFinal, ...(sortedSteps ?? [])])
-      } else
+      } else {
+        setStrategy(selectedStrategy)
         setDataSteps([selectedStrategy])
+      }
     } catch (err) { console.log(err) }
   }
 
