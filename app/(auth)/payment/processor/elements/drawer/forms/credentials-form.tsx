@@ -59,7 +59,13 @@ export function CredentialsForm({ formData, updateFormData, isViewMode }: Creden
                   placeholder={isViewMode && !isEditingPassword ? "" : "Enter password"}
                   labelPlacement="outside"
                   description="Password for the payment processor"
-                  value={isViewMode && !isEditingPassword ? "••••••••••••" : formData.password}
+                  value={
+                    isViewMode && !isEditingPassword
+                      ? showPassword
+                        ? formData.password
+                        : "••••••••••••"
+                      : formData.password
+                  }
                   type={showPassword ? "text" : "password"}
                   isReadOnly={isViewMode && !isEditingPassword}
                   startContent={
