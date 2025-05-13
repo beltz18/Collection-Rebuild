@@ -34,6 +34,9 @@ export const ManagerModals = ({
         <DeleteStepModal
           open={ isOpen }
           setOpen={ setIsOpen }
+          id={ modalType.id }
+          nodes={ nodes }
+          setNodes={ setNodes }
         />
       )
     } else if (selectedType == 'strategy') {

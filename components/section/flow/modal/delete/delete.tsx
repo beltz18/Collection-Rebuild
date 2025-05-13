@@ -7,12 +7,14 @@ import {
 import { Button } from '@com/index'
 import { AlertCircle } from 'lucide-react'
 import { DeleteConfirmationModalProps } from '@sec/flow/elements/types'
+import { AnimatedButtonIcon } from '../add/button-animated'
 
 export default function DeleteConfirmationModal({
   isOpen,
   onClose,
   selectedCount,
   onConfirm,
+  isSubmit = false,
   title = 'Deactivate',
   actionText = 'deactivate',
   entityName = 'processor',
@@ -77,7 +79,8 @@ export default function DeleteConfirmationModal({
               <Button
                 className='bg-red-500 text-white rounded-xl py-6 px-8 font-medium min-w-[120px]'
                 onPress={ handleConfirm }
-                placeholder={ title }
+                startContent={ <AnimatedButtonIcon isSubmitting={ isSubmit } /> }
+                placeholder={ isSubmit ? 'Eliminating...' : title }
               >
                 { title }
               </Button>

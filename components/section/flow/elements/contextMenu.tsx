@@ -43,7 +43,7 @@ export const ContextMenu = ({
       case 'delete-step':
         console.log('Delete step')
         setSelectedType('step')
-        setModalType({ modal: 'delete' })
+        setModalType({ modal: 'delete', id: props.id })
         setIsOpen(true)
         break
 
