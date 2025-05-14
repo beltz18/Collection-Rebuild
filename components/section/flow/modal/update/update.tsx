@@ -5,7 +5,7 @@ import {
   ModalFooter 
 } from '@sec/modal'
 import { Button } from '@com/index'
-import { CircleHelpIcon } from 'lucide-react'
+import { CircleHelpIcon, XCircleIcon, CircleCheckIcon } from 'lucide-react'
 import { DeleteConfirmationModalProps } from '@sec/flow/elements/types'
 import { AnimatedButtonIcon } from '../add/button-animated'
 
@@ -90,7 +90,12 @@ export default function MakeRevokeConfirmationModal({
               <Button
                 className='bg-orange-500 text-white rounded-xl py-6 px-8 font-medium min-w-[120px]'
                 onPress={ handleConfirm }
-                startContent={ <AnimatedButtonIcon isSubmitting={ isSubmit } /> }
+                startContent={ 
+                  <AnimatedButtonIcon 
+                    isSubmitting={ isSubmit } 
+                    icon={ actionText == 'make' ? CircleCheckIcon : XCircleIcon} 
+                  /> 
+                }
                 placeholder={ isSubmit ? 'Updating...' : title }
               />
             </ModalFooter>

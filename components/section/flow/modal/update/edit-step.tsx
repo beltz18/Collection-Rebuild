@@ -31,6 +31,7 @@ import { isEqual } from 'radash'
 import { useUpdateStep } from '@api/routes/step'
 import { generateNewNode } from '@sec/flow/util/util'
 import { StepExtended } from '@typ/step'
+import { FilePenLineIcon } from 'lucide-react'
 
 type Props = {
   open: boolean
@@ -229,7 +230,7 @@ export const EditStepModal = ({
                   <Button
                     color='secondary'
                     onPress={ handleSubmit }
-                    startContent={ <AnimatedButtonIcon isSubmitting={ isSubmitting } /> }
+                    startContent={ <AnimatedButtonIcon isSubmitting={ isSubmitting } icon={FilePenLineIcon} /> }
                     placeholder={ isSubmitting ? 'Updating...' : 'Update step' }
                   />
                 </>
