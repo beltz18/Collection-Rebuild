@@ -44,8 +44,6 @@ export const StepsQueryContainer = ({ strategyId }: Props) => {
   const [value, setValue] = useState<string | number | null>(null)
   const [dataSteps, setDataSteps] = useState<[StrategyT, ...StepT[]] | null>(null)
 
-  console.log(value)
-
   const {
     data,
     isError,

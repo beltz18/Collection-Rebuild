@@ -2,17 +2,26 @@
 
 import DeleteConfirmationModal from './delete'
 import { useState } from 'react'
-import type { ModalProps } from '@sec/flow/elements/types'
+import { ModalProps } from '@sec/flow/elements/types'
 import { useFlowStore } from '@sts/useFlowStore'
 import { useUpdateStep } from '@api/routes/step'
-import type { Node } from '@xyflow/react'
-import type { NodeData } from '@sec/flow/elements/node'
-import type { StepT } from '@typ/strategy'
+import { Node } from '@xyflow/react'
+import { NodeData } from '@sec/flow/elements/node'
+import { StepT } from '@typ/strategy'
 import { useTokenStore } from '@sts/useTokenStore'
-import type { StepExtended } from '@typ/step'
-import { errorToast, successToast } from '@com/index'
+import { StepExtended } from '@typ/step'
+import {
+  errorToast,
+  successToast,
+} from '@com/index'
 
-export const DeleteStepModal = ({ open, setOpen, id, nodes, setNodes }: ModalProps) => {
+export const DeleteStepModal = ({
+  open,
+  setOpen,
+  id,
+  nodes,
+  setNodes,
+}: ModalProps) => {
   const { steps, setSteps } = useFlowStore()
   const { token } = useTokenStore()
   const [isSubmit, setIsSubmit] = useState<boolean>(false)
@@ -32,15 +41,12 @@ export const DeleteStepModal = ({ open, setOpen, id, nodes, setNodes }: ModalPro
         const selNode = { ...nodes.find((e) => e.data.Data?.id == id) }
         const selStep = { ...steps?.find((e) => e.id == id) } as StepExtended
 
-        const nodeIdx = nodes.findIndex((e) => e.data.Data?.id == id)
-        const stepIdx = steps.findIndex((e) => e.id == id)
-
         selStep['active'] = false
         if (selNode['data'] && selNode['data'].Data) selNode['data'].Data.active = false
 
         if (selNode.id && selStep.id) {
-          copyNodes.toSpliced(nodeIdx, 1, selNode as Node<NodeData>)
-          copySteps.splice(stepIdx, 1, selStep as StepT)
+          copyNodes.pop()
+          copySteps.pop()
         }
 
         const r = await updateStep.mutateAsync({
@@ -49,14 +55,8 @@ export const DeleteStepModal = ({ open, setOpen, id, nodes, setNodes }: ModalPro
           processor: selStep.processor,
           active: false,
         } as StepExtended)
-
-        console.log(id);
-        
-        console.log(r);
         
         if (r.data) {
-          console.log(r.data);
-          
           setSteps(copySteps)
           setNodes(copyNodes)
           handleClose()
@@ -85,11 +85,11 @@ export const DeleteStepModal = ({ open, setOpen, id, nodes, setNodes }: ModalPro
 
   return (
     <DeleteConfirmationModal
-      isOpen={open}
-      onClose={handleClose}
-      selectedCount={1}
-      onConfirm={handleSubmit}
-      isSubmit={isSubmit}
+      isOpen={ open }
+      onClose={ handleClose }
+      selectedCount={ 1 }
+      onConfirm={ handleSubmit }
+      isSubmit={ isSubmit }
       title='Delete'
       actionText='delete'
       entityName='step'
