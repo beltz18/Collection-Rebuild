@@ -44,11 +44,18 @@ export type RightPanelProps = {
   hasChanges: boolean
   options: { label: string, key: string }[]
   hasBasic: boolean
+  current: number | null
+  nodes: Node<NodeData>[]
+  open: boolean
+  setOpen: Dispatch<SetStateAction<boolean>>
   onChange: ChangeEventHandler<HTMLSelectElement>
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+  handleSubmit: (nodes: Node<NodeData>[]) => void
+  setHasChanges: Dispatch<SetStateAction<boolean>>
+  setIsModalOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export type LeftPanelProps = {
   setData: Dispatch<SetStateAction<[StrategyT, ...StepT[]] | null>>
+  setValue: Dispatch<SetStateAction<string | number | null>>
   clearData: VoidFunction
 }

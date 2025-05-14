@@ -28,6 +28,10 @@ import {
   CustomRightPanel,
   CustomLeftPanel,
 } from './elements/panel'
+import {
+  useUpdateStepsPosition,
+  useUpdateStrategyPosition,
+} from '@api/routes/step'
 import AddNodeModal from './modal/add'
 import { generateNewNode } from './util/util'
 import { useNodesChanged } from './util/checkNodes'
@@ -39,20 +43,28 @@ import { useCreateNewStep } from '@api/routes/step'
 import { ContextMenu } from './elements/contextMenu'
 import { ModalTypeProps } from './elements/types'
 import { ManagerModals } from './modal/manager-modals'
+import { Node } from '@xyflow/react'
+import { NodeData } from './elements/node'
+import { isEqual } from 'radash'
+import { StepT } from '@typ/strategy'
 
 export const Flow = ({
   initialNodes,
   initialEdges,
+  setValue,
   setData,
 }: FlowProps) => {
-  const { strategy, clearData } = useFlowStore()
+  const { strategy, steps, clearData } = useFlowStore()
   const { flowTheme, setFlowTheme } = useTheme()
   const { token } = useTokenStore()
 
   const addNewStep = useCreateNewStep(token)
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [modalUpdateData, setModalUpdateData] = useState<boolean>(false)
+
   const [modalType, setModalType] = useState<ModalTypeProps | null>(null)
+  const [indexStep, setIndexStep] = useState<number | null>(null)
   const [selectedType, setSelectedType] = useState<'step' | 'strategy' | null>(null)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [hasChanges, setHasChanges] = useState<boolean>(false)
@@ -120,6 +132,66 @@ export const Flow = ({
     setFlowTheme(e.target.value as ColorMode)
   }
 
+  const updateStep = useUpdateStepsPosition(token)
+  const updateStrategy = useUpdateStrategyPosition(token)
+
+  const handleSubmitNewPositions = async (nodes: Node<NodeData>[]) => {
+    setModalUpdateData(true)
+
+    if (!isEqual(initialNodes, nodes)) {
+      for (let idx = 0; idx < nodes.length; idx++) {
+        if (nodes[idx].data.type === 'step') {
+          const node = nodes[idx].data.Data as StepT
+          const stepId = node?.id
+
+          if (stepId && node) {
+            try {
+              const r = await updateStep(
+                stepId,
+                {
+                  id: node.id,
+                  strategy: node.strategy,
+                  method: Number(steps?.find((e) => e.id == node.id)?.method),
+                  processor: Number(steps?.find((e) => e.id == node.id)?.processor),
+                  admin_config: {
+                    position: {
+                      x: nodes[idx].position.x,
+                      y: nodes[idx].position.y,
+                    }
+                  },
+                }
+              )
+              if (r.data) setIndexStep(idx)
+            } catch (err) {
+              console.error(`Failed to update step ${stepId}`, err)
+            }
+          }
+        } else if (nodes[idx].data.type === 'strategy') {
+          if (strategy) {
+            try {
+              await updateStrategy(
+                strategy?.id,
+                {
+                  name: strategy?.name,
+                  admin_config: {
+                    position: {
+                      x: nodes[0].position.x,
+                      y: nodes[0].position.y,
+                    }
+                  },
+                }
+              )
+            } catch (err) {
+              console.error(`Failed to update strategy`, err)
+            }
+          }
+        }
+      }
+    }
+
+    setModalUpdateData(false)
+  }
+
   return (
     <div className='w-full h-full relative'>
       <ReactFlow
@@ -142,14 +214,21 @@ export const Flow = ({
         <CustomLeftPanel
           setData={ setData }
           clearData={ clearData }
+          setValue={ setValue }
         />
 
         <CustomRightPanel
           hasChanges={ hasChanges }
+          setHasChanges={ setHasChanges }
           onChange={ onChange }
           options={ options }
           setIsModalOpen={ setIsModalOpen }
           hasBasic={ nodes.find((e) => e.data.Data?.is_basic_step == true) ? true : false  }
+          handleSubmit={ handleSubmitNewPositions }
+          open={ modalUpdateData }
+          setOpen={ setModalUpdateData }
+          nodes={ nodes }
+          current={ indexStep }
         />
       </ReactFlow>
 

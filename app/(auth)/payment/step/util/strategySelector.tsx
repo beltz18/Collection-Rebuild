@@ -9,12 +9,14 @@ import {
 
 type CompProps = {
   data: ValueProps[] | null
+  value: string | number | null
   setValue: any
   handleClick: VoidFunction
 }
 
 export const StrategySelector = ({
   data,
+  value,
   setValue,
   handleClick,
 }: CompProps) => {
@@ -51,6 +53,7 @@ export const StrategySelector = ({
             placeholder='Continue to Flow Chart'
             endContent={ <Icon icon='arrowRight' /> }
             className='w-full rounded-sm'
+            isDisabled={ !value ? true : false }
             onPress={ handleClick }
           />
         </div>

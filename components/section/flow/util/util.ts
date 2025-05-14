@@ -1,4 +1,8 @@
 import {
+  Dispatch,
+  SetStateAction,
+} from 'react'
+import {
   type Node,
   type Edge,
 } from '@xyflow/react'
@@ -26,7 +30,8 @@ export const defaultEdgeOptions = {
 export type FlowProps = {
   initialNodes: Node<NodeData>[]
   initialEdges: Edge[]
-  setData: React.Dispatch<React.SetStateAction<[StrategyT, ...StepT[]] | null>>
+  setData: Dispatch<SetStateAction<[StrategyT, ...StepT[]] | null>>
+  setValue: Dispatch<SetStateAction<string | number | null>>
 }
 
 export const generateNewNode = (

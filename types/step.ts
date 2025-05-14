@@ -15,7 +15,32 @@ export interface StepExtended {
   is_fallback?: boolean
   fallback_for?: any
   use_regular_ach?: boolean
-  admin_config?: any
+  admin_config?: {
+    position?: {
+      x: number
+      y: number
+    }
+    description?: string
+    note?: string
+  } | null
+}
+
+export interface StrategyExtended {
+  active?: boolean
+  default?: boolean
+  name: string
+  days_before_due_to_start?: number
+  strict_mode?: boolean
+  company?: number
+  branch?: number
+  admin_config?: {
+    position?: {
+      x: number
+      y: number
+    }
+    description?: string
+    note?: string
+  } | null
 }
 
 export interface StepUpdateResponse {

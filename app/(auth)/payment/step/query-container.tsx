@@ -52,7 +52,10 @@ export const StepsQueryContainer = ({ strategyId }: Props) => {
 
   const { refetch } = useGetSteps(
     token,
-    { strategy_id: selectedStrategy?.id },
+    {
+      strategy_id: selectedStrategy?.id,
+      active: true,
+    },
     { enabled: false },
   )
 
@@ -78,8 +81,10 @@ export const StepsQueryContainer = ({ strategyId }: Props) => {
       })
       logout()
     }
-    if (value && data)
-      setSelectedStrategy(data?.find((s) => value == s.id) || null)
+    if (value && data) {
+      const selected = data?.find((s) => value == s.id) || null
+      setSelectedStrategy({ ...selected } as StrategyT)
+    }
   }, [strategyId, isError, error, logout, value, companies])
 
   const handleGoToSteps = async () => {
@@ -127,6 +132,7 @@ export const StepsQueryContainer = ({ strategyId }: Props) => {
         <ComponentContainer
           data={ dataSteps }
           setData={ setDataSteps }
+          setValue={ setValue }
         />
           :
         <div className='px-4 w-full flex justify-center'>
@@ -139,6 +145,7 @@ export const StepsQueryContainer = ({ strategyId }: Props) => {
                 ??
               []
             }
+            value={ value }
             setValue={ setValue }
             handleClick={ handleGoToSteps }
           />
