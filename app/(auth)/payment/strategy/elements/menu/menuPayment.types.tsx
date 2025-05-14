@@ -1,3 +1,5 @@
+import { StrategyT } from "@typ/strategy"
+
 export interface FiltersProps {
   filters: {
     status: string
@@ -15,6 +17,7 @@ export interface FiltersProps {
 export interface MenuPaymentProps extends FiltersProps {
   title?: string
   selectedCount?: number
+  cells?: StrategyT[]
   input: string | null
   setInput: (input: string) => void
 }

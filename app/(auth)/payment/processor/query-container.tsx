@@ -20,13 +20,13 @@ type Props = {
 }
 
 const columns: ColumnEx[] = [
-  { uid: 'name', name: 'Name', sortable: true },
-  { uid: 'description', name: 'Description' },
-  { uid: 'processor_type', name: 'Type', sortable: true },
-  { uid: 'status', name: 'Status', sortable: true },
-  { uid: 'store_id', name: 'Store ID' },
-  { uid: 'client_id', name: 'Client ID' },
-  { uid: 'location_id', name: 'Location ID' },
+  { uid: 'name',           name: 'Name',          sortable: true },
+  { uid: 'description',    name: 'Description' },
+  { uid: 'processor_type', name: 'Type',          sortable: true },
+  { uid: 'status',         name: 'Status',        sortable: true },
+  { uid: 'store_id',       name: 'Store ID' },
+  { uid: 'client_id',      name: 'Client ID' },
+  { uid: 'location_id',    name: 'Location ID' },
 ]
 
 export const QueryContainer = ({

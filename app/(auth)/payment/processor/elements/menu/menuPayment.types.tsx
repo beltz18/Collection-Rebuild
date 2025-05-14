@@ -1,3 +1,5 @@
+import { ProcessorT } from "@typ/processor"
+
 export interface FiltersProps {
   filters: {
     status: string
@@ -14,6 +16,7 @@ export interface FiltersProps {
 export interface MenuPaymentProps extends FiltersProps {
   title?: string
   selectedCount?: number
+  cells?: ProcessorT[]
   input: string | null
   setInput: (input: string) => void
 }

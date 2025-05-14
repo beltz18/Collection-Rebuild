@@ -31,6 +31,8 @@ export const API_ROUTES = {
   method: '/api/payment-methods/',
   methodProcessor: '/api/processor-payment-methods/',
   updateStep: (stepId: number | undefined) => { return `/api/payment-steps/${stepId}/` },
+  updateStrategy: (strategyId: number | undefined) => { return `/api/payment-strategies/${strategyId}/` },
+  updateProcessor: (processorId: number | undefined) => { return `/payment-processors/${processorId}/` },
 }
 
 export const SYSTEM_ROUTES = {

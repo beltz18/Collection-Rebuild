@@ -60,3 +60,12 @@ export const usePostProcessors = (token: string | null) => {
     )
   })
 }
+
+export const useUpdateProcessors = (token: string | null, processorId: number | undefined) => {
+  return useCollectionMutation<SendProps, ProcessorResponseProps>({
+    fetcher: async (data) => await genericAuthRequest(
+      METHODS.patch, API_ROUTES.updateProcessor(processorId), { ...data },
+      token ? { Authorization: `Bearer ${token}` } : undefined,
+    )
+  })
+}

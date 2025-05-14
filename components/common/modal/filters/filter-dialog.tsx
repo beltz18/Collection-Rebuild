@@ -31,6 +31,9 @@ function FilterDialogComponent<T extends Record<string, FilterValue>>(props: Fil
       onApplyFilters?.(filters)
       setIsApplying(false)
     }, 500)
+
+    console.log(filters);
+    
   }
 
   const handleClearFilters = () => {

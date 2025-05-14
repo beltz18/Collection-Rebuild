@@ -170,12 +170,16 @@ const Filters = ({ filters, setFilters, onApplyFilters }: FiltersProps) => {
 export default function MenuPayment({
   title = 'Title Placeholder',
   selectedCount = 0,
+  cells,
   filters,
   setFilters,
   applyFilters,
   input,
   setInput,
 }: MenuPaymentProps) {
+  console.log(cells);
+  console.log(cells?.length);
+
   const { isTablet } = useResponsive()
   const [isOpen, setIsOpen] = useState(false)
   const [viewMode, setViewMode] = useState<"view" | "edit" | "add">("view")
@@ -184,13 +188,16 @@ export default function MenuPayment({
 
   const handleOpenDrawer = (mode: "view" | "edit" | "add", strategy: any = null) => {
     setViewMode(mode)
-    setSelectedStrategy(strategy)
+    if (cells?.length !== 1) setSelectedStrategy(cells)
+    setSelectedStrategy(cells)
     setIsOpen(true)
     console.log("Opening drawer with mode:", mode, "isOpen set to:", true)
+    
   }
-
-  const isViewDisabled = selectedCount !== 1
-  const isDeleteDisabled = selectedCount === 0
+  
+  console.log(selectedStrategy)
+  const isViewDisabled = cells?.length !== 1
+  const isDeleteDisabled = cells?.length === 0
 
   if (!isTablet) {
     return (
@@ -243,6 +250,7 @@ export default function MenuPayment({
               className='flex justify-center items-center'
               color='primary'
               isDisabled={ isViewDisabled }
+              onPress={ () => handleOpenDrawer("view", cells) }
             >
               <Icon icon='eye' size='sm' />
               View Details
@@ -355,6 +363,7 @@ export default function MenuPayment({
               className='flex justify-center items-center w-full'
               color='primary'
               isDisabled={ isViewDisabled }
+              onPress={ () => handleOpenDrawer("view", cells) }
             >
               <Icon icon='eye' size='sm' />
               View Details

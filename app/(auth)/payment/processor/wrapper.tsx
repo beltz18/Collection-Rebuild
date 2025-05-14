@@ -9,8 +9,11 @@ import { QueryContainer } from './query-container'
 import { useSidebarStore } from '@sts/useSidebarStore'
 import MenuPayment from './elements/menu/menuPayment'
 import { useDebounce } from '@uti/useDebounce'
+import { useSelected } from '@sts/useSelectedStore'
 
 export const Wrapper = () => {
+  const { selectedCellsP } = useSelected()
+
   const [search, setSearch] = useState<string>('')
   const [mounted, setMounted] = useState(false)
   const debouncedSearch = useDebounce(search, 500)
@@ -54,6 +57,7 @@ export const Wrapper = () => {
           <MenuPayment
             title='Payment Processors'
             selectedCount={ 0 }
+            cells={ selectedCellsP }
             filters={ filters }
             setFilters={ setFilters }
             applyFilters={ applyFilters }

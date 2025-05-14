@@ -83,6 +83,11 @@ export type SendStrategiesProps = {
   branch?: number
 }
 
+export type StrategiesUpdateResponseProps = {
+  data: any
+  message: string
+}
+
 export type StrategiesResponseProps = {
   data: StrategyT,
   message: string

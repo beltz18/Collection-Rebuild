@@ -12,6 +12,7 @@ import { VerticalDotsIcon } from '@uti/consts'
 import { useMemo, useState, useEffect, type Key } from 'react'
 import { Chip, type Selection } from '@heroui/react'
 import type { ColumnEx } from './types'
+import { useSelected } from '@sts/useSelectedStore'
 import { StrategyT } from '@typ/strategy'
 
 type Props = {
@@ -98,6 +99,8 @@ const renderUserCell = (strategy: StrategyT, columnKey: Key) => {
 }
 
 export const TableContainer = ({ data, columns, onSelectionChange }: Props) => {
+  const { setSelectedCells, selectedCells } = useSelected()
+
   const [filterValue, setFilterValue] = useState('')
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]))
   const visibleColumns = [
@@ -115,18 +118,14 @@ export const TableContainer = ({ data, columns, onSelectionChange }: Props) => {
     return Array.from(selectedKeys).map((key) => Number(key))
   }, [selectedKeys])
 
-  const handleSelectionChange = (keys: Selection) => {
-    setSelectedKeys(keys)
-    if (onSelectionChange) {
-      const numericKeys = new Set(Array.from(keys).map((key) => Number(key)))
-      onSelectionChange(numericKeys)
-    }
-  }
+  const handleSelectionChange = (keys: Selection) => setSelectedKeys(keys)
 
   useEffect(() => {
     const selectedStrategies = data.filter((el) => selectedUserIds.includes(el.id))
-    // console.log('Selected strategies:', selectedStrategies)
-  }, [selectedUserIds, data])
+    console.log('Selected strategies:', selectedStrategies)
+    // if (selectedKeys == 'all') 
+      setSelectedCells(selectedStrategies)
+  }, [selectedUserIds])
 
   return (
     <div className='w-full'>

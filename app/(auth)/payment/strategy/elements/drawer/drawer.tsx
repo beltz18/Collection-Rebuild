@@ -8,10 +8,14 @@ import { Strategy } from './types'
 import { StrategyDrawerProps } from './types'
 import { ScrollShadow } from '@heroui/scroll-shadow'
 import { useResponsive } from '@uti/useResponsive'
-import { usePostStrategies } from '@api/routes/strategy'
 import { useTokenStore } from '@sts/useTokenStore'
 import { useQueryClient } from '@tanstack/react-query'
 import { CACHE_KEYS } from '@api/cache'
+import { useSelected } from '@sts/useSelectedStore'
+import { 
+  usePostStrategies, 
+  useUpdateStrategies 
+} from '@api/routes/strategy'
 import {
   useState,
   useEffect,
@@ -39,19 +43,30 @@ export function StrategyDrawer({
     strict_mode: false,
     default: true,
   })
-
+  
+  const data = Array.isArray(strategy) && strategy.length > 0 ? strategy[0] : null
+  const { selectedCells } = useSelected()
   const queryClient = useQueryClient()
   const { token } = useTokenStore()
   const auth = usePostStrategies(token)
+  const update = useUpdateStrategies(token, selectedCells[0]?.id)
   const { isPending, isSuccess } = auth
 
   const [isEditing, setIsEditing] = useState(isViewMode === 'add')
-
+  
   useEffect(() => {
-    if (strategy) {
-      setFormData({
-        ...strategy,
-      })
+    if (strategy && Array.isArray(strategy) && strategy.length > 0) {
+      const [firstItem] = strategy
+      if (firstItem && typeof firstItem === 'object') {
+        setFormData((prev) => ({
+          ...prev,
+          ...firstItem,
+          company: firstItem.company || 0,
+          branch: firstItem.branch || 0,
+          company_id: firstItem.company_id ?? '',
+          branch_id: firstItem.branch_id ?? '',
+        }))
+      }
     } else {
       setFormData({
         name: '',
@@ -67,18 +82,57 @@ export function StrategyDrawer({
     }
 
     setIsEditing(isViewMode === 'add' || isViewMode === 'edit')
+    console.log('strategy ', selectedCells[0]?.id)
   }, [strategy, isViewMode])
 
   useEffect(() => {
-    setFormData((prevData) => ({
-      ...prevData,
-      company: Number(prevData.company_id) || 0,
-      branch: Number(prevData.branch_id) || 0,
-    }))
+    setFormData(prevData => ({...prevData}))
   }, [formData.company_id, formData.branch_id])
 
   const updateFormData = (newData: Partial<typeof formData>) => {
     setFormData((prevData) => ({ ...prevData, ...newData }))
+    console.log(formData);
+  }
+
+  const handleUpdate = async () => { 
+    try {
+      if (selectedCells[0]?.id) {
+        const data = {
+          ...formData,
+          days_before_due_to_start: formData.days_before_due_to_start?.toString(),
+        }
+
+        const r = await update.mutateAsync(data)
+        console.log(r);
+        if (r.message === 'Payment strategy partially updated successfully') {
+          queryClient.refetchQueries({ queryKey: [CACHE_KEYS.getStrategies] })
+          successToast({
+            title: 'Done!',
+            body: 'Updated strategy data',
+          })
+
+          setTimeout(() => {
+            onClose()
+          }, 1000)
+        } else {
+          errorToast({
+            title: 'Error',
+            body: 'Something wrong happened...',
+          })
+        }
+      } else {
+        errorToast({
+          title: 'Error',
+          body: 'There was an error getting the id of this strategy',
+        })
+      }
+    } catch (err) {
+      console.log(err)
+      errorToast({
+        title: 'Error',
+        body: 'Strategy could not be updated',
+      })
+    }
   }
 
   const handleSave = async () => {
@@ -123,12 +177,12 @@ export function StrategyDrawer({
   const handleEdit = () => { setIsEditing(!isEditing) }
 
   const handleCancel = () => {
-    if (strategy) setFormData(strategy)
+    if (strategy) setFormData(data)
     setIsEditing(false)
     if (isViewMode === 'add') onClose()
   }
 
-  const footerContent = isEditing ? (
+  const footerContent = isViewMode === "add" ? (
     <div className='flex justify-end gap-2 w-full'>
       <Button
         color='danger'
@@ -148,7 +202,7 @@ export function StrategyDrawer({
         Save
       </Button>
     </div>
-  ) : (
+  ) : isViewMode === "view" && (
     <div className='flex justify-end gap-2 w-full'>
       <Button
         color='danger'
@@ -158,13 +212,27 @@ export function StrategyDrawer({
         Close
       </Button>
 
-      <Button
-        color='primary'
-        className='bg-[#023047]'
-        onPress={ handleEdit }
-      >
-        Edit
-      </Button>
+      { 
+        isEditing ? (
+          <Button 
+            color='primary' 
+            className='bg-[#023047]' 
+            onPress={ handleUpdate }
+            disabled={ isPending }
+            isLoading={ isPending && !isSuccess }
+          >
+            Save
+          </Button>
+        ) : (
+          <Button
+            color='primary'
+            className='bg-[#023047]'
+            onPress={ handleEdit }
+          >
+            Edit
+          </Button>
+        )
+      }
     </div>
   )
 

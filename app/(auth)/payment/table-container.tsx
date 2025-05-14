@@ -168,19 +168,19 @@ export const TableContainer = ({
   ]
 
   const selectedElements = useMemo(() => {
-      return Array.from(selectedKeys).map(key => Number(key))
-    }, [selectedKeys])
+    return Array.from(selectedKeys).map(key => Number(key))
+  }, [selectedKeys])
   
-    const handleSelectionChange = (keys: Selection) =>
-      setSelectedKeys(keys)
-  
-    useEffect(() => {
-      const selected = data.filter(el => selectedElements.includes(el.id))
-      setSelectedCells(selected)
-  
-      if (selectedKeys == 'all')
-        setSelectedCells(data)
-    }, [selectedElements])
+  const handleSelectionChange = (keys: Selection) =>
+    setSelectedKeys(keys)
+
+  useEffect(() => {
+    const selected = data.filter(el => selectedElements.includes(el.id))
+    setSelectedCells(selected)
+
+    if (selectedKeys == 'all')
+      setSelectedCells(data)
+  }, [selectedElements])
 
   return (
     <div className='w-full'>

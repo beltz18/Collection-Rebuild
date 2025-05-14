@@ -10,6 +10,7 @@ import {
 } from '@heroui/react'
 import { CustomTable } from '@com/index'
 import { ProcessorT } from '@typ/processor'
+import { useSelected } from '@sts/useSelectedStore'
 import { ColumnEx } from './types'
 
 type Props = {
@@ -77,6 +78,8 @@ const renderUserCell = (payment: ProcessorT, columnKey: Key) => {
 }
 
 export const TableContainer = ({ data, columns }: Props) => {
+  const { setSelectedCellsP } = useSelected()
+
   const [filterValue, setFilterValue] = useState('')
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]))
   const visibleColumns = [
@@ -93,12 +96,13 @@ export const TableContainer = ({ data, columns }: Props) => {
     return Array.from(selectedKeys).map((key) => Number(key))
   }, [selectedKeys])
 
-  const handleSelectionChange = (keys: Selection) =>
-    setSelectedKeys(keys)
+  const handleSelectionChange = (keys: Selection) => setSelectedKeys(keys)
 
   useEffect(() => {
-    const selectedUsers = data.filter((el) => selectedUserIds.includes(el.id))
-    // console.log(selectedUsers)
+    const selectedProcessors = data.filter((el) => selectedUserIds.includes(el.id))
+    console.log('Selected processor:', selectedProcessors)
+    // if (selectedKeys == 'all') 
+      setSelectedCellsP(selectedProcessors)
   }, [selectedUserIds])
 
   return (

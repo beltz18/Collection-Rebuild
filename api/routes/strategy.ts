@@ -14,6 +14,7 @@ import {
   FilterStepsProps,
   SendStrategiesProps,
   StrategiesResponseProps,
+  StrategiesUpdateResponseProps,
 } from '@typ/strategy'
 import { StepT } from '@typ/strategy'
 
@@ -50,5 +51,14 @@ export const usePostStrategies = (token: string | null) => {
         METHODS.post, API_ROUTES.strategy, data,
         token ? { Authorization: `Bearer ${token}` } : undefined,
       )
+  })
+}
+
+export const useUpdateStrategies = (token: string | null, strategyId: number | undefined) => {
+  return useCollectionMutation<SendStrategiesProps, StrategiesUpdateResponseProps>({
+    fetcher: async (data) => await genericAuthRequest(
+      METHODS.patch, API_ROUTES.updateStrategy(strategyId), { ...data },
+      token ? { Authorization: `Bearer ${token}` } : undefined,
+    )
   })
 }

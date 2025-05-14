@@ -12,11 +12,15 @@ import { initialFormData } from "./constants"
 import type { PaymentProcessorFormData } from "./types"
 import { useTokenStore } from "@sts/useTokenStore"
 import { errorToast, successToast } from "@com/index"
-import { usePostProcessors } from "@api/routes/processor"
 import { CACHE_KEYS } from "@api/cache"
 import { useQueryClient } from "@tanstack/react-query"
 import { Heading } from "@com/heading"
+import { useSelected } from "@sts/useSelectedStore"
 import { AnimatePresence } from "framer-motion"
+import { 
+  usePostProcessors, 
+  useUpdateProcessors 
+} from "@api/routes/processor"
 
 interface PaymentProcessorDrawerProps {
   isOpen: boolean
@@ -31,6 +35,8 @@ export function PaymentProcessorDrawer({
   isViewMode,
   processor,
 }: PaymentProcessorDrawerProps) {
+  console.log(processor);
+  
   const { isMobile } = useResponsive()
   const [selectedOption, setSelectedOption] = useState("basic")
   const [isEditing, setIsEditing] = useState(
@@ -38,40 +44,81 @@ export function PaymentProcessorDrawer({
   )
   const [formData, setFormData] = useState<PaymentProcessorFormData>(initialFormData)
 
+  const data = Array.isArray(processor) && processor.length > 0 ? processor[0] : null
+  console.log(data);
+  const { selectedCellsP } = useSelected()
   const queryClient = useQueryClient()
   const { token } = useTokenStore()
   const auth = usePostProcessors(token)
+  const update = useUpdateProcessors(token, selectedCellsP[0]?.id)
   const { isPending, isSuccess } = auth
 
   useEffect(() => {
-    if (processor && isViewMode === "view") {
-      setFormData({
-        name: processor.name || "",
-        description: processor.description || "",
-        processor_type: processor.processor_type || "both",
-        user: processor.user || "",
-        password: processor.password || "",
-        url: processor.url || "",
-        sftp_host: processor.sftp_host || "",
-        sftp_username: processor.sftp_username || "",
-        sftp_password: processor.password || "",
-        store_id: processor.store_id || "",
-        client_id: processor.client_id || "",
-        location_id: processor.location_id || "",
-        sec_code: processor.sec_code || "ppd",
-        use_same_day_ach: processor.use_same_day_ach || false,
-        enabled_for_lender_web: processor.enabled_for_lender_web || false,
-        active: processor.active || true,
-      })
-    } else if (isViewMode === "add") {
+    if (processor && Array.isArray(processor) && processor.length > 0) {
+      const [firstItem] = processor
+      if (firstItem && typeof firstItem === 'object') {
+        setFormData((prev) => ({
+          ...prev,
+          ...firstItem,
+          company: firstItem.company || 0,
+          branch: firstItem.branch || 0,
+          company_id: firstItem.company_id ?? '',
+          branch_id: firstItem.branch_id ?? '',
+        }))
+      }
+    } else {
       setFormData(initialFormData)
     }
 
-    setIsEditing(isViewMode === "add" || isViewMode === "edit")
+    setIsEditing(isViewMode === 'add' || isViewMode === 'edit')
+    console.log('processor ', selectedCellsP[0]?.id)
   }, [processor, isViewMode])
+
+  console.log(formData);
+  
 
   const updateFormData = (newData: Partial<PaymentProcessorFormData>) => {
     setFormData((prevData) => ({ ...prevData, ...newData }))
+  }
+
+  const handleUpdate = async () => { 
+    try {
+      if (selectedCellsP[0]?.id) {
+        const data = {
+          ...formData,
+        }
+
+        const r = await update.mutateAsync(data)
+        console.log(r);
+        if (r.message === 'Payment processor updated successfully') {
+          queryClient.refetchQueries({ queryKey: [CACHE_KEYS.getProcessors] })
+          successToast({
+            title: 'Done!',
+            body: 'Updated processor data',
+          })
+
+          setTimeout(() => {
+            onClose()
+          }, 1000)
+        } else {
+          errorToast({
+            title: 'Error',
+            body: 'Something wrong happened...',
+          })
+        }
+      } else {
+        errorToast({
+          title: 'Error',
+          body: 'There was an error getting the id of this processor',
+        })
+      }
+    } catch (err) {
+      console.log(err)
+      errorToast({
+        title: 'Error',
+        body: 'Processor could not be updated',
+      })
+    }
   }
 
   const handleSave = async () => {
@@ -119,30 +166,12 @@ export function PaymentProcessorDrawer({
   }
 
   const handleCancel = () => {
-    if (processor)
-      setFormData({
-        name: processor.name || "",
-        description: processor.description || "",
-        processor_type: processor.processor_type || "both",
-        user: processor.user || "",
-        password: processor.password || "",
-        url: processor.url || "",
-        sftp_host: processor.sftp_host || "",
-        sftp_username: processor.sftp_username || "",
-        sftp_password: processor.password || "",
-        store_id: processor.store_id || "",
-        client_id: processor.client_id || "",
-        location_id: processor.location_id || "",
-        sec_code: processor.sec_code || "ppd",
-        use_same_day_ach: processor.use_same_day_ach || false,
-        enabled_for_lender_web: processor.enabled_for_lender_web || false,
-        active: processor.active || true,
-      })
+    if (processor) setFormData(data)
     setIsEditing(false)
     if (isViewMode === "add") onClose()
   }
 
-  const footerContent = isEditing ? (
+  const footerContent = isViewMode === "add"  ?(
     <div className="flex justify-end gap-2 w-full">
       <Button color="danger" variant="light" onPress={handleCancel}>
         Cancel
@@ -157,14 +186,33 @@ export function PaymentProcessorDrawer({
         Save
       </Button>
     </div>
-  ) : (
+  ) : isViewMode === "view" && (
     <div className="flex justify-end gap-2 w-full">
       <Button color="danger" variant="light" onPress={onClose}>
         Close
       </Button>
-      <Button color="primary" className="bg-[#023047]" onPress={handleEdit}>
-        Edit
-      </Button>
+
+      { 
+        isEditing ? (
+          <Button 
+            color='primary' 
+            className='bg-[#023047]' 
+            onPress={ handleUpdate }
+            disabled={ isPending }
+            isLoading={ isPending && !isSuccess }
+          >
+            Save
+          </Button>
+        ) : (
+          <Button
+            color='primary'
+            className='bg-[#023047]'
+            onPress={ handleEdit }
+          >
+            Edit
+          </Button>
+        )
+      }
     </div>
   )
 
@@ -194,7 +242,7 @@ export function PaymentProcessorDrawer({
       footer={footerContent}
     >
       {isViewMode === "view" && (
-        <div className="w-full mb-4">
+        <div className="w-auto mt-3 ml-3">
           <Button
             color="primary"
             onPress={handleEdit}

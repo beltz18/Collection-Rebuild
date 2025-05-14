@@ -20,14 +20,14 @@ type Props = {
 }
 
 const columns: ColumnEx[] = [
-  { uid: 'name', name: 'Name' },
-  { uid: 'status', name: 'Status' },
-  { uid: 'company', name: 'Company ID' },
-  { uid: 'store', name: 'Store' },
+  { uid: 'name',            name: 'Name' },
+  { uid: 'status',          name: 'Status' },
+  { uid: 'company',         name: 'Company ID' },
+  { uid: 'store',           name: 'Store' },
   { uid: 'days_before_due', name: 'Days Before Due' },
-  { uid: 'strict_mode', name: 'Mode' },
-  { uid: 'is_default', name: 'Default' },
-  { uid: 'actions', name: 'Actions' },
+  { uid: 'strict_mode',     name: 'Mode' },
+  { uid: 'is_default',      name: 'Default' },
+  { uid: 'actions',         name: 'Actions' },
 ]
 
 export const TableQueryContainer = ({

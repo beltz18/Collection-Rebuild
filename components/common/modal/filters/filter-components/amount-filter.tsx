@@ -8,9 +8,11 @@ export function AmountRangeFilter<T extends Record<string, FilterValue>>({
   values,
   onChange,
 }: FilterContentItemProps<T>) {
-  // Assuming we have minAmount and maxAmount keys in the filter values
   const minKey = `min${String(filter.key).charAt(0).toUpperCase() + String(filter.key).slice(1)}` as keyof T
   const maxKey = `max${String(filter.key).charAt(0).toUpperCase() + String(filter.key).slice(1)}` as keyof T
+  console.log(minKey);
+  console.log(maxKey);
+  
 
   return (
     <div className="flex flex-col gap-4 sm:flex-row">

@@ -41,6 +41,7 @@ export default function StrategyForm({ formData, updateFormData, isViewMode = fa
 
     updateFormData({
       company_id: value,
+      company: Number(value)
     })
   }
 
@@ -59,6 +60,7 @@ export default function StrategyForm({ formData, updateFormData, isViewMode = fa
 
     updateFormData({
       branch_id: value,
+      branch:  Number(value)
     })
   }
 
@@ -92,7 +94,7 @@ export default function StrategyForm({ formData, updateFormData, isViewMode = fa
                 isViewMode
                   ?
                 <div className='bg-default-100 shadow-sm rounded-xl border border-[#5f5e5e1a] h-12 w-full px-3 py-3 text-foreground'>
-                  { formData.company || 'No company selected' }
+                  { formData.company ? companies?.find((e) => e.company_id == formData.company)?.name : 'No company selected' }
                 </div>
                   :
                 <Select
@@ -138,7 +140,7 @@ export default function StrategyForm({ formData, updateFormData, isViewMode = fa
                 isViewMode
                   ?
                 <div className='bg-default-100 shadow-sm rounded-xl border border-[#5f5e5e1a] h-12 w-full px-3 py-3 text-foreground'>
-                  {formData.branch || 'No store selected'}
+                  {formData.branch ? selectedBranch?.find((e) => e.branch_id == formData.branch)?.name : 'No store selected'}
                 </div>
                   :
                 <Select
@@ -202,7 +204,7 @@ export default function StrategyForm({ formData, updateFormData, isViewMode = fa
                 label='Name'
                 placeholder='Enter strategy name'
                 labelPlacement='outside'
-                value={ formData.name || '' }
+                value={ formData.name }
                 isRequired
                 isReadOnly={ isViewMode }
                 onChange={(e) => updateFormData({ name: e.target.value })}
