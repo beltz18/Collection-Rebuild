@@ -2,6 +2,7 @@
 import { Panel } from '@xyflow/react'
 import { CustomSelect } from '@com/select/select'
 import { Button } from '@com/index'
+import { UpdateStepsAdditionalData } from '../modal/update/update-nodes-data'
 import {
   RightPanelProps,
   LeftPanelProps,
@@ -15,7 +16,13 @@ export const CustomRightPanel = ({
   hasChanges,
   options,
   hasBasic,
+  current,
+  nodes,
+  open,
+  setOpen,
   onChange,
+  handleSubmit,
+  setHasChanges,
   setIsModalOpen,
 }: RightPanelProps) => {
   return (
@@ -28,7 +35,7 @@ export const CustomRightPanel = ({
             variant='bordered'
             color='secondary'
             className='rounded-md text-xs h-[48px] font-medium z-50 bg-theme-text-default text-theme-background'
-            onPress={() => console.log('saving...')}
+            onPress={() => handleSubmit(nodes)}
           />
         )
       }
@@ -39,6 +46,15 @@ export const CustomRightPanel = ({
         onChange={ onChange }
         size='sm'
         className='w-[120px] text-theme-text-default'
+      />
+
+      <UpdateStepsAdditionalData
+        size={ nodes.length }
+        open={ open }
+        close={ setOpen }
+        setHasChanges={ setHasChanges }
+        nodes={ nodes }
+        current={ current }
       />
 
       {
@@ -60,6 +76,7 @@ export const CustomRightPanel = ({
 
 export const CustomLeftPanel = ({
   setData,
+  setValue,
   clearData,
 }: LeftPanelProps) => {
   return (
@@ -69,6 +86,7 @@ export const CustomLeftPanel = ({
         onClick={() => {
           setData(null)
           clearData()
+          setValue(null)
         }}
       >
         <ChevronLeft size={ 14 } />

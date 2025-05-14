@@ -11,6 +11,14 @@ export interface StrategyT {
   update_date: Date | string | null
   order?: number
   is_basic_step?: boolean
+  admin_config?: {
+    position?: {
+      x: number
+      y: number
+    }
+    description?: string
+    note?: string
+  } | null
 }
 
 export interface Strategy {
@@ -31,6 +39,14 @@ export interface Strategy {
   use_same_day_ach?: boolean
   enabled_for_lender_web?: boolean
   days_before_due_to_start?: number
+  admin_config?: {
+    position?: {
+      x: number
+      y: number
+    }
+    description?: string
+    note?: string
+  } | null
 }
 
 export interface Step {
@@ -43,7 +59,14 @@ export interface Step {
   min_hours_before_next_step: number
   is_basic_step: boolean
   active: boolean
-  admin_config?: {} | null
+  admin_config?: {
+    position?: {
+      x: number
+      y: number
+    }
+    description?: string
+    note?: string
+  } | null
 }
 
 export interface StepResponse {
@@ -71,6 +94,7 @@ export type FilterStrategiesProps = Partial<{
 
 export type FilterStepsProps = {
   strategy_id: number | undefined
+  active: boolean
 }
 
 export type SendStrategiesProps = {

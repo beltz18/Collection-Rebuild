@@ -40,7 +40,10 @@ export const generateSerpentineNodes = (data: (StrategyT | StepT)[]): Node<NodeD
 
     return {
       id: String(idx),
-      position: { x, y },
+      position: {
+        x: node.admin_config?.position?.x ?? x,
+        y: node.admin_config?.position?.y ?? y,
+      },
       data: {
         title: 'name' in node ? node.name : '',
         type: 'name' in node ? 'strategy' : 'step',
