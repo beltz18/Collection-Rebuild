@@ -30,13 +30,18 @@ import { format } from 'date-fns'
 import { loanRequestStatus } from '@typ/loans-status'
 import { cn } from '@uti/cn'
 import { useMenuStoreLoan } from '@sts/useMenuStore'
+import { useLoanPayment } from '@sts/useLoanPaymentStore'
 
 type Props = {
   data: Loan[]
   columns: Column[]
 }
 
-const renderUserCell = (loans: Loan, columnKey: Key) => {
+const renderUserCell = (
+  loans: Loan,
+  columnKey: Key,
+  setLoan: (loan: Loan) => void,
+) => {
   switch (columnKey) {
     case 'id':
       return (
@@ -115,6 +120,7 @@ const renderUserCell = (loans: Loan, columnKey: Key) => {
               key='view loan'
               as={ Link }
               href={ SYSTEM_ROUTES.goToALoan(loans.loan_request_id) }
+              onClick={() => setLoan(loans)}
             >
               View Loan
             </DropdownItem>
@@ -140,6 +146,7 @@ export const TableContainer = ({
   columns,
 }: Props) => {
   const { setSelectedCells } = useMenuStoreLoan()
+  const { setLoanData } = useLoanPayment()
 
   const [filterValue, setFilterValue] = useState('')
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]))
@@ -176,7 +183,7 @@ export const TableContainer = ({
         filterValue={ filterValue }
         visibleColumns={ visibleColumns }
         selectedKeys={ selectedKeys }
-        renderCell={ renderUserCell }
+        renderCell={(item: Loan, columnKey: Key) => renderUserCell(item, columnKey, setLoanData) }
         onSearchChange={ setFilterValue }
         onClearSearch={() => setFilterValue('')}
         onSelectionChange={ handleSelectionChange }

@@ -5,8 +5,8 @@ import {
   useEffect 
 } from 'react'
 import { useSidebarStore } from '@sts/useSidebarStore'
-import { useParams } from 'next/navigation'
-import { QueryContainer } from './query-container'
+import { useParams }       from 'next/navigation'
+import { QueryContainer }  from './query-container'
 
 export const Wrapper = () => {
   const { id } = useParams<{ id: string }>()
@@ -15,11 +15,11 @@ export const Wrapper = () => {
 
   useEffect(() => {
     clear()
-    setActiveTab('Loans')
+    setActiveTab('Payments')
     setMounted(true)
   }, [])
   
   if (!mounted) return null
   
-  return <QueryContainer loanId={ id } />
+  return <QueryContainer paymentId={ id } />
 }

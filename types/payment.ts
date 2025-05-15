@@ -4,6 +4,7 @@ export type FilterProps = Partial<{
   page: number
   page_size: number
   search: string
+  loan_payment_id?: string | number
 }>
 
 export type PaymentResponse = {

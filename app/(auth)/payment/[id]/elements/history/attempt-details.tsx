@@ -1,9 +1,14 @@
 "use client"
 
 import type React from "react"
-
-import { DollarSign, CreditCard, Hash, Clock, Info } from "lucide-react"
 import { Chip } from "@heroui/react"
+import { 
+  DollarSign, 
+  CreditCard, 
+  Hash, 
+  Clock, 
+  Info 
+} from "lucide-react"
 import { 
   formatDateTime, 
   formatCurrency, 
@@ -42,7 +47,7 @@ export const PaymentAttemptDetails: React.FC<PaymentAttemptDetailsProps> = ({ at
         <div className="flex items-center gap-2">
           <Hash className="w-4 h-4 text-primary" />
           <span className="text-default-500">Transaction ID: </span>
-          <span className="font-medium">{attempt.transaction_id}</span>
+          <span className="font-medium">{attempt.transaction_id ? attempt.transaction_id : 'N/A'}</span>
         </div>
         <div className="flex items-center gap-2">
           <Clock className="w-4 h-4 text-primary" />

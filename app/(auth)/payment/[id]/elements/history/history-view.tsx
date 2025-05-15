@@ -25,7 +25,7 @@ import { getStatusColor, paymentStatus, type Status } from "@typ/payment-status"
 import type { PaymentHistoryViewProps } from "./types"
 import { useResponsive } from '@uti/useResponsive'
 
-export const PaymentHistoryView: React.FC<PaymentHistoryViewProps> = ({ paymentData, token, id }) => {
+export const PaymentHistoryView: React.FC<PaymentHistoryViewProps> = ({ paymentData }) => {
   const { theme } = useTheme()
   const [selectedKey, setSelectedKey] = useState<string>("all")
   const [filteredAttempts, setFilteredAttempts] = useState<any[]>([])

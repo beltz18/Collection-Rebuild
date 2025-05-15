@@ -5,35 +5,40 @@ import { Card } from "@com/card/card-payment"
 import { getStatusColor, paymentStatus, type Status } from "@typ/payment-status"
 import { Chip } from "@heroui/react"
 
-interface PaymentComponentProps {
-  loan_payment_id: number
-  loan_request_id: number
-  loan_request_number: string
-  person: {
-    first_name: string
-    last_name: string
-    email: string
-  }
-  company_name: string
-  amount: string
-  capital: string
-  interest_amount: string
-  arrears_amount: string
-  other_debts: string
-  balance_date: string | null
-  remaining_amount: string
-  due_date: string
-  real_payment_date: string
-  payment_status: {
-    description: string
-    unique_description?: Status
-  }
-  number_payment: number
-  loan_details_url: string
-  customer_details_url: string
+export interface PaymentComponentProps {
+  paymentDetails: {
+    loan_payment_id: number
+    loan_request_id: number
+    loan_request_number: string
+    person: {
+      first_name: string
+      last_name: string
+      email: string
+    }
+    company_name: string
+    amount: string
+    capital: string
+    interest_amount: string
+    arrears_amount: string
+    other_debts: string
+    balance_date: string | null
+    remaining_amount: string
+    due_date: string
+    real_payment_date: string
+    payment_status: {
+      description: string
+      unique_description?: Status
+    }
+    number_payment: number
+    loan_details_url: string
+    customer_details_url: string
+  },
+  paymentId: string | undefined
 }
 
-export const PaymentComponent = (paymentDetails: PaymentComponentProps) => {
+export const PaymentComponent = ({ paymentDetails, paymentId }: PaymentComponentProps) => {
+  console.log(paymentId)
+  
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",

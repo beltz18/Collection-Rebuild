@@ -157,7 +157,7 @@ export const TableQueryContainer = () => {
 
       <div className='w-full flex items-center justify-center'>
         <PaginationC
-          total={ Math.floor(data.count / selected) }
+          total={ Math.ceil(data.count / selected) }
           currentPage={ current }
           onPageChange={ setCurrent }
         />

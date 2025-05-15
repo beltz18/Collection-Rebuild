@@ -3,7 +3,11 @@
 import { CustomAccordion } from "@com/accordion/accordion"
 import { Card } from "@heroui/card"
 import { Chip } from "@heroui/chip"
-import { getStatusColor, loanRequestStatus, type LoanRequestStatus } from "@typ/loans-status"
+import { 
+  getStatusColor, 
+  loanRequestStatus, 
+  type LoanRequestStatus 
+} from "@typ/loans-status"
 import {
   Calendar,
   DollarSign,
@@ -19,7 +23,7 @@ import {
   Building,
 } from "lucide-react"
 
-interface LoanComponentProps {
+export interface LoanComponentProps {
   about: {
     title: string
     description: string
@@ -39,6 +43,7 @@ interface LoanComponentProps {
     customer_details_url: string
     payment_frequency: {
       description: string
+      unique_description: string
     }
     request_date: string
     requested_amount: string
@@ -54,18 +59,23 @@ interface LoanComponentProps {
     }
     loan_destination: {
       description: string
+      unique_description: string
     }
     status: {
       description: string
+      unique_description: string
     }
     currency: {
       code: string
     }
     customerNetIncome?: string
-  }
+  },
+  loandId: string | undefined
 }
 
-export const LoanComponent = ({ loanDetails }: LoanComponentProps) => {
+export const LoanComponent = ({ loanDetails, loandId }: LoanComponentProps) => {
+  console.log(loandId);
+  
   const formatDate = (dateString: string) => {
     try {
       return new Date(dateString).toLocaleDateString("en-US", {
@@ -77,8 +87,13 @@ export const LoanComponent = ({ loanDetails }: LoanComponentProps) => {
       return dateString
     }
   }
-  
-  const paymentStatusKey = (loanDetails.status.description as LoanRequestStatus) || "PENDING"
+
+  function capitalizeFirstLetter(text: string): string {
+    if (!text) return '';
+    return text.charAt(0).toUpperCase() + text.slice(1);
+  }
+
+  const paymentStatusKey = (loanDetails.status.unique_description as LoanRequestStatus) || "PENDING"
 
   return (
     <div className="space-y-6 pt-4">
@@ -86,7 +101,7 @@ export const LoanComponent = ({ loanDetails }: LoanComponentProps) => {
         <h1 className="text-2xl font-bold text-default-800">Loan Information</h1>
         <Chip className={`mt-1 ${getStatusColor(paymentStatusKey)}`}>
           <span className="font-bold text-[11px]">
-            {loanRequestStatus[paymentStatusKey] || loanDetails.status.description}
+            {loanRequestStatus[paymentStatusKey] || loanDetails.status.unique_description}
           </span>
         </Chip>
       </div>
@@ -163,7 +178,7 @@ export const LoanComponent = ({ loanDetails }: LoanComponentProps) => {
               </div>
               <div>
                 <p className="text-sm text-default-500">Loan Destination</p>
-                <p className="text-lg text-default-700 font-semibold">{loanDetails.loan_destination.description}</p>
+                <p className="text-lg text-default-700 font-semibold">{capitalizeFirstLetter(loanDetails.loan_destination.unique_description)}</p>
               </div>
             </div>
           </div>
@@ -210,7 +225,7 @@ export const LoanComponent = ({ loanDetails }: LoanComponentProps) => {
                   <div>
                     <p className="text-sm text-default-500">Payment Frequency</p>
                     <p className="text-base text-default-700 font-medium">
-                      {loanDetails.payment_frequency.description}
+                      {capitalizeFirstLetter(loanDetails.payment_frequency.unique_description)}
                     </p>
                   </div>
                 </div>
