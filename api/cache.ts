@@ -8,6 +8,7 @@ export const CACHE_KEYS = {
   getBranches: 'branches',
   getMethods: 'methods',
   getMethodProcessors: 'methodProcessors',
+  getReceipt: 'receipt'
 }
 
 type HttpMethod = 'get' | 'post' | 'put' | 'delete' | 'patch'
@@ -33,6 +34,7 @@ export const API_ROUTES = {
   updateStep: (stepId: number | undefined) => { return `/api/payment-steps/${stepId}/` },
   updateStrategy: (strategyId: number | undefined) => { return `/api/payment-strategies/${strategyId}/` },
   updateProcessor: (processorId: number | undefined) => { return `/payment-processors/${processorId}/` },
+  receipt: (paymentId: number | undefined) => { return `/payment-receipt/${paymentId}/` },
 }
 
 export const SYSTEM_ROUTES = {

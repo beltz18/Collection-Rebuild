@@ -225,7 +225,7 @@ export const LoanComponent = ({ loanDetails, loandId }: LoanComponentProps) => {
                   <div>
                     <p className="text-sm text-default-500">Payment Frequency</p>
                     <p className="text-base text-default-700 font-medium">
-                      {capitalizeFirstLetter(loanDetails.payment_frequency.unique_description)}
+                      {capitalizeFirstLetter(loanDetails?.payment_frequency?.unique_description ? loanDetails?.payment_frequency?.unique_description : 'N/A')}
                     </p>
                   </div>
                 </div>

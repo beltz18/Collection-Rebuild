@@ -6,6 +6,9 @@ import { CheckCircle, XCircle, FileCheck, AlertCircle } from "lucide-react"
 import { PaymentAttemptDetails } from "./attempt-details"
 import { getAssociatedPaymentStatusColor, getAssociatedPaymentStatus } from "./utils"
 import { PAYMENT_METHODS } from "../constants"
+import { useLoanPayment } from "@sts/useLoanPaymentStore"
+import { usePaymentReceipt } from "@sts/useReceiptStore"
+import { generateReceipt } from "@uti/pdf"
 
 interface PaymentAttemptsListProps {
   filteredAttempts: any[]
@@ -26,6 +29,11 @@ export const PaymentAttemptsList: React.FC<PaymentAttemptsListProps> = ({
   handleGenerateReceipt,
   theme,
 }) => {
+  const { paymentData } = useLoanPayment()
+  const { receipt } = usePaymentReceipt()
+
+  const handlerDownload = (attemp: any) => { generateReceipt(paymentData, attemp, receipt) }
+
   if (filteredAttempts.length === 0) {
     return (
       <div className="text-center p-8 bg-default-50 rounded-lg">
@@ -76,7 +84,7 @@ export const PaymentAttemptsList: React.FC<PaymentAttemptsListProps> = ({
                           ${theme === "light" ? "bg-[#161616e0] text-[#ededed]" : "bg-theme-primary"}
                         `}
                         startContent={<FileCheck className="w-4 h-4" />}
-                        onClick={() => console.log(attempt)}
+                        onClick={() => handlerDownload(attempt)}
                       >
                         Receipt
                       </Chip>

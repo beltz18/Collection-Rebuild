@@ -3,8 +3,7 @@
 import { Tabs } from '@com/tabs/tabs'
 import { useResponsive } from '@uti/useResponsive'
 import { PaymentComponent } from './component-container'
-import { mockData } from './mock/mock-data'
-import { Status } from '@typ/payment-status'
+import { useGetReceipt } from '@api/routes/receipt'
 import PaymentHistory from './component-history-container'
 import { useGetPayments } from '@api/routes/payment'
 import { useLoanPayment } from '@sts/useLoanPaymentStore'
@@ -12,6 +11,7 @@ import { SkeletonContent } from '@com/index'
 import { NoResults } from '@uti/home-utils'
 import { useTokenStore } from '@sts/useTokenStore'
 import { errorToast } from '@com/index'
+import { usePaymentReceipt } from '@sts/useReceiptStore'
 import { 
   useState, 
   useEffect 
@@ -20,26 +20,34 @@ import {
 type Props = { paymentId: string | undefined }
 
 export function QueryContainer({ paymentId }: Props) {
-  const { paymentData } = useLoanPayment()
+  const { paymentData }   = useLoanPayment()
+  const { setReceipt }    = usePaymentReceipt()
   const { token, logout } = useTokenStore()
   const id = Number(paymentId)
+
   const {
-      data,
-      isLoading,
-      isFetching,
+      data: paymentsData,
+      isLoading: paymentsIsLoading,
+      isFetching: paymentsIsFetching,
   
-      isError,
-      error
+      isError: paymentsIsError,
+      error: paymentsError
     } = useGetPayments(token, paymentId ? { loan_payment_id: paymentId } : {})
+  const {
+      data: receiptData,
+  
+      isError: receiptIsError,
+      error: receiptError
+    } = useGetReceipt(id, token)
   
   const { isTablet } = useResponsive()
   const [selectedTab, setSelectedTab] = useState('payment')
   const [paymentDetail, setPaymentDetail] = useState<any>(null)
-  const numberHistory = paymentDetail || paymentData ? paymentDetail?.payment_history?.lenght || paymentData?.payment_history.length : 0
+  const numberHistory = paymentDetail || paymentData ? paymentDetail?.payment_history?.length || paymentData?.payment_history.length : 0
 
   useEffect(() => {
-    if (isError) {
-      console.log(error)
+    if (paymentsIsError || receiptIsError) {
+      console.log(paymentsError)
       errorToast({
         title: 'Error',
         body: 'Session expired or unexpected error. Please sign in again',
@@ -47,17 +55,22 @@ export function QueryContainer({ paymentId }: Props) {
       })
       logout()
     }
-  }, [isError, error, logout])
+  }, [paymentsIsError, paymentsError, receiptError, receiptIsError, logout])
     
+  useEffect(() => {
+    if (receiptData) { setReceipt(receiptData) }
+  }, [receiptData, setReceipt])
+
+  
   useEffect(() => {
     if (paymentData?.loan_request_id === id) {
       setPaymentDetail(paymentData)
-    } else if (data?.results && data.results.length > 0) {
-      setPaymentDetail(data.results[0])
+    } else if (paymentsData?.results && paymentsData.results.length > 0) {
+      setPaymentDetail(paymentsData.results[0])
     } else {
       setPaymentDetail(null)
     }
-  }, [paymentData, id, data])
+  }, [paymentData, id, paymentsData])
 
   return (
         <div className={`p-4 relative ${isTablet ? 'w-full h-full' : 'w-full h-full'}`}>
@@ -77,12 +90,12 @@ export function QueryContainer({ paymentId }: Props) {
           >
             <Tabs.Tab key='payment' title='Payment' className={`bg-theme-background ${isTablet ? '' : 'w-full min-h-full'}`}>
               <div className={isTablet ? '' : 'h-full w-full'}>
-                { isLoading || isFetching ? (
+                { paymentsIsLoading || paymentsIsFetching ? (
                   <SkeletonContent />
                 ) : paymentDetail ? (
                   <PaymentComponent
                     paymentDetails={ paymentDetail }
-                    paymentId={paymentId}
+                    paymentId={paymentId }
                   />
                 ) : (
                   <NoResults 

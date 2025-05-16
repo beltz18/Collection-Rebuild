@@ -10,6 +10,9 @@ import { useLoanPayment } from '@sts/useLoanPaymentStore'
 import { errorToast } from '@com/index'
 import { SkeletonContent } from '@com/index'
 import { NoResults } from '@uti/home-utils'
+import { samplePaymentData } from './format'
+import { PaymentsView } from './component-container-payment'
+import { useGetPayments } from '@api/routes/payment'
 import { 
   useState, 
   useEffect 
@@ -29,9 +32,23 @@ export const QueryContainer = ({ loanId }: Props) => {
     isError,
     error
   } = useGetLoans(token, loanId ? { loan_request_id: loanId } : {})
+  const {
+    data: dataP,
+    isLoading: loadingP,
+    isFetching: fecthP,
+
+    isError: irErrP,
+    error: errorP
+  } = useGetPayments(
+    token,
+    loanId ? { loan_request_id: loanId, page_size: 10 } : {},
+  )
 
   const { isTablet } = useResponsive()
   const [loanDetail, setLoanDetail] = useState<any>(null)
+
+  console.log(dataP);
+  
 
   useEffect(() => {
     if (isError) {
@@ -87,7 +104,9 @@ export const QueryContainer = ({ loanId }: Props) => {
 
         <Tabs.Tab key='payments' title='Payments' className={`bg-theme-background ${isTablet ? '' : 'w-full h-full'}`}>
           <div className={isTablet ? 'h-full w-full' : 'min-h-full w-full'}>
-            <p>payments</p>
+            <PaymentsView
+              payments={ samplePaymentData }
+            />
           </div>
         </Tabs.Tab>
 

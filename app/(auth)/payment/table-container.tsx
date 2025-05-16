@@ -30,19 +30,25 @@ import { SYSTEM_ROUTES } from '@api/cache'
 import { format } from 'date-fns'
 import { cn } from '@uti/cn'
 import { useMenuStorePayment } from '@sts/useMenuStore'
+import { useLoanPayment } from '@sts/useLoanPaymentStore'
 
 type Props = {
   data: Payment[]
   columns: Column[]
 }
 
-const renderUserCell = (payment: Payment, columnKey: Key) => {
+const renderUserCell = (
+  payment: Payment, 
+  columnKey: Key,
+  setPayment: (payment: Payment) => void
+) => {
   switch (columnKey) {
     case 'id':
       return (
         <Link
           href={ SYSTEM_ROUTES.goToAPayment(payment.loan_payment_id) }
           className='text-blue-600 underline'
+          onClick={() => setPayment(payment)}
         >
           { payment.loan_payment_id }
         </Link>
@@ -134,6 +140,9 @@ const renderUserCell = (payment: Payment, columnKey: Key) => {
           <DropdownMenu>
             <DropdownItem
               key='view'
+              as={ Link }
+              href={ SYSTEM_ROUTES.goToAPayment(payment.loan_payment_id) }
+              onClick={() => setPayment(payment)}
             >
               View payment
             </DropdownItem>
@@ -151,6 +160,7 @@ export const TableContainer = ({
   columns,
 }: Props) => {
   const { setSelectedCells } = useMenuStorePayment()
+  const { setPaymentData } = useLoanPayment()
 
   const [filterValue, setFilterValue] = useState('')
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]))
@@ -190,7 +200,7 @@ export const TableContainer = ({
         filterValue={ filterValue }
         visibleColumns={ visibleColumns }
         selectedKeys={ selectedKeys }
-        renderCell={ renderUserCell }
+        renderCell={( item: Payment, columnKey: Key ) => renderUserCell(item, columnKey, setPaymentData)}
         onSearchChange={ setFilterValue }
         onClearSearch={() => setFilterValue('')}
         onSelectionChange={ handleSelectionChange }

@@ -1,29 +1,24 @@
 import jsPDF from "jspdf"
 import { format } from "date-fns"
-import { 
-  LOGO_FOOTER, 
-  LOGO_PDF as LOGO_ENTITY 
-} from "@uti/var"
-import { 
-  paymentStatus, 
-  getStatusColor, 
-  Status 
-} from "@typ/payment-status"
-import { 
-  tailwindToRGB, 
-  tailwindToTextRGB, 
-  formatDateTime, 
-  formatCurrency, 
-  PAGE_MARGIN, 
-  CONTENT_WIDTH, 
-  CONTENT_START_X, 
-  MAX_Y 
+import { LOGO_FOOTER, LOGO_PDF as LOGO_ENTITY } from "@uti/var"
+import { paymentStatus, getStatusColor, type Status } from "@typ/payment-status"
+import {
+  tailwindToRGB,
+  tailwindToTextRGB,
+  formatDateTime,
+  formatCurrency,
+  PAGE_MARGIN,
+  CONTENT_WIDTH,
+  CONTENT_START_X,
+  MAX_Y,
 } from "@uti/payment-report-functions"
 
 export const paymentAttempReportPDF = async (payment: any, fileName: string) => {
   const doc: any = new jsPDF()
   let pageCount = 1
   let yOffset = PAGE_MARGIN.top
+
+  const BOTTOM_MARGIN = 30 
 
   const addHeader = (pageNum: number, totalPages: number) => {
     doc.setFontSize(10)
@@ -34,29 +29,34 @@ export const paymentAttempReportPDF = async (payment: any, fileName: string) => 
   const addFooter = () => {
     const footerHeight = 6
     doc.setFillColor(22, 22, 22)
-    doc.rect(0, doc.internal.pageSize.height - footerHeight, doc.internal.pageSize.width, footerHeight, 'F')
-    
+    doc.rect(0, doc.internal.pageSize.height - footerHeight, doc.internal.pageSize.width, footerHeight, "F")
+
     const imageUrl = LOGO_FOOTER
     const imgWidth = 20
     const imgHeight = 5
     const pageWidth = doc.internal.pageSize.width
     const pageHeight = doc.internal.pageSize.height
-    doc.addImage(imageUrl, "PNG", (pageWidth - imgWidth) / 2, pageHeight - footerHeight / 2 - imgHeight / 2, imgWidth, imgHeight)
+    doc.addImage(
+      imageUrl,
+      "PNG",
+      (pageWidth - imgWidth) / 2,
+      pageHeight - footerHeight / 2 - imgHeight / 2,
+      imgWidth,
+      imgHeight,
+    )
   }
 
   const addNewPage = () => {
     doc.addPage()
     pageCount++
     yOffset = PAGE_MARGIN.top
-    addHeader(pageCount, pageCount) 
-    addFooter() 
+    addHeader(pageCount, pageCount)
+    addFooter()
     return yOffset
   }
 
   const addText = (text: string, x: number, fontSize = 11, isBold = false, maxWidth?: number) => {
-    if (yOffset > MAX_Y - 20) {
-      yOffset = addNewPage()
-    }
+    if (yOffset > MAX_Y - BOTTOM_MARGIN) { yOffset = addNewPage() }
     doc.setFontSize(fontSize)
     doc.setFont("helvetica", isBold ? "bold" : "normal")
 
@@ -92,6 +92,11 @@ export const paymentAttempReportPDF = async (payment: any, fileName: string) => 
     doc.setTextColor(0, 0, 0)
   }
 
+  const formatValue = (value: any): string => {
+    if (value === null || value === undefined || value === "") { return "N/A" }
+    else return String(value)
+  }
+
   const imageUrl = LOGO_ENTITY
   doc.addImage(imageUrl, "PNG", CONTENT_START_X, yOffset, 65, 12)
   doc.setFontSize(12)
@@ -100,7 +105,10 @@ export const paymentAttempReportPDF = async (payment: any, fileName: string) => 
 
   doc.setFillColor(245, 245, 245)
   doc.roundedRect(CONTENT_START_X - 5, yOffset - 10, CONTENT_WIDTH + 10, 20, 2, 2, "F")
-  addText(`Payment #${payment.number_payment}`, CONTENT_START_X, 16, true)
+
+  doc.setFontSize(16)
+  doc.setFont("helvetica", "bold")
+  doc.text(`Payment #${payment.number_payment}`, CONTENT_START_X, yOffset)
 
   const statusText = paymentStatus[payment.payment_status.unique_description as Status]
   const statusColorClass = getStatusColor(payment.payment_status.unique_description as Status)
@@ -113,7 +121,7 @@ export const paymentAttempReportPDF = async (payment: any, fileName: string) => 
   doc.roundedRect(CONTENT_START_X + CONTENT_WIDTH - statusWidth, yOffset - 6, statusWidth, 8, 2, 2, "F")
   doc.setTextColor(...textColorRGB)
   doc.setFontSize(10)
-  doc.text(statusText, CONTENT_START_X + CONTENT_WIDTH - statusWidth / 2, yOffset, { align: "center" })
+  doc.text(statusText, CONTENT_START_X + CONTENT_WIDTH - statusWidth + 8, yOffset)
   yOffset += 20
 
   doc.setTextColor(0, 0, 0)
@@ -137,7 +145,7 @@ export const paymentAttempReportPDF = async (payment: any, fileName: string) => 
     doc.text(label, CONTENT_START_X + 5, yOffset)
     doc.setTextColor(0, 0, 0)
     doc.setFont("helvetica", "bold")
-    doc.text(String(value), CONTENT_START_X + 5, yOffset + 5)
+    doc.text(formatValue(value), CONTENT_START_X + 5, yOffset + 5)
     yOffset += 15
   })
 
@@ -148,14 +156,17 @@ export const paymentAttempReportPDF = async (payment: any, fileName: string) => 
   yOffset += 10
 
   payment.payment_history.forEach((attempt: any) => {
-    if (yOffset > MAX_Y - 40) {
-      doc.addPage()
-      yOffset = PAGE_MARGIN.top
+    if (yOffset > MAX_Y - BOTTOM_MARGIN) {
+      yOffset = addNewPage()
     }
 
     doc.setFillColor(245, 245, 245)
     doc.roundedRect(CONTENT_START_X - 5, yOffset - 5, CONTENT_WIDTH + 10, 15, 2, 2, "F")
-    addText(`Attempt ${attempt.attempt_number} - ${attempt.payment_method}`, CONTENT_START_X + 5, 12, true)
+
+    doc.setFontSize(12)
+    doc.setFont("helvetica", "bold")
+    doc.text(`Attempt ${attempt.attempt_number} - ${formatValue(attempt.payment_method)}`, CONTENT_START_X + 5, yOffset)
+
     addStatusChip(attempt.success, CONTENT_START_X + CONTENT_WIDTH - 40, yOffset)
     yOffset += 10
 
@@ -169,14 +180,14 @@ export const paymentAttempReportPDF = async (payment: any, fileName: string) => 
       ["Amount After", formatCurrency(attempt.amount_after)],
       ["Payment Method", attempt.payment_method],
       ["Payment Processor", attempt.payment_processor],
-      ["Transaction ID", attempt.transaction_id == null ? "N/A" : attempt.transaction_id],
+      ["Transaction ID", attempt.transaction_id],
       ["Processed At", formatDateTime(attempt.processed_at)],
       ["Created At", formatDateTime(attempt.created_at)],
       ["Returned At", formatDateTime(attempt.returned_at)],
       ["Successful At", formatDateTime(attempt.successful_at)],
-      ["Identifier", attempt.identifier || "N/A"],
-      ["Identifier 2", attempt.identifier_2 || "N/A"],
-      ["Status", attempt.status || "N/A"],
+      ["Identifier", attempt.identifier],
+      ["Identifier 2", attempt.identifier_2],
+      ["Status", attempt.status],
     ]
 
     attemptDetails.forEach(([label, value], idx) => {
@@ -191,10 +202,14 @@ export const paymentAttempReportPDF = async (payment: any, fileName: string) => 
       doc.text(label + ":", x, y)
       doc.setTextColor(0, 0, 0)
       doc.setFont("helvetica", "bold")
-      doc.text(String(value), x + doc.getTextWidth(label + ": "), y)
+      doc.text(formatValue(value), x + doc.getTextWidth(label + ": "), y)
     })
 
     yOffset = detailsStartY + detailsHeight + 5
+
+    if (yOffset > MAX_Y - BOTTOM_MARGIN && attempt.associated_payment) {
+      yOffset = addNewPage()
+    }
 
     if (attempt.associated_payment) {
       addText("Associated Payment", CONTENT_START_X + 5, 11, true)
@@ -202,16 +217,14 @@ export const paymentAttempReportPDF = async (payment: any, fileName: string) => 
       doc.roundedRect(CONTENT_START_X - 5, yOffset - 5, CONTENT_WIDTH + 10, 52, 2, 2, "F")
 
       Object.entries(attempt.associated_payment).forEach(([key, value]) => {
-        const dateFields = ["created_at", "successful_at", "returned_at"];
+        const dateFields = ["created_at", "successful_at", "returned_at"]
 
         if (dateFields.includes(key)) {
-          value = formatDateTime(value as string);
+          value = formatDateTime(value as string)
         }
-        
-        const formattedKey = key
-          .replace(/_/g, " ") 
-          .replace(/\b\w/g, (char) => char.toUpperCase())
-        
+
+        const formattedKey = key.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase())
+
         if (key !== "return_code") {
           doc.setFont("helvetica", "normal")
           doc.setFontSize(9)
@@ -219,57 +232,20 @@ export const paymentAttempReportPDF = async (payment: any, fileName: string) => 
           doc.text(formattedKey + ":", CONTENT_START_X + 10, yOffset)
           doc.setTextColor(0, 0, 0)
           doc.setFont("helvetica", "bold")
-          doc.text(String(value), CONTENT_START_X + 10 + doc.getTextWidth(formattedKey + ": "), yOffset)
+          doc.text(formatValue(value), CONTENT_START_X + 10 + doc.getTextWidth(formattedKey + ": "), yOffset)
           yOffset += 7
         }
       })
       yOffset += 5
     }
-
-    if (attempt.associated_payment && attempt.associated_payment.return_code) {
-      addText("Return Code", CONTENT_START_X + 5, 11, true)
-      doc.setFillColor(250, 250, 250)
-      doc.roundedRect(CONTENT_START_X - 5, yOffset - 5, CONTENT_WIDTH + 10, 40, 2, 2, "F")
-
-      const returnCode = attempt.associated_payment.return_code
-      const returnCodeDetails = [
-        ["Code", returnCode.code],
-        ["Title", returnCode.title_en],
-        ["Description", returnCode.description_en],
-        ["Stop Step", returnCode.stop_step ? "Yes" : "No"],
-      ]
-
-      returnCodeDetails.forEach(([label, value]) => {
-        doc.setFont("helvetica", "normal")
-        doc.setFontSize(9)
-        doc.setTextColor(100, 100, 100)
-        doc.text(label + ":", CONTENT_START_X + 10, yOffset)
-        doc.setTextColor(0, 0, 0)
-        doc.setFont("helvetica", "bold")
-
-        if (label === "Description") {
-          const lines = doc.splitTextToSize(String(value), CONTENT_WIDTH - 40)
-          doc.text(lines, CONTENT_START_X + 10 + doc.getTextWidth(label + ": "), yOffset)
-          yOffset += 7 * lines.length
-        } else {
-          doc.text(String(value), CONTENT_START_X + 10 + doc.getTextWidth(label + ": "), yOffset)
-          yOffset += 7
-        }
-      })
-    }
-
     yOffset += 15
   })
 
-  if (yOffset > MAX_Y - 40) {
-    addNewPage()
-    yOffset = PAGE_MARGIN.top
-  }
+  if (yOffset > MAX_Y - BOTTOM_MARGIN) { addNewPage() }
 
-  const p = doc.internal.pages.length-1
+  const p = doc.internal.pages.length - 1
 
   for (let i = 1; i <= p; i++) {
-    console.log(i, p)
     doc.setPage(i)
     addHeader(i, p)
     addFooter()

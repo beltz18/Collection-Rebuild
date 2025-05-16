@@ -48,6 +48,7 @@ const renderUserCell = (
         <Link
           href={ SYSTEM_ROUTES.goToALoan(loans.loan_request_id) }
           className='text-blue-600 underline'
+          onClick={() => setLoan(loans)}
         >
           { loans.loan_request_id }
         </Link>

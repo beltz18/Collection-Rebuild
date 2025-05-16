@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect, useCallback } from "react"
-import { format } from "date-fns"
+import { Payment } from "@typ/home-tables"
 import {
   Button,
   Dropdown,
@@ -16,7 +16,7 @@ import {
   Divider,
   Chip,
 } from "@heroui/react"
-import { Download, RotateCw } from "lucide-react"
+import { Download } from "lucide-react"
 import { useTheme } from "@ctx/themeContext"
 import { PaymentMethodTabs } from "./methods.tabs"
 import { PaymentAttemptsList } from "./attempts-list"
@@ -24,6 +24,7 @@ import { PAYMENT_METHODS } from "../constants"
 import { getStatusColor, paymentStatus, type Status } from "@typ/payment-status"
 import type { PaymentHistoryViewProps } from "./types"
 import { useResponsive } from '@uti/useResponsive'
+import { generateReport } from "@uti/pdf"
 
 export const PaymentHistoryView: React.FC<PaymentHistoryViewProps> = ({ paymentData }) => {
   const { theme } = useTheme()
@@ -31,7 +32,6 @@ export const PaymentHistoryView: React.FC<PaymentHistoryViewProps> = ({ paymentD
   const [filteredAttempts, setFilteredAttempts] = useState<any[]>([])
   const [expandedItems, setExpandedItems] = useState<Record<string, string[]>>({})
   const [forceUpdate, setForceUpdate] = useState(0)
-  const [isRefreshing, setIsRefreshing] = useState(false)
 
   const { isMobile } = useResponsive()
 
@@ -57,16 +57,13 @@ export const PaymentHistoryView: React.FC<PaymentHistoryViewProps> = ({ paymentD
     ).length
   }
 
+  const handlerDownload = (data: Payment[], type: 'pdf' | 'csv') => {
+    generateReport(data, type)
+  }
+
   return (
     <div className="space-y-6">
       <div className={`w-full flex ${isMobile ? 'flex-col items-start gap-2' : 'flex-row justify-end items-center gap-4'}`}>
-        <Button
-          color="primary"
-          startContent={<RotateCw className={`mr-1 ${isRefreshing ? "animate-spin" : ""}`} size={15} />}
-          disabled={isRefreshing}
-        >
-          Refresh
-        </Button>
         <Dropdown>
           <DropdownTrigger>
             <Button
@@ -80,10 +77,16 @@ export const PaymentHistoryView: React.FC<PaymentHistoryViewProps> = ({ paymentD
             </Button>
           </DropdownTrigger>
           <DropdownMenu aria-label="Generate Report">
-            <DropdownItem key="pdf" onClick={() => console.log("pdf")}>
+            <DropdownItem 
+              key="pdf" 
+              onClick={() => handlerDownload(paymentData, 'pdf')}
+            >
               PDF
             </DropdownItem>
-            <DropdownItem key="csv" onClick={() => console.log("csv")}>
+            <DropdownItem 
+              key="csv" 
+              onClick={() => handlerDownload(paymentData, 'csv')}
+            >
               CSV
             </DropdownItem>
           </DropdownMenu>
